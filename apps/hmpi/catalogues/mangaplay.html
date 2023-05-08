@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Multimedia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="keywords" content="iptv, movie, github, online tv, web tv, series tv...">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <link href="../css/main.css" rel="stylesheet" />
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script src="../js/spotlight.bundle.js"></script>
+</head>
+<style>
+    #readzone {
+        color: #fff;
+        width: 100vw;
+        height: inherit;
+        background-color: #000;
+        text-align: center;
+    }
+    
+    #reader {
+        padding: 50px;
+        height: 90%;
+        overflow-y: auto;
+    }
+    
+    div {
+        float: none !important;
+    }
+</style>
+
+<body>
+    <div id="left">
+        <h3></h3>
+        <ul id="menu">
+            <li>
+                <p>Chapters list is loading...</p>
+            </li>
+        </ul>
+    </div>
+    <div class="toggle"></div>
+    <div id="control">
+        <div id="menuicon" title="Toggle tools menu">
+        </div>
+        <div id="favorite" title="Open your favorite channels list">
+        </div>
+        <div id="channelist">
+            <h3>Favorite</h3>
+            <ul id="channelcontent">
+                <li>
+                    <p>Please click like to collect</p>
+                </li>
+            </ul>
+        </div>
+        <div id="epdetail" title="Content detail">
+        </div>
+        <div id="epcontent">
+        </div>
+    </div>
+    <div id="readzone">
+        <div id="reader" class="spotlight-group" data-control="autofit,page,fullscreen,zoom,close,theme,play,autoslide" data-autoslide="true">
+        </div>
+    </div>
+    <div id="hiddens" style="display: none;"></div>
+    <script src="../js/manga.js"></script>
+    <script>
+        let menuHeight = document.getElementById('menu');
+        let screenHeight = window.innerHeight;
+        menuHeight.style.height = screenHeight - 60 + 'px';
+        $("#menu").css({
+            "overflow-y": "auto",
+            "height": menuHeight
+        });
+        $("li p").mouseover(function() {
+            $(this).children("a").css({
+                "color": "#000"
+            })
+        })
+        $("li p").mouseleave(function() {
+            $(this).children("a").css({
+                "color": "#fff"
+            })
+        });
+    </script>
+</body>
+
+</html>

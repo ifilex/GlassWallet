@@ -1,0 +1,224 @@
+<!doctype html>
+<html>
+<head>
+<title>XBill</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<style>
+body {
+	background: #3B6EA5;
+    color: white;
+	font-family: sans-serif;
+	text-align: center;
+	border: 0;
+	margin: 0;
+	padding: 0;
+	font-family: Tahoma, sans-serif;
+	font-size: 12px;
+	line-height: 12px;
+}
+
+body a {
+    color: white;
+}
+
+div {
+	margin: 0px auto;
+}
+
+div#footer {
+	clear: both;
+}
+
+div#menubar {
+	background: #d4d0c8;
+	margin-top: 25px;
+	text-align: left;
+}
+
+div#menubar ul ul {
+	display: none;
+}
+
+div#menubar ul li:hover > ul {
+	display: block;
+}
+
+div#menubar ul {
+	padding: 0 0;
+	list-style: none;
+	margin: 0px;
+	position: relative;
+	display: inline-table;
+}
+div#menubar ul:after {
+	clear: both;
+	content: "";
+	display: block;
+}
+
+div#menubar ul li {
+	float: left;
+}
+
+div#menubar ul li:hover {
+	background: #d4d0c8;
+}
+
+div#menubar ul li:hover a {
+	color: #000;
+}
+
+div#menubar ul li a {
+	display: block;
+	padding: 5px 10px;
+	color: black;
+	text-align: left;
+    text-decoration: none;
+}
+
+div#menubar ul ul {
+	background: #d4d0c8;
+	border-radius: 0px;
+	box-shadow: 0px 0px 9px rgba(0,0,0,0.15);
+	padding: 0;
+	position: absolute;
+	top: 100%;
+}
+
+div#menubar ul ul li {
+	float: none;
+}
+
+div#menubar ul ul li a {
+	padding: 3px 20px;
+	color: #000;
+}
+
+div#menubar ul ul li a:hover {
+	background: #0a246a;
+	color: white;
+}
+
+div#scorediv, div#newscorediv, div#storydiv {
+	position:absolute;
+	top:25%;
+	left:50%;
+	background-color:#d4d0c8;
+    color: black;
+	z-index:1002;
+	overflow:auto;
+	width:40em;
+	height:40em;
+	margin-left:-20em;
+	margin-top:-10em;
+	border-top:2px solid white;
+	border-left:2px solid white;
+	border-right:2px solid black;
+	border-bottom:2px solid black;
+	text-align: center;
+}
+
+div#scorediv table {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+div#scorediv th, div#scorediv td {
+	padding-left: 5px;
+	padding-right: 5px;
+	text-align: center;
+}
+
+div#storydiv {
+	width:30em;
+	height:31em;
+	margin-left:-15em;
+}
+
+div#storydiv div {
+	margin-left: 70px;
+	margin-right: 70px;
+}
+
+</style>
+</head>
+<body>
+
+<div id='storydiv' style='display:block;'>
+<br /><br />
+<img src='images/logo.png' width=260 height=65/>
+<br /><br />
+<div>
+The Story:<br /><br />
+Yet again, the fate of the world rests in your hands!  An evil computer hacker,
+known only by his handle 'Bill', has created the ultimate computer virus.  A
+virus so powerful that it has the power to transmute an ordinary computer into
+a toaster oven.  (oooh!) 'Bill' has cloned himself into a billion-jillion
+micro-Bills.  Their sole purpose is to deliver the nefarious virus, which has
+been cleverly diguised as a popular operating system.<br /><br />
+As System Administrator/Exterminator, your job is to keep Bill from succeeding
+at his task.<br /><br />
+</div>
+<button id='hide' onClick='JavaScript:storyHide();'>OK</button>
+</div>
+
+<div id="menubar" style="width:400px;margin-left:auto;margin-right:auto;">
+	<ul>
+		<li><a href="#"><u>G</u>ame</a>
+			<ul id="gamemenu">
+				<li><a href="JavaScript:gameStart(1);">New&nbsp;Game</a></li>
+				<li><a href="JavaScript:gameStop();" id="pauseHref">Pause&nbsp;Game</a></li>
+				<li><a href="JavaScript:scorelistShow();">View&nbsp;High&nbsp;Scores</a></li>
+			</ul>
+		</li>
+		<li><a href="JavaScript:menu_show()"><u>I</u>nfo</a>
+			<ul id="infomenu">
+				<li><a href="JavaScript:storyShow();">Story&nbsp;of&nbsp;XBill</a></li>
+			</ul>
+		</li>
+	</ul>
+</div>
+
+<div style="width:400px;margin-left:auto;margin-right:auto;">
+<canvas id="canvas" style="margin-top:0px;background-color: white;" width="400" height="400">It appears that your browser doesn't support the canvas element.</canvas><br />
+<a href="http://xbill.org/">XBill</a> was created by Brian Wellington & Matias Duarte.<br />
+Ported to the web by <a href="https://twitter.com/alistair1975">Alistair McMillan</a>.
+</div>
+
+<div id='scorediv' style='display:none;'>
+<h1>High Scores</h1>
+<button id='hide' onClick='JavaScript:scorelistHide();'>Close</button>
+<table id='scoretable'>
+<thead><tr><th>Player</th><th>Level</th><th>Score</th><th>Date</th></tr></thead>
+<tbody></tbody>
+</table>
+</div>
+
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="howler.js"></script>
+<script type="text/javascript" src="game.js"></script>
+<script>
+	function preload(arrayOfImages) {
+		$(arrayOfImages).each(function(){
+			$('<img/>')[0].src = this;
+		});
+	}
+
+	preload([
+		'images/sprites.png'
+	]);
+
+	window.onload = function () {
+		main();
+	}
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=YOURGOOGLETAGHERE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'YOURGOOGLETAGHERE');
+</script>
+</body>
+</html>

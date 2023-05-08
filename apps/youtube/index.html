@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Youtube</title>
+<meta http-equiv="x-ua-compatible" content="IE=edge">
+<link rel="stylesheet" href="css/charms.css"/>
+<link rel="shortcut icon" href="favicon.ico"/>
+<script>
+function start()
+{
+	document.getElementById('startbutton').style.display='block';
+}
+</script>
+</head>
+
+<body onload="start()">
+
+<iframe src="https://www.bing.com/videos/search?q=youtube&form=QBLH&sp=-1&pq=youtube&sc=8-7&qs=n&sk=&cvid=8FE7339DF8C2479C970FA00A787A234A" width="100%" height="100%"></iframe>
+
+<div id="starthoverarea" onmouseover="start()" class="hotcorner">
+</div>
+
+<div id="startbutton" onmouseout="start()">
+<a href="../../start/index.html"><img src="../../common/img/charmsbar/startbutton.png"/></a>
+</div>
+
+</body>
+</html>
+

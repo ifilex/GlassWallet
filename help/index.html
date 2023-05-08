@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="x-ua-compatible" content="IE=edge">
+		<title>About</title>
+		<link rel="shortcut icon" href="../favicon.ico"/>
+		<link rel="stylesheet" href="about.css"/>
+		<link rel="stylesheet" href="charmsabout.css"/>
+		<script>
+		function start()
+		{
+			document.getElementById('startbutton').style.display='block';
+		}
+		</script>
+	</head>
+<body onload="start()">
+	<div id="title">
+		<span>About</span>
+	</div>
+	<h2>What is this ?</h2>
+	<p>This is an open source Venom Wallet with a graphical desktop for TvBOXs, Cell Phones and PC.</p>
+	<h2>Why was this created ?</h2>
+	<p>It was created to develop the first virtual video game console, capable of mining cryptocurrencies that are given to players for playing the games on it.</p>
+	<h2>How to play?</h2>
+	<p>Just select the game you want to play, and the system will download its content from the cloud so you can enjoy it on your computer.</p>
+	<h2>Comparing Ethereum vs. Venom architectures</h2>
+	<p>Most likely, you are familiar with EVM-based blockchains like Ethereum, and you need to migrate your experience from EVM-based blockchain to Venom. This article touches most important things about the difference between the two networks.</p>
+	<h2>EVM as the "Global Computer" vs. TVM with the Dynamic Sharding protocol</h2>
+	<p>First, let's see why the world needed a different virtual machine than EVM. A blockchain virtual machine works like a distributed state machine. A state, which can change from block to block according to a pre-defined set of rules, and which can execute arbitrary machine code. The VM defines the specific rules of changing state from block to block. EVM is designed like a "global computer," but only one computer for everything in the world, and the world is competing for its computing resource. Any EVM-based network inherits concurrency challenges. When validators need to reconstruct the current state, each validator must re-execute every call to every account and smart contract in sequential, one-at-a-time order. We have very expensive computing, even for simple tasks like a swap or a transfer token. Because a transaction of token transfer competes with a transaction to mint NFT and all other transactions that were sent to the network simultaneously. In the real world, we have many computers with modern multicore architectures for different tasks. You can email your friend while your computer compiles the code and does many other things. The Venom blockchain works like a multicore system instead of an EVM-based network. TVM is designed as a distributed computing system with the scalability opportunity through dynamic sharding. This means that The Venom blockchain can share tasks between groups of validator nodes called "a validator task group" (similar to processor cores) depending on the load. The part of tasks doesn't need to wait for other tasks to be completed. For this reason, all interactions between system participants (accounts, aka smart contracts) are asynchronous. One participant doesn't need to wait for another. To learn more about the architecture of the Venom blockchain, please follow the link provided.</p>
+	<h2>Synchronous vs. Asynchronous Communication</h2>
+	<p>Therefore, an important difference between TVM-based and EVM-based networks is the communication between accounts (smart contracts). An EVM-based network transaction is an atomic unit, and all transactions are executed individually and serially (atomically) by the validator when constructing a block. When one contract calls another, it means one continuous process executing bytecode with the state of all accounts. Therefore, each next transaction relies on the completion of the previous one, and regardless they are accessing the same account state or not. This way of executing transactions is synchronous; all transactions are processed in "the main program flow." TVM, by design, has an asynchronous communication model between accounts (aka smart contracts). This is because of the need to maintain calls between contracts in different shards processed by different validator task groups. In this way, each account has the only way to affect the state of some other account by sending a message. When an account receives an inbound message, it triggers the computation of the account's new state and the possibility of generating one or more outbound messages, with the account serving as the source. The inbound message and the previous state of the account serve as inputs for the transaction, while the generated outbound messages and the next state of the account serve as outputs. This makes the transaction processing in TVM more efficient because it is not necessary to update the state of all accounts when executing each transaction. Instead, each account processes only the messages that are addressed to it, allowing for the parallel processing of multiple transactions and increasing the transaction processing speed.</p>
+	<h2>Gas Model and Fees</h2>
+	<p>In Ethereum, the gas model is used to limit the number of computational steps that a transaction can perform. Users pay gas fees for each transaction they send, and these fees are paid in the native currency of the network, Ether (ETH). The fees are determined by the amount of gas used by a transaction, and the gas price, which fluctuates according to network demand. On the other hand, in Venom, the fee calculation is based on a combination of gas, data storage, and forward message fees. The user decides how many VENOM to attach as payment fees from their contract account for the call, and this value is the upper limit for the cost of executing the call chain for the user. By including data storage fees in the fee calculation, Venom incentivizes efficient use of storage space on the network and encourages developers to design contracts that minimize storage usage. This helps to prevent network congestion in the long term.</p>
+
+	<h2>Licenses</h2>
+	<p>All the content presented within the application is free, without monetary charges, and it is free to distribute.</p>
+		
+<div id="starthoverarea" onmouseover="start()" class="hotcorner">
+</div>
+
+<div id="startbutton" onmouseout="start()">
+<a href="../start/index.html"><img src="../common/img/charmsbar/startbutton.png"/></a>
+</div>
+
+</body>
+</html>

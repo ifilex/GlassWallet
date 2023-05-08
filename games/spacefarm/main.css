@@ -1,0 +1,838 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Do Hyeon', sans-serif;
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+.clearFix::after {
+  clear: both;
+  content: '';
+  display: block;
+}
+.megaShadow {
+  font-size: 2em;
+  color: white;
+  text-shadow: 0 0 3px #c3d6eb, 0 0 3px #c3d6eb, 0 0 3px #c3d6eb, 0 0 3px #c3d6eb, 0 0 3px #c3d6eb, 0 0 3px #c3d6eb, 0 0 80px #c3d6eb, 0 0 50px #c3d6eb, 0 0 40px #c3d6eb, 0 0 30px #c3d6eb, 0 0 30px #c3d6eb, 0 0 30px #c3d6eb;
+
+  transition: all 0.3s;
+}
+.megaShadow:hover {
+  text-shadow: 0 0 3px #c3d6eb, 0 0 3px #c3d6eb, 0 0 3px #c3d6eb, 0 0 3px #c3d6eb, 0 0 3px #c3d6eb, 0 0 3px #c3d6eb, 0 0 120px #c3d6eb, 0 0 100px #c3d6eb, 0 0 80px #c3d6eb, 0 0 60px #c3d6eb, 0 0 60px #c3d6eb, 0 0 60px #c3d6eb;
+
+  transition: all 0.3s;
+}
+#playerStatus {
+  z-index: 100;
+  position: absolute;
+  height: 50px;
+  width: 100vw;
+  background-color: rgba(204, 204, 204, 0.5);
+}
+#playerStatus > span {
+  position: absolute !important;
+  font-weight: bold;
+}
+#playerStatus > span:nth-child(2) {
+  left: 50vw;
+}
+#playerStatus > span:nth-child(3) {
+  top: -5px;
+  left: 70vw;
+}
+#playerStatus > span:nth-child(4) {
+  top: 3px;
+  left: 77vw;
+}
+#playerStatus > span:nth-child(5) {
+  top: 20px;
+  left: 77vw;
+}
+.playerIcon {
+  margin-top: 5px;
+  width: 40px;
+  height: 40px;
+  display: block;
+  float: left;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+#playerStatus > span > span {
+  font-size: 40px;
+}
+#coin {
+  animation-duration: 2s;
+  animation-name: goldShiny;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+@keyframes goldShiny {
+  from {
+    color: #ccc93b;
+    text-shadow: 0 0 3px #ccc93b;
+  }
+  50% {
+    color: #a3a134;
+    text-shadow: 0 0 3px #a3a134;
+  }
+  to {
+    color: #ccc93b;
+    text-shadow: 0 0 3px #ccc93b;
+  }
+}
+#diamond {
+  animation-duration: 2s;
+  animation-name: diamondShiny;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+@keyframes diamondShiny {
+  from {
+    color: #3b97cc;
+    text-shadow: 0 0 3px #3b97cc;
+  }
+  50% {
+    color: #347aa3;
+    text-shadow: 0 0 3px #347aa3;
+  }
+  to {
+    color: #3b97cc;
+    text-shadow: 0 0 3px #3b97cc;
+  }
+}
+#level {
+  animation-duration: 2s;
+  animation-name: levelShiny;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+@keyframes levelShiny {
+  from {
+    color: #3bcc4a;
+    text-shadow: 0 0 3px #3bcc4a;
+  }
+  50% {
+    color: #34a34e;
+    text-shadow: 0 0 3px #34a34e;
+  }
+  to {
+    color: #3bcc4a;
+    text-shadow: 0 0 3px #3bcc4a;
+  }
+}
+#gameScreen {
+  z-index: 10;
+  width: 100vw;
+  height: 100vh;
+  background-color: #5acedb;
+}
+#farm {
+  z-index: 50;
+  position: absolute;
+  left: 5vh;
+  top: 5vh;
+  width: 90vh;
+  height: 90vh;
+}
+.farmLine {
+  z-index: 51;
+  width: 100%;
+  height: 11.1111%;
+}
+.farmBlock {
+  position: absolute;
+  width: 11.1111%;
+  height: 11.1111%;
+  display: block;
+  float: left;
+  background-size: cover;
+}
+.farmBackground {
+  z-index: 52;
+}
+.farmTile {
+  z-index: 53;
+}
+.farmThing {
+  z-index: 54;
+
+  transition: all 0.5s;
+}
+.canFarm:hover {
+  animation-duration: 0.5s;
+  animation-name: cursorShiny;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+@keyframes cursorShiny {
+  from {
+    background-color: rgba(145, 145, 145, 0.5);
+  }
+  50% {
+    background-color: rgba(145, 145, 145, 0);
+  }
+  to {
+    background-color: rgba(145, 145, 145, 0.5);
+  }
+}
+#tools {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  width: 17vw;
+  height: 6vw;
+  background-color: rgba(255, 255, 255, 0.4);
+}
+#tools > span:first-child {
+  margin-left: 0.5vw;
+}
+#tools > span {
+  margin-right: 0.5vw;
+  margin-top: 0.5vw;
+  width: 5vw;
+  height: 5vw;
+  display: block;
+  float: left;
+  background-color: rgba(255, 255, 255, 0.6);
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  transition: all 0.2s;
+}
+#tools > span:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+
+  transition: all 0.2s;
+}
+#tools > span.toolSel {
+  background-color: #3cde64;
+
+  transition: all 0.1s;
+}
+#cellStatus {
+  position: absolute;
+  padding-left: 2px;
+  height: 30vh;
+  width: 15vw;
+  font-size: 1.4em;
+  color: #537353;
+  left: 5px;
+  top: 55px;
+  background-color: #a3cca8;
+  border: 3px solid #38c94a;
+  border-radius: 3px;
+}
+#goCraft {
+  position: absolute;
+  margin: 0 10px;
+  padding: 3px 10px;
+  bottom: 27vh;
+  font-size: 1.5em;
+  color: black;
+  background-color: rgba(217, 183, 121, 0.6);
+
+  transition: all 0.2s;
+}
+#goCraft:hover {
+  color: white;
+  background-color: rgba(217, 183, 121, 0.9);
+
+  transition: all 0.2s;
+}
+#goOption {
+  position: absolute;
+  margin: 0 10px;
+  padding: 3px 10px;
+  bottom: 20vh;
+  font-size: 1.5em;
+  color: black;
+  background-color: rgba(168, 168, 168, 0.6);
+
+  transition: all 0.2s;
+}
+#goOption:hover {
+  color: white;
+  background-color: rgba(168, 168, 168, 0.9);
+
+  transition: all 0.2s;
+}
+#shop {
+  z-index: 100;
+  position: absolute;
+  height: 90vh;
+  width: 25vw;
+  right: 0px;
+  top: 60px;
+  background-color: rgba(255, 255, 255, 0.4);
+  overflow-y: scroll;
+}
+#changeShop {
+  margin: 5px auto;
+  width: 90%;
+  height: 25px;
+}
+#changeShop > span {
+  display: block;
+  float: left;
+  width: 33%;
+  font-size: 23px;
+  color: #555;
+  text-align: center;
+}
+#changeShop > span:not(:nth-child(2)) {
+  padding-top: 1px;
+  float: left;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.4);
+
+  transition: all 0.2s;
+}
+#changeShop > span:not(:nth-child(2)):hover {
+  background-color: rgba(255, 255, 255, 0.8);
+
+  transition: all 0.2s;
+}
+#changeShop > span:nth-child(2) {
+  padding-top: 1px;
+  float: left;
+}
+#innerHand > div:nth-child(3n) {
+  margin-top: 0.5vw;
+  margin-left: 1.4vw;
+  padding-left: 1vw;
+  height: auto;
+  width: 23vw;
+}
+.divisionTxt {
+  margin-left: 5px;
+  font-size: 2em;
+  color: #4a4a4a;
+  text-shadow: 3px 3px rgba(128, 128, 128, 0.5);
+}
+.divisionHr {
+  margin: 0 5px;
+}
+.handBlock {
+  margin-right: 0.5vw;
+  margin-bottom: 0.5vw;
+  padding-right: 0.2vw;
+  display: block;
+  float: left;
+  height: 4.5vw;
+  width: 4.3vw;
+  font-size: 0.7em;
+  text-align: right;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: rgba(255, 255, 255, 0.4);
+
+  transition: all 0.2s;
+}
+.reqN {
+  background-color: rgba(235, 152, 152, 0.4);
+}
+.handBlock:not(.reqN):hover {
+  background-color: rgba(255, 255, 255, 0.8);
+
+  transition: all 0.2s;
+}
+.upgradeThing {
+  margin-bottom: 5px;
+  margin-left: 5%;
+  width: 90%;
+}
+.upgradeN {
+  background-color: rgba(230, 144, 138, 0.4);
+
+  transition: all 0.3s;
+}
+.upgradeN:hover {
+  background-color: rgba(230, 144, 138, 0.2);
+
+  transition: all 0.3s;
+}
+.upgradeY {
+  background-color: rgba(138, 230, 146, 0.4);
+
+  transition: all 0.3s;
+}
+.upgradeY:hover {
+  background-color: rgba(138, 230, 146, 0.8);
+
+  transition: all 0.3s;
+}
+.upgradeThing > div:nth-child(1) {
+  margin: 3px;
+  background-color: rgba(255, 255, 255, 0.4);
+}
+#bulkSell {
+  margin-left: 5px;
+  margin-bottom: 5px;
+  float: none;
+  width: 100%;
+}
+#bulkSell > span {
+  margin-right: 0.9%;
+  float: left;
+  font-size: 1.5em;
+  width: 24%;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.3);
+
+  transition: all 0.2s;
+}
+#bulkSell > span:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+
+  transition: all 0.2s;
+}
+.inventoryItem {
+  margin-left: 5%;
+  margin-bottom: 0.7vh;
+  width: 90%;
+  height: 8vh;
+  background-color: rgba(255, 255, 255, 0.4);
+
+  transition: all 0.2s;
+}
+.inventoryItem:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+
+  transition: all 0.2s;
+}
+.inventoryItem > span:nth-child(1) {
+  margin: 0.5vh 0.5vh 0 0.5vh;
+  width: 7vh;
+  height: 7vh;
+  display: block;
+  float: left;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: rgba(69, 161, 93, 0.2);
+}
+.inventoryItem > span:nth-child(2) {
+  color: #3e9139;
+  text-shadow: 2.5px 2.5px 0 rgba(121, 194, 116, 0.5);
+}
+.inventoryItem > span:nth-child(2) > div:nth-child(1) {
+  margin-top: 0.7vh;
+  background-color: rgba(255, 255, 255, 0.4);
+}
+.inventoryItemMat {
+  margin-left: 5%;
+  margin-bottom: 0.7vh;
+  width: 90%;
+  height: 8vh;
+  background-color: rgba(255, 255, 255, 0.4);
+
+  transition: all 0.2s;
+}
+.inventoryItemMat:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+
+  transition: all 0.2s;
+}
+.inventoryItemMat > span:nth-child(1) {
+  margin: 0.5vh 0.5vh 0 0.5vh;
+  width: 7vh;
+  height: 7vh;
+  display: block;
+  float: left;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: rgba(209, 151, 75, 0.2);
+}
+.inventoryItemMat > span:nth-child(2) {
+  color: #d1974b;
+  text-shadow: 2.5px 2.5px 0 rgba(121, 194, 116, 0.5);
+}
+.inventoryItemMat > span:nth-child(2) > div:nth-child(1) {
+  margin-top: 0.7vh;
+  background-color: rgba(255, 255, 255, 0.4);
+}
+#craftScreen {
+  height: 100vh;
+  width: 100vw;
+  background-color: #c79946;
+}
+.goGame {
+  position: absolute;
+  margin: 0 10px;
+  padding: 3px 10px;
+  top: 60px;
+  font-size: 1.5em;
+  color: black;
+  background-color: rgba(199, 70, 70, 0.6);
+
+  transition: all 0.2s;
+}
+.goGame:hover {
+  background-color: rgba(199, 70, 70, 0.9);
+  color: white;
+
+  transition: all 0.2s;
+}
+#craftMenu {
+  position: absolute;
+  left: 30vw;
+  top: 60px;
+  width: 40vw;
+  height: 20px;
+}
+#craftMenu > span {
+  position: absolute;
+  width: 25%;
+  height: 100%;
+  text-align: center;
+  font-size: 15pt;
+  color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+
+  transition: all 0.2s;
+}
+#craftMenu > span:hover {
+  padding: 0 10px;
+  color: rgba(128, 128, 128, 0.8);
+  background-color: rgba(255, 255, 255, 0.8);
+
+  transition: all 0.2s;
+}
+#craftMenu > span:nth-child(1) {
+  left: 6.25%;
+}
+#craftMenu > span:nth-child(2) {
+  left: 37.5%;
+}
+#craftMenu > span:nth-child(3) {
+  left: 68.75%;
+}
+#craftInner {
+  margin: 13vh 3vh 5vh 3vh;
+  height: 83vh;
+  overflow-y: scroll;
+  background-color: rgba(255, 255, 255, 0.2);
+
+  transition: all 0.2s;
+}
+#craftInner:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+
+  transition: all 0.2s;
+}
+#optionScreen {
+  height: 100vh;
+  width: 100vw;
+  background-color: #a6a6a6;
+}
+#optionInnerWarp {
+  margin-top: 120px;
+  padding-left: 20px;
+  height: 90vh;
+  width: 100vw;
+}
+#optionInnerWarp > div {
+  margin-bottom: 10px;
+  padding-left: 10px;
+  font-size: 20pt;
+  height: 40px;
+  width: 30vw;
+  color: #333;
+  background-color: rgba(255, 255, 255, 0.4);
+
+  transition: all 1s;
+}
+#optionInnerWarp > div:nth-child(4) > a {
+  color: black;
+  text-decoration: none;
+}
+#optionInnerWarp > div:hover {
+  width: 50vw;
+  color: white;
+  background-color: rgba(128, 128, 128, 0.8);
+
+  transition: all 0.2s;
+}
+#craftMaterial {
+  height: auto;
+}
+#bulkCraft {
+  margin-left: 5px;
+  margin-bottom: 5px;
+  float: none;
+  width: 100%;
+}
+#bulkCraft > span {
+  margin-right: 0.9%;
+  float: left;
+  font-size: 1.5em;
+  width: 24%;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.3);
+
+  transition: all 0.2s;
+}
+#bulkCraft > span:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+
+  transition: all 0.2s;
+}
+.craftBlock {
+  margin: 0.5vw 0.25vw 0.5vw 0.5vw;
+  padding: 0 0.2vw 0 0.1vw;
+  display: block;
+  float: left;
+  width: 10.8vw;
+}
+.craftY {
+  background-color: rgba(255, 255, 255, 0.4);
+
+  transition: all 0.2s;
+}
+.craftY:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+
+  transition: all 0.2s;
+}
+.craftN {
+  background-color: rgba(255, 144, 138, 0.4);
+
+  transition: all 0.2s;
+}
+.craftN:hover {
+  background-color: rgba(255, 144, 138, 0.2);
+
+  transition: all 0.2s;
+}
+.materialBack {
+  background: rgba(255, 255, 255, 0.4);
+}
+.materialY {
+  color: #5ea35b;
+  text-shadow: 0.5px 0.5px 0 rgba(0, 0, 0, 0.5);
+}
+.materialN {
+  color: #a35b5b;
+  text-shadow: 0.5px 0.5px 0 rgba(0, 0, 0, 0.5);
+}
+.craftBlock > span:nth-child(1) {
+  display: block;
+  float: left;
+  height: 4.5vw;
+  width: 10.8vw;
+  color: #fff;
+  font-weight: bold;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+  background-repeat: no-repeat;
+  background-size: 4.3vw auto;
+}
+.craftBlock > span:nth-child(2) {
+  margin: 0;
+  padding: 0;
+  color: #77a2e6;
+  font-size: 1vw;
+  text-shadow: 2px 2px 0 rgba(119, 162, 230, 0.2);
+}
+.craftBlock > div {
+  height: 4.5vw;
+  width: 10.8vw;
+}
+.craftBlock > div > div {
+  height: 1.5vw;
+  width: 10.8vw;
+}
+.craftBlock > div > div > span {
+  margin: 0.1vw 0.1vw;
+  display: block;
+  float: left;
+  height: 1.3vw;
+  width: 1.3vw;
+  background-size: cover;
+}
+.craftBlock > div > div > p {
+  font-size: 1vw;
+}
+#rpDisplay {
+  width: 100%;
+  font-size: 2em;
+  text-align: center;
+}
+#craftMachine {
+  padding-top: 1vh;
+}
+.machine {
+  position: relative;
+  margin-left: 5%;
+  margin-bottom: 1vw;
+  padding: 1vw 0 0 1vw;
+  width: 90%;
+  height: 10vw;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+.machine > span:nth-child(1) {
+  background-color: rgba(255, 255, 255, 0.5);
+  position: absolute;
+  display: block;
+  float: left;
+  width: 8vw;
+  height: 8vw;
+  background-size: cover;
+  z-index: 49;
+}
+.machine > span:nth-child(2) {
+  position: absolute;
+  display: block;
+  float: left;
+  width: 4vw;
+  height: 4vw;
+  background-size: cover;
+  z-index: 50;
+}
+.machine > span:nth-child(3) {
+  display: block;
+  float: left;
+  width: 9vw;
+  height: 8vw;
+}
+.machine > span:nth-child(4) {
+  position: absolute;
+  display: block;
+  float: left;
+  font-size: 8vw;
+  color: rgba(255, 255, 255, 0.3);
+  z-index: 51;
+}
+.machine > span:nth-child(5) {
+  font-size: 1vw;
+}
+.machine > span:nth-child(6) {
+  position: relative;
+  border: 3px solid rgba(88, 204, 129, 0.5);
+  border-radius: 3px;
+  color: white;
+  background: linear-gradient(90deg, rgba(88, 204, 129, 0.5), rgba(204, 102, 88, 0.5));
+  z-index: 70;
+  cursor: pointer;
+
+  transition: all 0.3s;
+}
+.machine > span:nth-child(6):hover {
+  border: 3px solid rgba(204, 102, 88, 0.5);
+  color: black;
+  background: linear-gradient(90deg, rgba(88, 204, 129, 0.7), rgba(204, 102, 88, 0.7));
+
+  transition: all 0.3s;
+}
+.machine > span:nth-child(7) {
+  margin-left: 1vw;
+  position: relative;
+  border: 3px solid rgba(204, 102, 88, 0.5);
+  border-radius: 3px;
+  color: white;
+  background-color: rgba(204, 102, 88, 0.5);
+  z-index: 70;
+  cursor: pointer;
+
+  transition: all 0.3s;
+}
+.machine > span:nth-child(7):hover {
+  border: 3px solid rgba(204, 102, 88, 0.7);
+  color: black;
+  background: rgba(204, 102, 88, 0.7);
+
+  transition: all 0.3s;
+}
+.machine > div {
+  position: relative;
+  z-index: 60;
+}
+.machine > div > span {
+  display: block;
+  float: left;
+  margin-right: 1vw;
+  width: 7vw;
+  height: 7vw;
+  background-size: cover;
+  background-color: rgba(255, 255, 255, 0.3);
+  z-index: 60;
+}
+.machine > div > span:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+.machine > div > div > span:nth-child(1) {
+  margin-bottom: 1vw;
+  float: left;
+  display: block;
+  width: 2vw;
+  height: 2vw;
+  background-size: 2vw 2vw;
+}
+.machine > div > div > span:nth-child(2) {
+  float: left;
+  display: block;
+  width: 90%;
+  height: 2vw;
+  font-size: 2vw;
+  background-color: rgba(255, 255, 255, 0.5)
+}
+#bulkResearch {
+  margin: 5px 0 5px 5px;
+  float: none;
+  width: 100%;
+}
+#bulkResearch > span {
+  margin-right: 0.9%;
+  float: left;
+  font-size: 1.5em;
+  width: 19%;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.3);
+
+  transition: all 0.2s;
+}
+#bulkResearch > span:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+
+  transition: all 0.2s;
+}
+.researchCell {
+  margin: 0 0 1vw 5%;
+  height: 3vw;
+  width: 90%;
+  font-size: 2vw;
+  text-align: center;
+  color: white;
+  text-shadow: 0 0 3px #c3d6eb, 0 0 3px #c3d6eb, 0 0 3px #c3d6eb, 0 0 3px #c3d6eb, 0 0 3px #c3d6eb, 0 0 3px #c3d6eb, 0 0 80px #c3d6eb, 0 0 50px #c3d6eb, 0 0 40px #c3d6eb, 0 0 30px #c3d6eb, 0 0 30px #c3d6eb, 0 0 30px #c3d6eb;
+  background-color: rgba(255, 255, 255, 0.4);
+}
+.researchCell > span:nth-child(1) {
+  display: block;
+  float: left;
+  height: 3vw;
+  width: 20%;
+}
+.researchCell > span:nth-child(2) {
+  display: block;
+  float: left;
+  height: 3vw;
+  width: 70%;
+}
+.researchCell > span:nth-child(3) {
+  margin-top: 0.5vw;
+  display: block;
+  float: left;
+  background-size: cover;
+  width: 2.225vw;
+  height: 2.225vw;
+  cursor: pointer;
+  transform: translateX(0) translateY(0);
+
+  transition: all 0.2s;
+}
+.researchCell > span:nth-child(3):hover {
+  transform: translateX(2px) translateY(2px);
+
+  transition: all 0.2s;
+}

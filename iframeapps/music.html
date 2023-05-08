@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="x-ua-compatible" content="IE=edge">
+<title>Youtube Music</title>
+<link rel="shortcut icon" href="favicons/metroie.ico"/>
+<link rel="stylesheet" href="common.css"/>
+<script>
+function start()
+{
+	document.getElementById('startbutton').style.display='block';
+}
+</script>
+</head>
+
+<body onload="start()">
+
+<iframe src="https://www.bing.com/videos/search?q=music&form=QBLH&sp=-1&pq=music&sc=8-5&qs=n&sk=&cvid=6663DEF7C73D4607A8918B1442B62650" width="100%" height="100%"></iframe>
+
+<div id="starthoverarea" onmouseover="start()" class="hotcorner">
+</div>
+
+<div id="startbutton" onmouseout="start()">
+<a href="../start/index.html"><img src="img/start.png"/></a>
+</div>
+
+</body>
+</html>
