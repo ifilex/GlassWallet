@@ -5,17 +5,6 @@
     <link rel="stylesheet" href="css/charms.css"/>
     <meta http-equiv="x-ua-compatible" content="IE=edge">
 
-    <script>
-	function start()
-	{
-		document.getElementById('startbutton').style.display='block';
-	}
-
-	function destroystart() 
-	{
-		document.getElementById('startbutton').style.display='none';
-	}
-    </script>
 
 <style>
 body {
@@ -98,10 +87,4 @@ Use a Remote Desktop Gateway server
 <input id="text" value="PC name" onFocus="this.value=''">
 <input type="button" id="connect" value="Connect">
 
-    <div id="starthoverarea" onmouseover="start()" class="hotcorner">
-    </div>
-
-    <div id="startbutton" onmouseout="destroystart()">
-    <a href="../../start/index.html"><img src="../../common/img/charmsbar/startbutton.png"/></a>
-    </div>
 </div>
