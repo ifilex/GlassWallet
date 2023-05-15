@@ -1,4 +1,4 @@
-Glass Wallet v 0.1
+Glass Wallet Program Manager v 1.0
 
 Glass​ es una Maquina virtual que emula una Wallet fria multi cadena, desarrollada con la finalidad 
 de integrar la navegación y transacciones dentro de un sistema autonomo, evitando cualquier tipo 
