@@ -1,0 +1,145 @@
+<!-- Token Name Field (select) -->
+<label class="col-sm-3 control-label text-left" for="token-name-select">
+    <span id="token-name-select-label">Token Name</span>
+    <a href="#" data-toggle="tooltip" title='This is the name of the token you would like to use in this transaction' class="pull-right" id="token-name-select-tooltip"><i class="fa fa-lg fa-question-circle-o margin-top-5" ></i></a>
+</label>
+<div class="col-sm-9">
+    <select id="token-name-select" name="name" class="selectpicker">
+    </select>
+</div>
+
+<script>
+
+$(document).ready(function(){
+
+    // Get the current form type and tooltip
+    var type = getFormType(),
+        tip  = $('#token-name-select-tooltip');
+
+    // Stash current price info on BTC and XCP
+    btc_info = getAssetPrice('BTC',true),
+    xcp_info = getAssetPrice('XCP',true);
+
+    // Populate the token name / asset list
+    var balances = getAddressBalance(FW.WALLET_ADDRESS),
+        html     = '',
+        el       = $('#token-name-select');
+    // Force "BTC" to be the only option for burning
+    if(type=='burn'){
+        html += '<option data-content="<img src=\'' + FW.XCHAIN_API + '/icon/BTC.png\' class=\'fw-icon-20 margin-right-5\'>BTC">BTC</option>';
+    } else if(type=='dispenser-buy'){
+        var o = FW.DIALOG_DATA;
+        html += '<option data-content="<img src=\'' + FW.XCHAIN_API + '/icon/' + o.asset + '.png\' class=\'fw-icon-20 margin-right-5\'>' + o.name +'">' + o.name + '</option>';
+    } else {
+        if(balances && balances.data){
+            balances.data.forEach(function(item){
+                // Skip BTC in some cases
+                if(item.asset=='BTC' && (type=='destroy'||type=='dispenser'))
+                    return;
+                var asset = (item.asset_longname && item.asset_longname!='') ? item.asset_longname : item.asset;
+                html += '<option data-content="<img src=\'' + FW.XCHAIN_API + '/icon/XCP.png\' data-src=\'' + FW.XCHAIN_API + '/icon/' + item.asset + '.png\' class=\'fw-icon-20 margin-right-5 lazy-load\'>' + asset + '">' + asset + '</option>';
+            });
+        }
+
+    }
+    el.html(html);
+    el.selectpicker({ width: '100%' });
+    el.selectpicker("refresh");
+
+    // Detect when select field is first shown and lazy-load images
+    el.on('shown.bs.select', $.debounce(100,function(e){
+        $('img.lazy-load').Lazy(FW.LAZY_LOAD_CONFIG);
+    }));
+
+    // Detect when select field chooses an option and lazy-load images
+    el.on('changed.bs.select', $.debounce(100,function(e){
+        $('img.lazy-load').Lazy(FW.LAZY_LOAD_CONFIG);
+    }));
+
+    // Detect scrolling of asset list and lazy-load images
+    $('.dropdown-menu').scroll($.debounce(100,function(e){
+        $('img.lazy-load').Lazy(FW.LAZY_LOAD_CONFIG);
+    }));
+
+     // Update the available amount if the function exist
+    if(typeof updateAvailableQuantity === 'function')
+        updateAvailableQuantity();
+
+    // Change the look/feel of the form based on form type
+    if(type=='dividend'){
+        $('#token-name-select-label').text('Dividend');
+        $('#token-name-select').attr('name','dividend');
+    } else if(['burn','dispenser-buy'].indexOf(type)!=-1){
+        $('#token-name-select').prop('disabled',true);
+        $('#token-name-select');
+    }
+
+    // Wait a brief moment to allow things to initialize
+    setTimeout(function(){
+
+        // Change toolip text based on form type 
+        var txt = false;
+        if(type=='send')
+            txt = 'This is the name of the token which you would like to send';
+        if(type=='dividend')
+            txt = 'This is the name of the token which you would like to pay out as a dividend';
+        if(type=='burn')
+            txt = 'This is the name of the token which you would like to burn';
+        if(type=='destroy')
+            txt = 'This is the name of the token which you would like to destroy';
+        if(type=='dispenser')
+            txt = 'This is the name of the token which you would like to use in a dispenser';
+        if(type=='dispenser-buy')
+            txt = 'This is the name of the token which you would like to buy';
+        if(txt)
+            tip.attr('data-original-title',txt);
+
+    },750);
+
+    // Detect any asset changes and update the available amount
+    $('#token-name-select').change(function(e){
+        var val = $(this).val();
+        // Update the available amount if the function exist
+        if(typeof updateAvailableQuantity === 'function')
+            updateAvailableQuantity();
+        // Callback function to handle saving current asset information
+        var cb = function(o){
+            FW.ASSET_INFO = o;
+            btc_info = getAssetPrice('BTC',true);
+            xcp_info = getAssetPrice('XCP',true);
+            // Handle enabling/disabling the fiat field based on if we detect some estimated BTC value
+            if(o.estimated_value.btc=='0.00000000'){
+                $('#amount-value').prop('disabled',true);
+                $('#escrow-amount-value').prop('disabled',true);
+                $('#give-amount-value').prop('disabled',true);
+            } else {
+                $('#amount-value').prop('disabled',false);
+                $('#escrow-amount-value').prop('disabled',false);
+                $('#give-amount-value').prop('disabled',false);
+            }
+        }
+        // If this is BTC, hardcode the values and skip getting asset info
+        if(val=='BTC'){
+            cb({
+                asset: "BTC",
+                estimated_value: {
+                    btc: '1.00000000',
+                    usd: numeral(btc_info.price_usd).format('0.00'),
+                    xcp: numeral(xcp_info.price_btc).format('0.00000000'),
+                },
+            });
+            // Disable the memo
+            $('#memo').attr('disabled', true);
+            $('#memo').val('');
+        } else {
+            $('#memo').attr('disabled', false);
+            // Get asset info and run callback
+            getAssetInfo(val, cb);
+        }
+    });
+
+    // Trigger a change on the field, so we initialize asset info
+    $('#token-name-select').change();
+
+});
+</script>

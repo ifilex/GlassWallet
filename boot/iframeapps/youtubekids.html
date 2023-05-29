@@ -5,12 +5,24 @@
 <title>Youtube Kids</title>
 <link rel="shortcut icon" href="favicons/metroie.ico"/>
 <link rel="stylesheet" href="common.css"/>
-
+<script>
+function start()
+{
+	document.getElementById('startbutton').style.display='block';
+}
+</script>
 </head>
 
 <body onload="start()">
 
 <iframe src="https://www.bing.com/videos/search?q=youtube%20kids&qs=n&form=QBVR&=%25eManage%20Your%20Search%20History%25E&sp=-1&ghc=1&pq=youtube%20kids&sc=8-12&sk=&cvid=C6C72D1FF9CB4996BA5A7B873560D409" width="100%" height="100%"></iframe>
+
+<div id="starthoverarea" onmouseover="start()" class="hotcorner">
+</div>
+
+<div id="startbutton" onmouseout="start()">
+<a href="../start/index.html"><img src="img/start.png"/></a>
+</div>
 
 </body>
 </html>

@@ -1,17 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Quake Arena</title>
+<title>Extreme Assault</title>
 <meta http-equiv="x-ua-compatible" content="IE=edge">
 <link rel="stylesheet" href="css/charms.css"/>
 <link rel="shortcut icon" href="favicon.ico"/>
-
+<script>
+function start()
+{
+	document.getElementById('startbutton').style.display='block';
+}
+</script>
 </head>
 
 <body onload="start()">
-<iframe src="http://www.quakejs.com/play?set%20fs_game%20cpma&set%20mode_start%20FFA&set%20g_teamAutoJoin%201&map%20cpm1a" width="100%" height="100%"></iframe>
+<iframe src="https://dos.zone/player/?bundleUrl=https%3A%2F%2Fifilex.github.io%2FFreedows8Bit%2Fgamestore%2Ffps%2Fextreme-box.jsdos?anonymous=1" target="_blank" rel="nofollow" width="100%" height="100%"></iframe>
 
 
+<div id="starthoverarea" onmouseover="start()" class="hotcorner">
+</div>
+
+<div id="startbutton" onmouseout="start()">
+<a href="../../start/index.html"><img src="../../common/img/charmsbar/startbutton.png"/></a>
+</div>
 
 </body>
 </html>

@@ -2,14 +2,19 @@
 <html>
 <head>
 		<meta http-equiv="x-ua-compatible" content="IE=edge">
-		<title>Offices</title>
+		<title>Movies and Music</title>
 		<!--[if IE]><style>#targetIE {margin-left:-2.5px;}</style><![endif]-->
 		<link rel="stylesheet" href="../lib/multimedia.css"/>
 		<link rel="stylesheet" href="../lib/scrollbar.css"/>
 		<link rel="shortcut icon" href="../favicon.ico"/>
     		<script src="../lib/jquery-1.8.0.min.js" type="text/javascript"></script>
     		<script src="../lib/jquery-ui-1.8.23.min.js" type="text/javascript"></script>
-
+		<script>
+		function start()
+		{
+			document.getElementById('startbutton').style.display='block';
+		}
+		</script>
 </head>
 <body onload="start()">
 	<div id="starttext" onclick="document.getElementById('userdropdown').style.display='none';">
@@ -25,14 +30,14 @@
 
 				<div class="tile">
 					<a href="https://docs.google.com/document/u/0/">					
-						<img src="images/gdoc.png" height="125" width="258"/>
+						<img src="images/bblack.png" height="125" width="258"/>
 					</a>
 					<p>Documents</p>
 				</div>
 
 				<div class="tile">
 					<a href="https://docs.google.com/spreadsheets/u/0/">					
-						<img src="images/gexcel.png" height="125" width="258"/>
+						<img src="images/bblack.png" height="125" width="258"/>
 					</a>
 					<p>Excel</p>
 				</div>
@@ -40,16 +45,16 @@
 
 				<div class="tile">
 					<a href="https://docs.google.com/presentation/u/0/">					
-						<img src="images/gpres.png" height="125" width="258"/>
+						<img src="images/bblack.png" height="125" width="258"/>
 					</a>
 					<p>Powerpoint</p>
 				</div>
 
 				<div class="tile">
 					<a href="https://www.office.com">					
-						<img src="images/office.png" height="125" width="258"/>
+						<img src="images/bblack.png" height="125" width="258"/>
 					</a>
-					<p></p>
+					<p>Microsoft Office</p>
 				</div>
 				
 			</div>
@@ -59,30 +64,30 @@
 
 				<div class="tile">
 					<a href="https://outlook.live.com/mail/0/">					
-						<img src="images/outlook.png" height="125" width="258"/>
+						<img src="images/bblack.png" height="125" width="258"/>
 					</a>
 					<p>Outlook</p>
 				</div>
 
 				<div class="tile">
 					<a href="../accesories/office.html">					
-						<img src="images/openoffice.png" height="125" width="258"/>
+						<img src="images/bblack.png" height="125" width="258"/>
 					</a>
 					<p>OpenOffice</p>
 				</div>
 
 				<div class="tile">
-					<a href="https://keep.google.com/">					
-						<img src="images/keep.png" height="125" width="258"/>
+					<a href="https://translate.google.com">					
+						<img src="images/bblack.png" height="125" width="258"/>
 					</a>
-					<p>Google Keep</p>
+					<p>Google Translate</p>
 				</div>
 
 				<div class="tile">
-					<a href="https://translate.google.com">					
-						<img src="images/translate.png" height="125" width="258"/>
+					<a href="http://www.youtube.com">					
+						<img src="images/bblack.png" height="125" width="258"/>
 					</a>
-					<p>Google Translate</p>
+					<p>Youtube</p>
 				</div>
 
 			</div>
@@ -91,6 +96,12 @@
 
 	</div>
 
+<div id="starthoverarea" onmouseover="start()" class="hotcorner">
+</div>
+
+<div id="startbutton" onmouseout="start()">
+<a href="../index.html"><img src="../common/img/charmsbar/startbutton.png"/></a>
+</div>
 
 </body>
 </html>

@@ -1,0 +1,124 @@
+<form class="form-horizontal" id="cancel-order-form" data-toggle="validator" role="form">
+    <!-- Order Information -->
+    <div class="form-group">
+        <label class="col-sm-3 control-label text-left order-type">
+            Order Hash
+            <a href="#" data-toggle="tooltip" title='This is the transaction hash of the order which you would like to cancel' class="pull-right"><i class="fa fa-lg fa-question-circle-o margin-top-5" ></i></a>
+        </label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" name="tx_hash" id="tx_hash" placeholder="Order Transaction Hash" autocomplete="off" required>
+        </div>
+    </div>
+    <div class="form-group" id="tx-fee-field">
+        <!-- Transaction Fee Field -->
+    </div>
+    <div id="transaction-status"></div>
+    <div class="text-right">
+        <div id="btn-cancel" class="btn btn-danger margin-right-5"><i class="fa fa-lg fa-fw fa-thumbs-down"></i> No</div>
+        <div id="btn-submit" class="btn btn-success"><i class="fa fa-lg fa-fw fa-thumbs-up"></i> Yes</div>
+    </div>
+</form>
+
+
+<script>
+$(document).ready(function(){
+
+    // Load any field content
+    $('#tx-fee-field').load('html/fields/tx-fee.html');
+
+    // Delay initializing some fields to give things a chance to load
+    setTimeout(function(){
+
+        // Handle loading any data from FW.DIALOG_DATA
+        var data = FW.DIALOG_DATA;
+        if(data.tx_hash){
+            $('#tx_hash').val(data.tx_hash).prop('readonly', true);
+        }
+
+        // Reset dialog data so we don't reuse data on form in the future
+        FW.DIALOG_DATA = {};
+
+        // Initialize any tooltips
+        $('[data-toggle="tooltip"]').tooltip({ 
+            html: true,
+            placement: 'bottom'
+        }); 
+
+        // Remove any error indicators when user changes a field value
+        $('#cancel-order-form input').change(function(e){
+            $(this).closest('.form-group').removeClass('has-error has-danger');
+        });
+
+    },100);
+
+    // Submit form if user clicks 'Submit' button
+    $('#btn-submit').click($.debounce(100,function(e){
+        $('#cancel-order-form').submit();
+    }));
+
+    // Hide the form if users clicks 'Cancel' button
+    $('#btn-cancel').click($.debounce(100,function(e){
+        dialogClose('dialog-cancel-order');
+    }));
+
+    // Handle form validation and displaying any errors
+    $('#cancel-order-form').validator().on('submit', function(e){
+        console.log('caught submit');
+        // prevent form submission
+        e.preventDefault(); 
+        // Get object with form values
+        var vals   = array2Object($(this).serializeArray()),
+            errors = [];
+        console.log('vals=',vals);
+        // Remove error indicators from any fields 
+        $('.form-group').removeClass('has-error has-danger');
+        // Verify we have valid fee amount 
+        if(vals['tx_hash'].length!=64){
+            errors.push('You must enter a valid order transaction hash');
+            $('#tx_hash').closest('.form-group').addClass('has-error has-danger');
+        }
+        // Verify we have valid fee amount 
+        if(numeral(vals['fee-amount']).value()==0){
+            errors.push('You must enter a fee which is greater than 0.00000000!');
+            $('#fee-amount').closest('.form-group').addClass('has-error has-danger');
+        }
+        // Display any error message
+        if(errors.length){
+            dialogMessage('<i class="fa fa-lg fa-fw fa-exclamation-circle"></i> Error(s)', errors.join('<br/>') );
+        } else {
+            // Lookup transaction data and verify it is a valid order and set source address
+            $.getJSON( FW.XCHAIN_API + '/api/tx/' + vals['tx_hash'], function(data){
+                if(data.tx_hash==vals['tx_hash'] && data.tx_type=='Order' && data.status=='open'){
+                    // Verify source address is in wallet
+                    var found = false;
+                    FW.WALLET_ADDRESSES.forEach(function(item){
+                        if(item.address==data.source)
+                            found = true;
+                    });
+                    if(found){
+                        // Callback to run after broadcasting tx
+                        var doneCb = function(tx){
+                            if(tx){
+                                dialogClose('dialog-cancel-order');
+                                dialogMessage('<i class="fa fa-lg fa-check"></i> Order Cancellation Successful', '<center>Your order cancellation has been broadcast to the network and your order should be cancelled shortly.' +
+                                              '<br/><br/><a class="btn btn-success" href="' + FW.XCHAIN_API + '/tx/' + tx + '" target="_blank">View Transaction</a></center>');
+                            }
+                        }
+                        var network  = (FW.WALLET_NETWORK==2) ? 'testnet' : 'mainnet',
+                            fee_sat  = getSatoshis(vals['fee-amount']);
+                        cpCancel(network, data.source, data.tx_hash, fee_sat, doneCb);
+                    } else {
+                        dialogMessage('<i class="fa fa-lg fa-fw fa-exclamation-circle"></i> Error(s)', 'Transaction source address is not in wallet!' );
+                    }
+                } else {
+                    dialogMessage('<i class="fa fa-lg fa-fw fa-exclamation-circle"></i> Error(s)', 'Transaction is not an open order!' );
+                }
+            });
+        }
+    })
+
+
+});
+</script>
+
+

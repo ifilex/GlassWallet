@@ -6,7 +6,12 @@
 		<link rel="shortcut icon" href="../favicon.ico"/>
 		<link rel="stylesheet" href="about.css"/>
 		<link rel="stylesheet" href="charmsabout.css"/>
-
+		<script>
+		function start()
+		{
+			document.getElementById('startbutton').style.display='block';
+		}
+		</script>
 	</head>
 <body onload="start()">
 	<div id="title">
@@ -28,6 +33,13 @@
 	<p>In Ethereum, transactions are limited by the gas model, where users pay fees in Ether (ETH) based on the amount of gas used. In Venom, fees are calculated considering gas, data storage, and forward message fees. Users can decide the amount of VENOM to attach as payment fees from their contract account, setting an upper limit for the call execution cost. By including data storage fees, Venom promotes efficient storage usage and encourages contract designs that minimize storage. This helps prevent long-term network congestion.</p>	
 	<h2>Licenses</h2>
 	<p>All the content presented within the application is free, without monetary charges, and it is free to distribute.</p>
+		
+<div id="starthoverarea" onmouseover="start()" class="hotcorner">
+</div>
+
+<div id="startbutton" onmouseout="start()">
+<a href="../start/index.html"><img src="../common/img/charmsbar/startbutton.png"/></a>
+</div>
 
 </body>
 </html>

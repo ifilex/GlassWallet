@@ -1,0 +1,86 @@
+body {
+    color: white;
+    text-align: center;
+    align-items: center;
+    background-image: url(https://research.binance.com/static/images/meta.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+#counter {
+    padding: 1%;
+    position: fixed;
+    top: 5px;
+    left: 10px;
+    color: rgba(245, 245, 245, 0.815);
+    background-color: rgba(0, 0, 0, 0.699);
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    font-family: cursive;
+    z-index: 1;
+}
+
+#tableData {
+    margin: auto;
+    background-color: rgba(92, 75, 21, 0.5);
+    font-family: 'Balsamiq Sans', cursive;
+}
+
+table,
+td {
+    padding: 1%;
+    border-bottom: 1px solid rgb(243, 229, 189);
+    text-align: center;
+    cursor: pointer;
+}
+
+td:nth-child(5) {
+    color: red;
+}
+
+td:nth-child(6) {
+    color: red;
+    font-weight: bold;
+}
+
+th {
+    padding: 5px;
+    border-right: 2px solid rgb(31, 28, 2);
+}
+
+tr:hover {
+    background-color: rgba(148, 121, 33, 0.5);
+}
+
+#owner {
+    color: rgba(245, 245, 245, 0.842);
+    top: 5px;
+    right: 10px;
+    position: fixed;
+    font-family: cursive;
+    z-index: 1;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    cursor: pointer;
+}
+
+::-webkit-scrollbar-track {
+    background-color: rgb(71, 71, 71);
+    cursor: pointer;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #edb71d;
+    border-radius: 50%;
+    cursor: pointer;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+}

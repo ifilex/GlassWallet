@@ -1,0 +1,127 @@
+<!-- Transaction Information -->
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default table-responsive">
+            <div class="panel-heading panel-heading-lg">
+                <i class="fa fa-lg fa-send"></i> Send Details
+                <a href="#" class="btn btn-xs btn-success pull-right" id="history-info-more" target="_blank"><i class="fa fa-info-circle"></i> more info</a>
+            </div>
+            <table class="table table-striped table-bordered table-condensed">
+            <tbody>
+            <tr>
+                <td class="info bold nowrap" width="130">Transaction Hash</td>
+                <td id="tx-hash"></td>
+            </tr>
+            <tr>
+                <td class="info bold" width="130">TX Index</td>
+                <td id="tx-index"></td>
+            </tr>
+            <tr>
+                <td class="info bold">Block #</td>
+                <td id="block"></td>
+            </tr>
+            <tr>
+                <td class="info bold">Time</td>
+                <td id="timestamp"></td>
+            </tr>
+            <tr>
+                <td class="info bold">Asset</td>
+                <td id="asset"></td>
+            </tr>
+            <tr>
+                <td class="info bold">Quantity</td>
+                <td id="quantity"></td>
+            </tr>
+            <tr>
+                <td class="info bold">Source</td>
+                <td id="source"></td>
+            </tr>
+            <tr>
+                <td class="info bold">Destination</td>
+                <td id="destination"></td>
+            </tr>
+            <tr>
+                <td class="info bold">Status</td>
+                <td id="status"></td>
+            </tr>
+            </tbody>
+            </table>
+        </div>
+    </div>
+</div><!-- end row -->
+
+<!-- Code to load/update data -->
+<script type="text/javascript">
+    var testnet = (FW.WALLET_NETWORK==2) ? true : false,
+        tx      = FW.CURRENT_TRANSACTION.tx;
+
+    $(document).ready(function(){
+
+        if(FW.CURRENT_TRANSACTION.asset=='BTC'){
+            var net = (FW.WALLET_NETWORK==2) ? '/testnet' : '';
+
+            // Update 'more info' link to point to transaction url
+            $('#history-info-more').attr('href','https://blockstream.info' + net + '/tx/' + tx);
+
+            // Request transaction information from blockstream
+            $.getJSON('https://blockstream.info' + net + '/api/tx/' + tx, function(o){
+                if(o.txid){
+                    $('#source').html(o.vin[0].prevout.scriptpubkey_address);
+                    $('#destination').html(o.vout[0].scriptpubkey_address);
+                    $('#asset').html('<img src="images/icons/btc.png" class="asset-icon-sm pull-left">BTC');
+                    $('#tx-hash').html(o.txid);
+                    $('#quantity').text(numeral(o.vout[0].value).multiply(0.00000001).format('0,0.00000000'));
+                    $('#status').text((o.status.block_height) ? 'Valid' : 'Pending');
+                    $('#timestamp').html('<span data-livestamp='  + o.status.block_time + ' class="nowrap"></span>');
+                    $('#block').html(numeral(o.status.block_height).format('0,0'));
+                    $('#tx-index').text('-');
+                }
+            }).fail(function(){
+                // Request transaction info from blockcypher
+                var net = (FW.WALLET_NETWORK==2) ? 'test3' : 'main',
+                    net2 = (FW.WALLET_NETWORK==2) ? 'btc-testnet' : 'btc';
+                $.getJSON('https://api.blockcypher.com/v1/btc/' + net + '/txs/' + tx, function(o){
+                    if(o.hash){
+                        $('#source').html(o.inputs[0].addresses[0]);
+                        $('#destination').html(FW.WALLET_ADDRESS);
+                        $('#asset').html('<img src="images/icons/btc.png" class="asset-icon-sm pull-left">BTC');
+                        $('#tx-hash').html(o.hash);
+                        $('#quantity').text(numeral(o.outputs[0].value).multiply(0.00000001).format('0,0.00000000'));
+                        $('#status').text((o.block_height) ? 'Valid' : 'Pending');
+                        $('#timestamp').html('<span data-livestamp='  + moment(o.confirmed,["YYYY-MM-DDTH:m:s"]).unix() + ' class="nowrap"></span>');
+                        $('#block').html(numeral(o.block_height).format('0,0'));
+                        $('#tx-index').text('-');
+                        $('#history-info-more').attr('href','https://live.blockcypher.com/' + net2 + '/tx/' + tx);
+                    }
+                });
+            });             
+        } else {
+            // Update 'more info' link to point to transaction url
+            $('#history-info-more').attr('href', FW.XCHAIN_API + '/tx/' + tx);
+
+            // Request transaction information from xchain.io
+            $.getJSON(FW.XCHAIN_API + '/api/tx/' + tx, function( o ){
+                if(!o.error){
+                    var asset = (o.asset_longname && o.asset_longname!='') ? o.asset_longname : o.asset;
+                    $('#source').html(o.source);
+                    $('#destination').html(o.destination);
+                    $('#asset').html('<img src="https://xchain.io/icon/' + o.asset + '.png" class="asset-icon-sm pull-left">' + asset);
+                    $('#tx-hash').html(o.tx_hash);
+                    var fmt = (String(o.quantity).indexOf('.')==-1) ? '0,0' : '0,0.00000000';
+                    $('#quantity').text(numeral(o.quantity).format(fmt));
+                    $('#status').text(o.status);
+                    $('#timestamp').html('<span data-livestamp='  + o.timestamp + ' class="nowrap"></span>');
+                    if(o.tx_index){
+                        $('#block').html(numeral(o.block_index).format('0,0'));
+                        $('#tx-index').text(numeral(o.tx_index).format('0,0'));
+                    } else {
+                        $('#block').text('-');
+                        $('#tx-index').text('-');
+                    }
+                }
+            });   
+        }
+
+    });
+
+</script>

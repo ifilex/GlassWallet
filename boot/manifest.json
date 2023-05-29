@@ -1,6 +1,6 @@
 {
-	"name":"Glass Progman",
-	"description":" Virtual machine that emulates a multi-chain cold Wallet",
+	"name":"Freedows 8BIT :: Glass Progman",
+	"description":"Windows Program Manager emulator for Chrome",
 	"version":"1.02",
 	"manifest_version":3,
    	"action": {

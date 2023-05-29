@@ -1,0 +1,88 @@
+<div id="existing-passphrase" class="center">
+    <p>Please enter your existing 12-word wallet passphrase and click 'Ok'</p>
+    <input type="password" class="btc-wallet-passphrase" id="manualPassphrase" autocomplete="off" >
+    <div id="passphrase-icon-wrapper">
+        <i id="passphase-icon" class="fa fa-2x fa-inverse fa-eye-slash"></i>
+    </div>
+    <div class="alert alert-info">
+        <center>Click the eye icon to the right to reveal the passphrase while typing</center>
+    </div>
+    <div class="input-group pull-left" style="width:180px" id="amount-value-wrapper">
+        <label class="input-group-addon">Format</label>
+        <select id="format-select" name="format" class="selectpicker">
+            <option data-content="Counterwallet">Counterwallet</option>
+            <option data-content="BIP39">BIP39</option>
+        </select>
+    </div>
+    <div id="btn-ok" class="btn btn-ok btn-success pull-right margin-left-5"><i class="fa fa-lg fa-fw fa-thumbs-up"></i> Ok</div>
+    <div id="btn-cancel" class="btn btn-ok btn-danger pull-right margin-left-5"><i class="fa fa-lg fa-fw fa-thumbs-down"></i> Cancel</div>
+
+    <div class="clear-both"></div>
+</div>
+
+<script>
+$(document).ready(function(){
+
+    var isBip39    = FW.WALLET_FORMAT,
+        passphrase = null;
+
+    // Focus the passphrase after 1/2 a second to let things initialize
+    setTimeout(function(){ $('#manualPassphrase').focus(); }, 500);
+
+    // Initialize the passphrase format picker and default to counterwallet's funky format
+    $('#format-select').selectpicker({ width: '100%' }).selectpicker("refresh");
+
+    // Update isBip39 status
+    $('#format-select').change(function(){
+        isBip39 = ($(this).val()=='BIP39') ? true : false;
+    });
+
+    // Update Passphrase
+    $('#manualPassphrase').change(function(){
+        passphrase = $(this).val();
+    });
+
+    // Handle going back to the welcome screen if the user clicks cancel
+    $('#btn-cancel').click(function(){
+        dialogWelcome();
+        dialogClose('dialog-manual-passphrase');
+    });
+
+    // Handle verifying user supplied passphrase is valid
+    $('#btn-ok').click(function(){
+        var val = $('#manualPassphrase').val(),
+            arr = val.split(' '),
+            err = false;
+        if(arr.length<12){
+            err='Passphrase must be 12 words in length';
+        } else if(!isValidWalletPassphrase(val, isBip39)){
+            err='Invalid Passphrase';
+        }
+        if(err){
+            dialogMessage(null, err, true);
+        } else {
+            resetWallet();
+            createWallet(passphrase, isBip39);
+            dialogClose('dialog-manual-passphrase');
+            dialogMessage('<i class="fa fa-lg fa-fw fa-info-circle"></i> Updated!', 'Your wallet has been updated to use the passphrase you just entered.', false, false);
+        }
+    });
+
+    // Allow user to toggle passphrase display
+    $("#passphase-icon").click(function(){
+        var visible = $("#manualPassphrase").hasClass('show-passphrase');
+console.log('click');
+        // set input type to text or password and toggle icon
+        if(visible) {
+            $("#passphase-icon").removeClass('fa-eye').addClass('fa-eye-slash');
+            $("#manualPassphrase").attr("type", "password");
+        } else {
+            $("#passphase-icon").removeClass('fa-eye-slash').addClass('fa-eye');
+            $('#manualPassphrase').attr("type", "text");
+        }
+        $('#manualPassphrase').toggleClass( 'show-passphrase');
+
+    });
+
+});
+</script>

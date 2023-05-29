@@ -4,10 +4,22 @@
 <meta http-equiv="x-ua-compatible" content="IE=edge">
 <title>Photos</title>
 <link rel="stylesheet" href="common.css"/>
-
+<script>
+function start()
+{
+	document.getElementById('startbutton').style.display='block';
+}
+</script>
 </head>
 
 <iframe src="https://webglstudio.org/demo/" width="100%" height="100%"></iframe>
+
+<div id="starthoverarea" onmouseover="start()" class="hotcorner">
+</div>
+
+<div id="startbutton" onmouseout="start()">
+<a href="../start/index.html"><img src="img/start.png"/></a>
+</div>
 
 </body>
 </html>
