@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Devel</title>
+    <meta name="robots"      content="index, follow">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link type="image/ico" rel="icon"       href="images/favicon.ico">
+    <!-- CSS Includes -->
+    <link type="text/css"  rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link type="text/css"  rel="stylesheet" href="node_modules/bootstrap-dialog/dist/css/bootstrap-dialog.min.css">
+    <link type="text/css"  rel="stylesheet" href="node_modules/bootstrap-select/dist/css/bootstrap-select.min.css">
+    <link type="text/css"  rel="stylesheet" href="node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
+    <link type="text/css"  rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">
+    <link type="text/css"  rel="stylesheet" href="node_modules/highstock-release/css/highcharts.css">
+    <link type="text/css"  rel="stylesheet" href="node_modules/jquery-ui-dist/jquery-ui.css">
+    <link type="text/css"  rel="stylesheet" href="node_modules/jquery.rateit/scripts/rateit.css">
+    <link type="text/css"  rel="stylesheet" href="css/jquery.dataTables.min.css">
+    <link type="text/css"  rel="stylesheet" href="css/freewallet-desktop.css">
+    <link type="text/css"  rel="stylesheet" href="css/freewallet-themes.css">
+</head> 
+<body>
+    <div class="header navbar-default navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="#" id="dispensers"><i class="fa fa-lg fa-arrows-h"></i> Dispensers</a></li>
+
+                    <li><a href="#" id="history"><i class="fa fa-lg fa-list"></i> History</a></li>
+                    <li><a href="#" id="balances"><i class="fa fa-lg fa-user"></i> My Wallet</a></li>
+
+
+
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" id="actions-dropdown" data-toggle="dropdown" data-placement="bottom" title="Tokens"><i class="fa fa-lg fa-cogs"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <div class="dropdown-menu-header">Tokens</div>
+                            <li><a href="#" id="action-asset-create"><i class="fa fa-lg fa-plus-circle"></i> Create a Token</a></li>
+                            <li><a href="#" id="action-asset-description"><i class="fa fa-lg fa-edit"></i> Change Description</a></li>
+                            <li><a href="#" id="action-asset-supply"><i class="fa fa-lg fa-bank"></i> Issue Supply</a></li>
+                            <li><a href="#" id="action-asset-reset"><i class="fa fa-lg fa-refresh"></i> Reset Supply</a></li>
+                            <li><a href="#" id="action-asset-destroy"><i class="fa fa-lg fa-trash"></i> Destroy Supply</a></li>
+                            <li><a href="#" id="action-asset-transfer"><i class="fa fa-lg fa-exchange"></i> Transfer Ownership</a></li>
+                            <li><a href="#" id="action-asset-lock"><i class="fa fa-lg fa-lock"></i> Lock Token Supply</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" id="actions-dropdown" data-toggle="dropdown" data-placement="bottom" title="Actions"><i class="fa fa-lg fa-list"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <div class="dropdown-menu-header">Actions</div>
+                            <li><a href="#" id="action-send"><i class="fa fa-lg fa-send"></i> Send Funds</a></li>
+                            <li><a href="#" id="action-sign-message"><i class="fa fa-lg fa-envelope"></i> Sign Message</a></li>
+                            <li><a href="#" id="action-sign-transaction"><i class="fa fa-lg fa-file-text"></i> Sign Transaction</a></li>
+                            <li><a href="#" id="action-dividend"><i class="fa fa-lg fa-sitemap"></i> Pay Dividends</a></li>
+                            <li><a href="#" id="action-broadcast-message"><i class="fa fa-lg fa-bullhorn"></i> Broadcast Message</a></li>
+                            <li><a href="#" id="action-burn"><i class="fa fa-lg fa-fire"></i> Burn Funds</a></li>
+                            <li><a href="#" id="action-dispenser"><i class="fa fa-lg fa-arrows-h"></i> Create Dispenser</a></li>
+                            <li><a href="#" id="action-close-dispenser"><i class="fa fa-lg fa-close"></i> Close Dispenser</a></li>
+                            <li><a href="#" id="action-cancel-order"><i class="fa fa-lg fa-ban"></i> Cancel Order</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" id="address-dropdown" data-toggle="dropdown" data-placement="bottom" title="Address"><i class="fa fa-lg fa-qrcode"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <div class="dropdown-menu-header">Address Actions</div>
+                            <li><a href="#" id="action-change-address"><i class="fa fa-lg fa-edit"></i> Change Address</a></li>
+                            <li><a href="#" id="action-view-address"><i class="fa fa-lg fa-qrcode"></i> View Address</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content panel-->
+    <div id="main-content-panel">
+    </div>
+
+    <!-- Footer (block, last updated, last price -->
+    <div class="footer navbar-fixed-bottom">
+        <div class="container-fluid">
+            <div class="row" style="margin-top:5px">
+                 <div class="col-xs-4">
+                    <i class="fa fa-chain"></i> <span class="footer-current-block">NA</span>
+                </div>
+                <div class="col-xs-4 text-center footer-last-updated">
+                    &nbsp;
+                </div>
+                <div class="col-xs-4">
+                    <div class="pull-right">1 XCP = <span class="footer-current-price">NA</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Javascript Includes  -->
+    <!-- Load jquery first since a bunch of stuff depends on it -->
+    <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="node_modules/jquery-ui-dist/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="node_modules/jquery.qrcode/jquery.qrcode.min.js"></script>
+    <script type="text/javascript" src="node_modules/jquery.rateit/scripts/jquery.rateit.min.js"></script>
+    <script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="node_modules/bootstrap-3-typeahead/bootstrap3-typeahead.min.js"></script>
+    <script type="text/javascript" src="node_modules/bootstrap-dialog/dist/js/bootstrap-dialog.min.js"></script>
+    <script type="text/javascript" src="node_modules/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="node_modules/bootstrap-validator/dist/validator.min.js"></script>
+    <script type="text/javascript" src="node_modules/moment/moment.js"></script>
+    <script type="text/javascript" src="node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="node_modules/numeraljs/numeral.js"></script>
+    <script type="text/javascript" src="node_modules/@bassettsj/livestamp/livestamp.js"></script>
+    <script type="text/javascript" src="node_modules/async/dist/async.min.js"></script>
+    <script type="text/javascript" src="node_modules/crypto-js/crypto-js.js"></script>
+    <script type="text/javascript" src="node_modules/highstock-release/highstock.js"></script>
+    <script type="text/javascript" src="node_modules/highstock-release/indicators/indicators.js"></script>
+    <script type="text/javascript" src="node_modules/highstock-release/indicators/accumulation-distribution.js"></script>
+    <script type="text/javascript" src="node_modules/highstock-release/indicators/atr.js"></script>
+    <script type="text/javascript" src="node_modules/highstock-release/indicators/bollinger-bands.js"></script>
+    <script type="text/javascript" src="node_modules/highstock-release/indicators/cci.js"></script>
+    <script type="text/javascript" src="node_modules/highstock-release/indicators/cmf.js"></script>
+    <script type="text/javascript" src="node_modules/highstock-release/indicators/ema.js"></script>
+    <script type="text/javascript" src="node_modules/highstock-release/indicators/ichimoku-kinko-hyo.js"></script>
+    <script type="text/javascript" src="node_modules/highstock-release/indicators/macd.js"></script>
+    <script type="text/javascript" src="node_modules/highstock-release/indicators/mfi.js"></script>
+    <script type="text/javascript" src="node_modules/highstock-release/indicators/momentum.js"></script>
+    <script type="text/javascript" src="node_modules/highstock-release/indicators/pivot-points.js"></script>
+    <script type="text/javascript" src="node_modules/highstock-release/indicators/price-envelopes.js"></script>
+    <script type="text/javascript" src="node_modules/highstock-release/indicators/psar.js"></script>
+    <script type="text/javascript" src="node_modules/highstock-release/indicators/roc.js"></script>
+    <script type="text/javascript" src="node_modules/highstock-release/indicators/rsi.js"></script>
+    <script type="text/javascript" src="node_modules/highstock-release/indicators/stochastic.js"></script>
+    <script type="text/javascript" src="node_modules/highstock-release/indicators/volume-by-price.js"></script>
+    <script type="text/javascript" src="node_modules/highstock-release/indicators/vwap.js"></script>
+    <script type="text/javascript" src="node_modules/highstock-release/indicators/wma.js"></script>
+    <script type="text/javascript" src="node_modules/highstock-release/indicators/zigzag.js"></script>
+    <script type="text/javascript" src="node_modules/highstock-release/modules/no-data-to-display.js"></script>
+    <script type="text/javascript" src="node_modules/highstock-release/modules/exporting.js"></script>
+    <script type="text/javascript" src="js/throttle-debounce-fn.min.js"></script>
+    <script type="text/javascript" src="js/jquery.base64.js"></script>
+    <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="js/jquery.lazy.min.js"></script>
+    <script type="text/javascript" src="js/mnemonic.js"></script>
+    <script type="text/javascript" src="js/sanitizer.js"></script>
+    <script type="text/javascript" src="js/buffer.min.js"></script>
+    <script type="text/javascript" src="js/bip39.min.js"></script>
+
+    <!-- Bitcore includes -->
+    <script type="text/javascript" src="js/bitcoinjs-lib.min.js"></script>
+    <script type="text/javascript" src="js/bitcore-lib.min.js"></script>
+    <script type="text/javascript" src="js/bitcore-message.min.js"></script>
+    <script type="text/javascript" src="js/util.bitcore.js"></script>
+    <script type="text/javascript" src="js/util.generic.js"></script>
+
+    <!-- Include this last so that bitcore is already defined -->
+    <script type="text/javascript" src="js/freewallet-desktop.js"></script>
+
+    <!-- Include this last so that bitcore is already defined -->
+    <script>
+        $(document).ready(function(){
+
+            // Array of html pages used in app
+            var pages = [
+                'balances',
+                'history',
+                'betting',
+                'dispensers',
+                'exchange',
+                'settings'
+            ];
+
+            // Load the theme
+            var theme = ls.getItem('theme') || 'theme-blue';
+            setTheme(theme);
+
+            // Load the homepage
+            loadPage('dispensers');
+
+            // Initialize any tooltips
+            $('[data-toggle="tooltip"]').tooltip({ html: true });
+
+            // Update the wallet options now that we have loaded the basic interface
+            // We do this here so that the wallet lock status is updated as soon as possible
+            updateWalletOptions();
+
+            // Setup listener on top toolbar buttons to load corresponding page
+            pages.forEach(function(page){
+                $('#' + page).click(function(){ loadPage(page); });
+            });
+
+            // Setup listener on 'qrcode/addresses' button
+            $('#addresses').click($.debounce(100,function(e){
+                dialogChangeAddress();
+            }));
+
+            // Setup listener on logout button
+            $('#logout').click($.debounce(100,function(e){
+                // dialogReset();
+                dialogLogout();
+            }));
+
+            // Setup listener on lock/unlock button
+            // buffer the click event by 100ms to prevent issues when users click item multiple times
+            $('#lock').click($.debounce(100,function(e){
+                if(parseInt(ls.getItem('walletEncrypted'))==1){
+                    if(ss.getItem('wallet')){
+                        // Lock wallet
+                        lockWallet();
+                        updateWalletOptions();
+                    } else {
+                        // Unlock wallet
+                        dialogPassword();
+                    }
+                } else {
+                    dialogPassword(true);
+                }
+            }));
+
+            // Handle hiding/showing the tooltip when user hovers over the actions icon
+            $('#actions-dropdown').hover(function(){
+                $(this).tooltip('show');
+            },function(){
+                $(this).tooltip('hide');
+            });
+
+            // Handle hiding/showing the tooltip when user hovers over the actions icon
+            $('#address-dropdown').hover(function(){
+                $(this).tooltip('show');
+            },function(){
+                $(this).tooltip('hide');
+            });
+
+            // Handle clicks on items in the action menu
+            $('#action-change-address').click($.debounce(100,function(e){       dialogChangeAddress();      }));
+            $('#action-view-address').click($.debounce(100,function(e){         dialogViewAddress();        }));
+            $('#action-sweep').click($.debounce(100,function(e){                dialogSweep();              }));
+            $('#action-view-privkey').click($.debounce(100,function(e){         dialogViewPrivateKey();     }));
+            $('#action-send').click($.debounce(100,function(e){                 dialogSend();               }));
+            $('#action-asset-create').click($.debounce(100,function(e){         dialogCreateToken();        }));
+            $('#action-asset-description').click($.debounce(100,function(e){    dialogChangeDescription();  }));
+            $('#action-asset-supply').click($.debounce(100,function(e){         dialogIssueSupply();        }));
+            $('#action-asset-reset').click($.debounce(100,function(e){          dialogResetSupply();        }));
+            $('#action-asset-destroy').click($.debounce(100,function(e){        dialogDestroy();            }));
+            $('#action-asset-transfer').click($.debounce(100,function(e){       dialogTransferOwnership();  }));
+            $('#action-asset-lock').click($.debounce(100,function(e){           dialogLockSupply();         }));
+            $('#action-sign-message').click($.debounce(100,function(e){         dialogSignMessage();        }));
+            $('#action-sign-transaction').click($.debounce(100,function(e){     dialogSignTransaction();    }));
+            $('#action-dividend').click($.debounce(100,function(e){             dialogPayDividend();        }));
+            $('#action-broadcast-message').click($.debounce(100,function(e){    dialogBroadcastMessage()    }));
+            $('#action-about').click($.debounce(100,function(e){                dialogAbout();              }));
+            $('#action-burn').click($.debounce(100,function(e){                 dialogBurn();               }));
+            $('#action-dispenser').click($.debounce(100,function(e){            dialogDispenser();          }));
+            $('#action-cancel-order').click($.debounce(100,function(e){         dialogCancelOrder();        }));
+            $('#action-close-dispenser').click($.debounce(100,function(e){      dialogCloseDispenser();     }));
+
+            // Detect when running in nwjs and setup some additional listeners
+            if(is_nwjs()){
+
+                var nw = require('nw.gui');
+
+                // Toggle this to true if you want the debug console to open automatically
+                var debug = false;
+                if(debug)
+                    nw.Window.get().showDevTools();
+
+                // Prevent default context menu and instead show custom menu
+                $('*').on('contextmenu', function(e){
+                    displayContextMenu(e)
+                    return false; 
+                });
+
+                // Launch any links externally (even if they don't have target=_blank)
+                $(document).on("click", "a", function(e){
+                    var re  = /^chrome-extension/, // ignore requests for local files
+                        url = String(this.href).toString();
+                    if(url!='' && url!='#' && !re.test(url)){
+                        nw.Shell.openExternal(url);
+                        return false;
+                    }
+                });
+
+                // Handle checking if there is a new version of the wallet available
+                checkWalletUpgrade(nw.App.manifest.version);
+
+                // loop through the arguments and process
+                var args = nw.App.argv;
+                args.forEach(function(item){
+                    processURIData(item);
+                });
+
+                // Listen for events that open the app and process the last argument passed (if any)
+                nw.App.on('open', function(argString){
+                    var args = String(argString).split(' ');
+                    if(args.length)
+                        processURIData(args[args.length-1]);
+                });
+
+            }
+
+
+        });
+    </script>
+
+</body>
+</html>
