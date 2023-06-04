@@ -1,29 +1,190 @@
-<!DOCTYPE html>
-<html>
-<head>
-<link rel="preconnect" href="https://fonts.googleapis.com"> 
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,300&display=swap" rel="stylesheet">
-<meta http-equiv="x-ua-compatible" content="IE=edge">
-<title>Login to Glass</title>
-<META HTTP-EQUIV="REFRESH" CONTENT="1;URL=boot/index.html">
-<link rel="stylesheet" href="boot/lib/style.css"/>
-<link rel="shortcut icon" href="boot/favicon.ico"/>
-<script>
-var passwd = 'document.getElementById('passwd')';
-</script>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+	<link rel="icon" href="favicon.ico">
+    	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="theme-color" content="#000000">
+	<link href="./libs/bootstrap.min.css" rel="stylesheet">
+	<link href="./libs/main.css" rel="stylesheet">
+    	<title>Glass Progman Wallet</title>
 </head>
-<body>
-<div id="login">
-			<div id="login_box">
-				<img src="boot/version/img/user.png" width="200" height="200" />
-				<form>
-					<p>
-						Welcome to Glass Wallet<br />
-						<span>Version 1.0</span>						
-						<span>Loading..</span>
-					</p>
-				</form>
+ <body>
+  	<div class="menu" id="mainmenu" style="background-color: #03010f;">
+	<div class="menu-wrap" style="background-color: #03010f;">
+			<div class="avatar flex-align-center">
+				<a href="boot/index.html">
+				<img style="background-size: cover;
+				background-repeat: no-repeat;" src="./libs/desktop.png" width="50%" height="50%"></a>
+			</div>
+			<ul class="list-unstyled">
+				<li class="nav-item">
+				  <a class="nav-link active" href="boot/index.html">[ START APP ]</a>
+				</li>
+				<li class="nav-item">
+				  <a class="nav-link" href="#about">About us</a>
+				</li>
+				<li class="nav-item">
+				  <a class="nav-link" href="#portfolio">Portfolio</a>
+				</li>
+				<li class="nav-item">
+				  <a class="nav-link" href="#experience">Experience</a>
+				</li>
+				<li class="nav-item">
+				  <a class="nav-link active" href="#downloads">Downloads</a>
+				</li>
+			</ul>
+	<div class="iconholder flex-align-center">
+				<!-- Facebook Logo, update href & fill -->
+				<a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/profile.php?id=100081036165500" class="Social-Link">
+				  <div alt="" class="social-logo">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+					  <g fill="none" fill-rule="evenodd">
+						<path d="M0 0h24v24H0z"></path>
+						<path fill="#8C90A2" "="" d="M12 1c6.075 0 11 4.925 11 11s-4.925
+						11-11 11S1 18.075 1 12 5.925 1 12 1zm0 2a9 9 0 1 0 0 18 9 9 0 0
+						0 0-18zm3 4v2h-1a1 1 0 0 0-1 1v1.004L15 11v2l-2
+						.004V18h-2v-4.996L9 13v-2l2 .004V10a3 3 0 0 1 3-3h1z" opacity="1"></path>
+					  </g>
+					</svg>
+				  </div>
+				</a>
+				<!-- Twitter Logo, update href & fill -->
+				<a target="_blank" rel="noopener noreferrer" href="https://twitter.com/mrwad3001" class="Social-Link">
+				  <div alt="" class="social-logo">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+					  <g fill="none" fill-rule="evenodd">
+						<path d="M0 0h24v24H0z"></path>
+						<path fill="#8C90A2" d="M21.12 4.508l1.414.165-.636 1.275-.931 1.865a1.475 1.475 0 0 1-.197.397c-.04.063-.177.262-.183.272a2.096 2.096 0 0 0-.082.131v2.389c0 6.112-5.915 9.995-11.501 9.995-1.143 0-2.012-.054-3.006-.271-1.637-.357-2.855-1.067-3.412-2.308l-.574-1.277 1.395-.129c1.261-.116 2.355-.356 3.195-.678-2.306-.37-3.598-1.383-3.598-3.285v-1h1c.22 0 .417-.018.595-.05C2.868 10.963 2 9.303 2 7.001v-.204c-.007-1.16.055-1.78.373-2.571.204-.508.498-.977.894-1.407L4.023 2l.733.838c2.418 2.764 4.808 4.44 7.248 4.643.01-2.55 1.938-4.48 4.5-4.48 1.195 0 2.279.454 3.13 1.272.467.096.962.174 1.486.235zm-2.211 1.654l-.307-.07-.212-.232c-.512-.561-1.154-.858-1.886-.858-1.463 0-2.5 1.042-2.5 2.5 0 .238-.006.387-.036.584-.118.785-.558 1.416-1.464 1.416-2.998 0-5.703-1.607-8.34-4.35-.136.414-.168.838-.164 1.635l.001.215c0 2.048.83 3.168 2.794 3.792l.698.222v.731c0 .887-.84 1.722-2.07 2.096.563.428 1.716.659 3.58.659h1v1c0 1.432-1.645 2.554-4.132 3.14.81.248 1.89.355 3.133.355 4.614 0 9.5-3.208 9.5-7.995v-2.5c0-.294.086-.55.227-.814.055-.104.116-.203.192-.316l.108-.16.08-.158.384-.77a16.89 16.89 0 0 1-.586-.122z" opacity="1"></path>
+					  </g>
+					</svg>
+				  </div>
+				</a>
+				<!-- Instagram Logo, update href & fill -->
+				
+				<!-- LinkedIn Logo, update href & fill -->
+									
 			</div>
 		</div>
-</div>
+		<div id="menuToggle"><i class="glyphicon glyphicon-align-justify"></i></div>
+	</div>
+	
+	<section style="background-color: #EFFFFA; id="home"="" name="home">
+	<div id="topheader">
+		<div class="container" style="
+					background: url(./bg.png) center top;
+					background-position: center center;
+					background-size: cover;
+					background-repeat: no-repeat;
+				">
+			<div class="row">
+				<h1 style="color: #FFFFFF">GLASS WALLET</h1>
+				<br>
+				<h3 style="color: #FFFFFF">"Unify your cryptocurrencies, simplify your life: The all-in-one cloud-based wallet!"</h3>
+				<br>
+				<br>
+			</div>
+		</div>
+	</div>
+	</section>
+	
+	<!-- update background color of all the sections -->
+	<div style="background-color: #EFFFFA;" class="main">
+		<section id="about" name="about">
+		<div id="sectionfooter">
+			<div class="container">
+				<div class="row">
+					<h3 style="color: #29293e;">ABOUT</h3>
+					<p class="centered"></p><hr><p></p>
+					<div class="col-lg-6 col-lg-offset-3">
+						<p style="color: #29293e;">Virtual machine that emulates a multi-chain cold Wallet, developed with the purpose of integrating navigation and transactions within an autonomous system, avoiding any type of risk or hacking to the accounts that are managed. The environment has three working modes, first a virtualized machine (recommended method) that will allow you to take your wallets to any operating system that supports **VirtualBOX **technology, second a real mode that will allow you to manage wallets in real time within your browser from the chrome family as an add-on, this option is only indicated for low power computers and its limited use is recommended since the security features of the virtual console are lost. And third, the mobile option (in development) that will allow to have a virtual instance of the wallet, maintaining the security of its PC version within Android cell phones only. The idea of glass wallet arose from the limitations that the team found when trying to protect our electronic wallets, and the fact that we could not have everything in a single browser and stay safe. That is why we decided to create an addon and a browser that would unite all the wallets in a single application but that would allow each project to be updated without jeopardizing the content of each wallet.</p>
+					</div>								
+				</div>
+			</div>
+		</div>
+		</section>
+
+				<section id="portfolio" name="portfolio">
+		<div id="sectionfooter">
+			<div class="container">
+				<div class="row centered">
+					<h3 style="color: #000000;">PORTFOLIO</h3>
+					<p class="centered"></p><hr><p></p>					
+					<div class="col-lg-8 col-lg-offset-2">
+						<div class="imagebox">
+							<!-- update first image in the portfolio section -->
+							
+							<div class="imagebox-text">
+							<!-- update text of the first header/paragraph in the portfolio section -->
+								<h2 style="color: #000000;">All Wallets</h2>
+								<p style="color: #000000;">It includes its own Chrome adaptation, enabling the execution of multiple wallets effortlessly.</p>
+							</div>
+						</div>
+						<div class="imagebox">
+							<!-- update first image in the portfolio section -->
+							
+							<div class="imagebox-text">
+								<h2 style="color: #000000;">Multimedia</h2>
+								<p style="color: #000000;">Our wallet goes beyond just a wallet - it includes multimedia support, allowing you to enjoy IPTV channels seamlessly. It's not just a wallet, it's an all-inclusive entertainment hub.</p>
+							</div>
+						</div>
+						<div class="imagebox">
+							<!-- update first image in the portfolio section -->
+							
+							<div class="imagebox-text">
+							<!-- update text of the first header/paragraph in the portfolio section -->
+								<h2 style="color: #000000;">Games</h2>
+								<p style="color: #000000;">With Gwallet, you can not only manage all wallet networks but also enjoy over 300 free games.</p>
+				</div>
+			</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</section>
+		
+		<section id="experience" name="experience">
+		<div id="sectionfooter">
+			<div class="container">
+				<div class="row">
+					<h3 style="color: #000000;">EXPERIENCE</h3>
+					<p class="centered"></p><hr><p></p>					
+					<div class="col-lg-8 col-lg-offset-2">
+						<ul class="explist">
+							<li style="color: #000000;">Develop and create new tokens organically within the BTC network, without the need for programming knowledge.</li>
+							<li style="color: #000000;">Swap, create liquidity for new tokens, or simply build your own BTC pool.</li>
+							<li style="color: #000000;">Access the Venom and Ethereum networks anonymously.</li>
+							<li style="color: #000000;">Install the wallet on a USB drive and transform it into a free, anonymous, and traceless ledger, or use it from the cloud, online, and access all your assets.</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		</section>
+
+		<section id="downloads" name="downloads">
+		<div id="sectionfooter">
+			<div class="container">
+				<div class="row">
+					<h3 style="color: #000000;">DOWNLOADS</h3>
+					<p class="centered"></p><hr><p></p>					
+					<div class="col-lg-8 col-lg-offset-2">
+						<ul class="explist">
+							<li style="color: #000000;"><a class="nav-link" href="https://github.com/ifilex/GlassWallet/releases/download/Binary/gwallet.-.chrome.-.1.00.crx">Install in your Chrome.</a></li>
+							<li style="color: #000000;"><a class="nav-link" href="https://github.com/ifilex/GlassWallet/releases/download/Binary/gwallet.-.windows.portable.-.1.00.zip">Install in your Windows USB pendrive.</a></li>
+							<li style="color: #000000;"><a class="nav-link" href="https://github.com/ifilex/GlassWallet/releases/download/Binary/gwallet.-.1.00.-.setup.exe">Install in Windows.</a></li>
+							<li style="color: #000000;"><a class="nav-link" href="boot/index.html">Run in the cloud.</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		</section>
+	</div>
+
+ 	<script src="./libs/jquery-3.4.1.min.js"></script>
+	<script src="./libs/bootstrap.min.js"></script>
+    	<script src="./libs/smoothscroll.js"></script>
+	<script src="./libs/menu.js"></script>  
+	<script src="chrome-extension://ldinpeekobnhjjdofggfgjlcehhmanlj/inpage.js" id="stacks-wallet-provider"></script>
+
+</body>
+</html>

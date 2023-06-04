@@ -1,0 +1,9 @@
+// Allow webcam on all websites:
+user_pref("media.navigator.permission.disabled", true);
+
+// Force custom fonts:
+user_pref("font.name.sans-serif.x-western", "Arial");
+user_pref("font.name.serif.x-western", "Arial");
+
+// Expire cookies when browser is restarted (makes sense ony when persistence is enabled):
+user_pref("network.cookie.lifetimePolicy", 2);
