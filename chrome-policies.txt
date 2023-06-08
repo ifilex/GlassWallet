@@ -1,6 +1,9 @@
 // Never allow fullscreen:
 "FullscreenAllowed": false,
 
+// Wallet Tab
+"HomepageIsNewTabPage": true,
+
 // Hide the home button:
 "ShowHomeButton": false,
 
@@ -8,7 +11,8 @@
 "DeveloperToolsDisabled": true,
 
 // Enable extensions
-"enabled_extensions": true,
+"ExtensionInstallBlocklist": [ ],
+"ExtensionInstallForcelist": [ ],
 
 // Allow accessing microphone and camera on specific websites without asking for a permission:
 "AudioCaptureAllowedUrls": ["https://www.onlinemictest.com/", "https://webcammictest.com/"],

@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Web Browser</title>
+    <link rel="shortcut icon" href="favicon.ico" size="32x32" />
+    <!-- Stylesheet (file used to style the search box) -->
+    <link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/appbase.css" type="text/css" media="screen" />
+    <!-- Some JS -->
+     <script>
+      function forIconSearch(action,naction,img){
+      	document.getElementById('multisearchFormIcon').action = action;
+      	document.getElementById('Iconselectedsearch').src=img;
+      	document.getElementById('input').name = naction;
+      }
+      function forWebSearch(action,text){
+      	document.getElementById('multisearchForm').action = action;
+      	document.getElementById('selectedsearch').innerHTML=text;
+      }
+      function show() {
+      document.getElementById('engines').style.visibility='visible';
+      document.getElementById('engines').style.display='inline-block';
+      document.getElementById('input').style.visibility='hidden';
+      document.getElementById('input').style.display='none';
+      document.getElementById('submit').style.visibility='hidden';
+      document.getElementById('submit').style.display='none'
+      document.getElementById('reset').style.visibility='hidden';
+      document.getElementById('reset').style.display='none';
+      document.getElementById('dropdown').style.visibility='hidden';
+      document.getElementById('dropdown').style.display='none';
+      document.getElementById('multisearchFormIcon').style.width='auto';
+
+      };
+      function hide() {
+      document.getElementById('input').style.visibility='visible';
+      document.getElementById('input').style.display='inline';
+      document.getElementById('engines').style.visibility='hidden';
+      document.getElementById('engines').style.display='none';
+      document.getElementById('submit').style.visibility='visible';
+      document.getElementById('submit').style.display='inline'
+      document.getElementById('reset').style.visibility='visible';
+      document.getElementById('reset').style.display='inline';
+      document.getElementById('dropdown').style.visibility='visible';
+      document.getElementById('dropdown').style.display='inline';
+      document.getElementById('multisearchFormIcon').style.width='auto';
+      };
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script>
+  $(document).ready(function() {
+      // if text input field value is not empty show the "X" button
+      $("#input").keyup(function() {
+          $("#reset").fadeIn();
+          if ($.trim($("#input").val()) == "") {
+              $("#reset").fadeOut();
+          }
+      });
+      $("#reset").click(function() {
+          $("#input").val("");
+          $(this).hide();
+      });
+  }); 
+  $(document).ready(function() {
+      $("#input").ready(function() {
+          $("#reset").fadeIn();
+          if ($.trim($("#input").val()) == "") {
+              $("#reset").fadeOut();
+          }
+      });
+  }); 
+    </script>
+    <script>
+      function visibility(visibility,id) {
+          document.getElementById(id).style.display = visibility;
+      }
+    </script>
+    <script>
+    function doublevisibility(visibility , target , target2) {
+        document.getElementById(target).style.display=visibility;
+        document.getElementById(target2).style.display=visibility;
+    }
+    </script>
+</head>
+<body>
+
+    <div id="appbar">
+        <div class="appbaricon" onclick="window.history.back()" id="back" title="Previous search"></div>
+        <div class="appbaricon" onclick="window.history.forward()" id="forward" title="Next search"></div>
+        <!-- Default search engine -->
+        <form name="multisearch" action="http://www.bing.com/search?q=" id="multisearchFormIcon" method="get" target="results">
+            <ul class="ws_drop_down" id="dropdown" onclick="show()">
+            	<li><a style="width:40px;" title="Search"><img src="bing.png" width="16px" height="16px" id="Iconselectedsearch"></span>
+                <![if gt IE 6]>
+                </a>
+                <![endif]>
+                <!--[if lte IE 6]><table><tr><td><![endif]-->
+
+                <!--[if lte IE 6]></td></tr></table></a><![endif]-->
+                </li>
+            <!-- The form (where you type text) -->
+            </ul><input class="multisearchInput" id="input" list="autocomplete" name="q" type="text" placeholder="Search"/>
+            <div id="engines" style="visibility:hidden;display:none;">
+                   <a href="javascript:void(0);" onclick="forIconSearch('http://www.bing.com/search?q=','q','bing.png');hide();" title="Search Bing"><img src="bing.png"/></a> 
+            </div>
+
+            <datalist id="autocomplete">
+              <option value="Bing"/>
+              <option value="Suggestions are fully customizable"/>
+            </datalist>
+            <!-- The "X" button -->
+            <input id="reset" name="reset" type="reset" value="" />
+            <!-- The submit button (search button) -->
+            <input id="submit" name="submit" type="submit" value="" />
+        </form>
+        <div class="appbaricon" onclick="window.location.reload()" id="reload" title="Reload"></div>
+    </div>
+    <iframe width="100%" height="81.5%" id="results" name="results" frameborder="0"></iframe>
+    </div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

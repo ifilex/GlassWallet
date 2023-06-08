@@ -1,0 +1,100 @@
+<!-- Transaction Fee / Priority Field-->
+<label class="col-sm-3 control-label text-left" for="fee-amount">
+    Fee
+    <a href="#" data-toggle="tooltip" title='This is the transaction fee to pay the bitcoin miners' class="pull-right"><i class="fa fa-lg fa-question-circle-o margin-top-5" ></i></a>
+</label>
+<div class="col-sm-9">
+    <input type="text" class="form-control pull-left" name="fee-amount"  id="fee-amount" placeholder="0.00000000" style="width:110px" data-minlength="10" required >
+    <div class="input-group pull-right" id="fee-priority-wrapper" style="width:180px;">
+        <span class="input-group-addon">Priority</span>
+        <select id="fee-priority" class="selectpicker">
+            <option>High</option>
+            <option>Medium</option>
+            <option>Low</option>
+            <option>Custom</option>
+        </select>
+    </div>
+    <div class="input-group pull-right" id="fee-value-wrapper" style="width:100px;">
+        <a class="input-group-addon" id=""><i class="fa fa-usd"></i></a>
+        <input type="text" class="form-control" name="fee-value"  id="fee-value" placeholder="0.00" readonly>
+    </div>
+</div>
+
+
+<script>
+$(document).ready(function(){
+    var ls = localStorage,
+    doMinimumFeeAlert = false;
+
+    btc_info = getAssetPrice('BTC',true);
+
+    // Function to calculate and set miners fee fiat value based on miners fee amount
+    var updateTxFeeValue = function(amt){
+        var val = numeral(amt).value() * btc_info.price_usd;
+        $('#fee-value').val(numeral(val).format('0,0.00'));
+    }
+
+    // On the 'Send Funds' form, resize the fee fields a bit since less space is available
+    $('#send-form #fee-priority-wrapper').width(160);
+    $('#send-form #fee-value-wrapper').width(95);
+
+    var val = ls.getItem('feePriority') || 'High';
+    $('#fee-priority').val(val);
+
+    // Make priority a dropdown
+    $('#fee-priority').selectpicker();
+
+    // When user changes priority, set fee amount based on priority selected
+    $('#fee-priority').change($.debounce(100,function(e){
+        var val = $(this).val(),
+            o   = FW.NETWORK_INFO.fee_info,
+            avg = 265,       // Average send is 265 bytes (come back in future and base on actual tx size, not average)
+            fee = o.optimal; // default to high priority
+        if(val=='Low')
+            fee = o.low_priority;
+        if(val=='Medium')
+            fee = ((o.low_priority + o.optimal) / 2); // Medium fee is between high and low
+        // Calculate the actual fee cost for this transaction
+        var cost = numeral(((fee / 1000) * avg) * 0.00000001).format('0.00000000');
+        // Set fee to minimum if user selects Custom
+        if(val=='Custom')
+            cost = numeral(FW.MINIMUM_TX_FEE * 0.00000001).format('0.00000000');
+        $('#fee-amount').val(cost);
+        $('#fee-amount').change();
+    }));
+
+    // Validate that fee amount is not below minimum tx fee, and force BTC value to correct 0,0.00000000 format
+    $('#fee-amount').change(function(e){
+        var min = numeral(FW.MINIMUM_TX_FEE * 0.00000001).format('0.00000000'),
+            amt = numeral(String($(this).val()).replace(/[^0-9.]/g,'')).format('0,0.00000000');
+        if(amt < min){
+            amt = min;
+            if(doMinimumFeeAlert)
+                dialogMessage('<i class="fa fa-lg fa-fw fa-info-circle"></i> Error', 'Transaction fee has been adjusted to minimum transaction fee!<br>You can edit minimum transaction fee at Settings->Preferences->Minimum Fee');
+        }
+        $(this).val(numeral(amt).format('0,0.00000000'));
+        updateTxFeeValue(amt);
+    });
+
+    // When user changes fee, update fee fiat
+    $('#fee-amount').keyup($.debounce(100,function(e){
+        var amt = String($(this).val()).replace(/[^0-9.]/g,'');
+        updateTxFeeValue(amt);
+        $('#fee-priority').val('Custom');
+        $('#fee-priority').selectpicker('refresh');
+    }));
+
+    // Make sure BTC value is in correct format
+    $('#fee-amount').keyup(function(e){
+        $('#fee-priority').val('Custom');
+    });
+
+    // Trigger a change on the priority field so we re-calculate price
+    $('#fee-priority').change();
+
+    // Don't throw a minimum fee alert when form first loads.. give 500ms then can start throwing minimum fee alerts
+    setTimeout(function(){ doMinimumFeeAlert = true; },500);
+
+
+});
+</script>

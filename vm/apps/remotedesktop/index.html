@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Remote Desktop</title>
+    <link rel="stylesheet" href="css/charms.css"/>
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+
+    <script>
+	function start()
+	{
+		document.getElementById('startbutton').style.display='block';
+	}
+
+	function destroystart() 
+	{
+		document.getElementById('startbutton').style.display='none';
+	}
+    </script>
+
+<style>
+body {
+	background-image: url(bg.jpg);
+	background-repeat: no-repeat;
+	background-size: 100%;
+	background-color: #515151;
+	font-family: Segoe UI Light, Segoe UI, Open Sans, Microsoft Jheng Hei;
+}
+#connect {
+	padding:10px;
+	height: 40px;
+	color: white;
+	font-weight:normal;
+	background:#212121;
+	border:2px solid white;
+	margin-left:10px;
+	font-family:Segoe UI Semibold;
+}
+
+#connect:hover {
+	background:#3e3e3e;
+	cursor:pointer;
+}
+#connect:active {
+	background: white;
+	color: black;
+	cursor:pointer;
+}
+#text {
+	font-family:Segoe UI;
+	padding: 10px; 
+	width: 1000px; 
+	max-height: 50px; 
+	background-color: #d3d3d3; 
+	border: 0px; 
+	margin-left: 100px; 
+	margin-top: 15px; 
+	margin-bottom: 15px; 
+	color: #555555;
+}
+#text:focus {
+	background: white;
+	color: black;
+	cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<div style="margin-left: 100px; margin-top: 40px;">
+<span style="color:white; font-size:72px;">Remote Desktop</span>
+</div>
+
+<div style="margin-left: 100px; margin-top: 50px;">
+<span style="color:white;">To connect to a PC enter the PC name below.</span>
+</div>
+
+<div style="margin-left: 100px; margin-top: 10px;">
+<span style="color:white;">With Remote Desktop, you can do more than connect to other PCs.</span>
+
+<ul>
+<span style="color:white;">
+<li>Work with apps and desktops that the administrator has set up for you.</li>
+</span>
+<span style="color:#2e93c3">
+Access RemoteApp and Desktop Connections
+</span>
+<span style="color:white;">
+<li>Connect to PCs on your corporate network without setting up a VPN.</li>
+</span>
+<span style="color:#2e93c3">
+Use a Remote Desktop Gateway server
+</span>
+</ul>
+
+</div>
+
+<div style="height: 70px; width: 100%; background-color: #212121; position:absolute; left: 0; bottom:0;">
+<input id="text" value="PC name" onFocus="this.value=''">
+<input type="button" id="connect" value="Connect">
+
+    <div id="starthoverarea" onmouseover="start()" class="hotcorner">
+    </div>
+
+    <div id="startbutton" onmouseout="destroystart()">
+    <a href="../../start/index.html"><img src="../../common/img/charmsbar/startbutton.png"/></a>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Comics</title>
+<meta http-equiv="x-ua-compatible" content="IE=edge">
+<link rel="stylesheet" href="css/charms.css"/>
+<link rel="shortcut icon" href="favicon.ico"/>
+
+<script>
+function start()
+{
+	document.getElementById('startbutton').style.display='block';
+}
+</script>
+</head>
+
+<body onload="start()">
+<iframe src="../routes/manga.html" target="_blank" rel="nofollow" width="100%" height="100%"></iframe>
+
+<div id="starthoverarea" onmouseover="start()" class="hotcorner">
+</div>
+
+<div id="startbutton" onmouseout="start()">
+<a href="../index.html"><img src="../common/img/charmsbar/startbutton.png"/></a>
+</div>
+
+</body>
+</html>
+
