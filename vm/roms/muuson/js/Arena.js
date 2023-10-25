@@ -150,7 +150,7 @@ FARM.Arena.inherit(cc.Layer, {
 
         if (this.collisionOnAdd(cow)) {
             delete cow;
-            FARM.Game.addMessage('Oops, you cannot create a creature on top of another!');
+   //         FARM.Game.addMessage('Oops, you cannot create a creature on top of another!');
         } else {
             FARM.Game.creatures.push(cow);
             this.addChild(cow);

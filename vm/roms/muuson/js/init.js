@@ -16,7 +16,7 @@
         scene.addChild(layer);
 
         gameIsRunning = false;
-        FARM.Game.addMessage('Click to make a cow!');
+ //       FARM.Game.addMessage('Click!!!');
 
         document.onclick = function(e) {
             //FARM.Game.removeMessage();               
