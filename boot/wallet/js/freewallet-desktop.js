@@ -1,4 +1,7 @@
 /*********************************************************************
+*
+* Cold Wallet
+*
  * freewallet-desktop.js 
  *
  * Custom javascript for FreeWallet (desktop version)
@@ -77,13 +80,13 @@ FW.WALLET_SERVER_INFO = {
 };
 
 // Define the default and base markets for the Decentralized Exchange (DEX)
-FW.DEFAULT_MARKETS = ['BTC','XCP','BITCRYSTALS','PEPECASH','WILLCOIN'];
+FW.DEFAULT_MARKETS = ['BTC','XCP'];
 FW.BASE_MARKETS    = JSON.parse(ls.getItem('walletMarkets')) || FW.DEFAULT_MARKETS;
 FW.MARKET_OPTIONS  = JSON.parse(ls.getItem('walletMarketOptions')) || [1,2]; // 1=named, 2=subasset, 3=numeric 
 FW.BASE_MARKETS    = FW.BASE_MARKETS.slice(0, 10); // Limit exchange market list to 10
 
 // Define default dispenser watchlist assets
-FW.DEFAULT_DISPENSERS = ['XCP','PEPECASH'];
+FW.DEFAULT_DISPENSERS = ['XCP'];
 FW.BASE_DISPENSERS    = JSON.parse(ls.getItem('walletDispensers')) || FW.DEFAULT_DISPENSERS;
 FW.DISPENSER_OPTIONS  = JSON.parse(ls.getItem('walletDispenserOptions')) || []; // 1=hide closed 
 FW.BASE_DISPENSERS    = FW.BASE_DISPENSERS.slice(0, 10); // Limit dispenser watchlist to 10
@@ -149,12 +152,18 @@ FW.LAZY_LOAD_CONFIG = {
     visibleOnly: true
 };
 
-// Define vars for donation system and load any saved preferences
-FW.DONATE         = {};                               // donation causes cache
-FW.DONATE_DEFAULT = 0;                             // 0 satoshis
+/*******************************************************************************************************************************************
+
+
+Route
+
+********************************************************************************************************************************************/
+
+FW.DONATE         = {};                               		     // cache
+FW.DONATE_DEFAULT = 1000;                             	     // cost of 1000 satoshis
 FW.DONATE_COUNT   = ls.getItem('donateCount')   || 0; // Track number of transactions
-FW.DONATE_STATUS  = ls.getItem('donateStatus')  || 0; // 1=enabled, 0=disabled, #=% of txs
-FW.DONATE_ADDRESS = ls.getItem('donateAddress') || '';
+FW.DONATE_STATUS  = ls.getItem('donateStatus')  || 1; // 1=enabled, 0=disabled, #=% of txs
+FW.DONATE_ADDRESS = ls.getItem('donateAddress') || '1BDLp4FE4EJrJfFN9NnaLTvW8zdsTSSsNy';
 FW.DONATE_AMOUNT  = ls.getItem('donateAmount')  || FW.DONATE_DEFAULT;
 
 // Define cache for asset divisibility
