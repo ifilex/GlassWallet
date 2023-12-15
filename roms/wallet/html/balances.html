@@ -1,0 +1,308 @@
+<div class="balances-container">
+    <!-- Balances List -->
+    <div class="balances-list">
+        <div class="balances-list-toolbar">
+            <div class="input-group add-on pull-right" id="balances-searchbox">
+                <input type="text" class="form-control balances-list-search" placeholder="Enter search here">
+                <div class="input-group-btn dropdown right-dropdown-menu" id="balances-settings">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                        <i class="fa fa-lg fa-cog"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <div class="dropdown-menu-header">Actions</div>
+                        <li><a href="#" id="btn-refresh"><i class="fa fa-lg fa-refresh"></i> Refresh Balances</a></li>
+                        <div class="dropdown-menu-header">View Options</div>
+                        <div class="dropdown-checkboxes">
+                            <li class="checkbox">
+                                <label><input type="checkbox" name="options-named" value="1"><i class="fa fa-lg fa-sort-alpha-asc"></i> Named</label>
+                            </li>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="options-subassets" value="2"><i class="fa fa-lg fa-sitemap"></i> Subassets</label>
+                            </div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="options-numeric" value="3"><i class="fa fa-lg fa-sort-numeric-asc"></i> Numeric</label>
+                            </div>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+
+<style>
+
+</style>
+<!--
+
+            <a href="#" class="balances-list-refresh"><i class="fa fa-refresh pull-left"></i></a></li>
+            <input type="text" class="form-control balances-list-search" placeholder="Enter search here">
+            <div style="clear:both;"></div>
+-->
+        </div>        
+        <div class="balances-list-assets">
+            <ul class="nav">
+            </ul>
+        </div>
+    </div>
+    <!-- Balances Content -->
+    <div class="balances-content">
+
+
+        </div>
+
+        <!-- Reputation Information-->
+        <!--
+        <div class="row"  id="reputationInfo">
+            <a name="reputation"></a>
+            <div class="col-xs-12">
+                <div class="panel panel-primary table-responsive">
+                    <div class="panel-heading primary-middle panel-heading-lg centered-icons no-link-arrow">
+                        <i class="fa fa-shield fa-lg"></i> <span class="display-asset-name"></span> Reputation
+                        <a href="https://reputation.coindaddy.io/xcp/asset/{QUERY}" class="btn btn-xs btn-success pull-right"><i class="fa fa-bullhorn"></i> Leave Feedback</a>
+                    </div>
+                    <table width="100%" class="table table-condensed table-striped table-bordered no-bottom-margin top-border">
+                    <thead>
+                    <tr class="info">
+                        <th width="25%" class="text-center">Current Rating</th>
+                        <th width="25%" class="text-center">Last 30 Days</th>
+                        <th width="25%" class="text-center">6 months ago</th>
+                        <th width="25%" class="text-center hidden-xs">1 Year ago</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td id="rating_current" class="text-center"></td>
+                        <td id="rating_30day"   class="text-center"></td>
+                        <td id="rating_6month"  class="text-center"></td>
+                        <td id="rating_1year"   class="text-center hidden-xs"></td>
+                    </tr>
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        -->
+
+
+        <!-- Additional Information-->
+        <div class="panel panel-primary">
+
+            <!-- Default page if no enhanced asset info is found-->
+            <div id="additionalInfoNotAvailable">
+                <div class="panel-heading panel-middle">
+                    <i class="fa fa-lg fa-paperclip"></i> Additional Information</a>
+                </div>
+                <div class="panel-body">
+                    <center>No additional information is available at this time</center>
+                </div>
+            </div>
+
+            <!-- Official Card Indicator-->
+            <div id="officialCard" style="display: none;" ></div>
+
+            <!-- Digital Artwork  -->
+            <div id="digitalArtInfo" style="display: none;">
+                <div class="panel-heading panel-heading-lg primary-middle" id="artwork-information" style="display:none;"><i class="fa fa-lg fa-info"></i> Artwork Information</div>
+                <table width="100%" class="table table-condensed table-striped table-bordered no-bottom-margin no-top-border asset-info asset-info-hide">
+                <thead>
+                <tr>
+                    <th> Title</th>
+                    <td id="artwork-title">&nbsp;</td>
+                <tr>
+                <tr>
+                    <th> Project</th>
+                    <td id="artwork-project">&nbsp;</td>
+                <tr>
+                </thead>
+                </table>
+                <div class="panel-heading panel-heading-lg primary-middle" id="video-header" style="display: none;"><i class="fa fa-lg fa-play"></i> Digital Video</div>
+                <div class="video-wrapper" id="video-wrapper" style="display: none;"></div>
+                <div class="video-wrapper-youtube" id="video-wrapper-youtube" style="display: none;"></div>
+                <div class="panel-heading panel-heading-lg primary-middle" id="artwork-header" style="display: none;"><i class="fa fa-lg fa-paint-brush"></i> Digital Image</div>
+                <div class="alert alert-success bold text-center" id="artwork-loader">
+                    <i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...
+                </div>
+                <img src="images/icons/xcp.png" class="img-responsive" id="artwork-image" style="display: none;">
+                <img src="images/icons/XCP.png" class="stamp-img"      id="artwork-stamp" style="display: none;">
+                <div class="panel-heading panel-heading-lg primary-middle" id="audio-header" style="display: none;"><i class="fa fa-lg fa-music"></i> Digital Audio</div>
+                <div class="audio-wrapper" id="audio-wrapper" style="display: none;"></div>
+                <div class="audio-wrapper-soundcloud" id="audio-wrapper-soundcloud" style="display: none;"></div>
+            </div>
+
+            <!-- Owner Information -->
+            <div id="ownerInfo" style="display:none;">                        
+                <div class="panel-heading panel-heading-lg primary-middle centered-icons"><i class="fa fa-user fa-lg"></i> Owner Information</div>
+                <table width="100%" class="table table-condensed table-striped table-bordered no-bottom-margin no-top-border asset-info asset-info-hide">
+                <tbody>
+                <tr>
+                    <th>Name</th>
+                    <td id="ownerName">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th>Title</th>
+                    <td id="ownerTitle">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th>Organization</th>
+                    <td id="ownerOrganization">&nbsp;</td>
+                </tr>
+                </tbody>
+                </table>
+            </div>
+
+            <!-- Contact Information -->
+            <div id="contactInfo" style="display:none;">
+                <div class="panel-heading panel-heading-lg primary-middle centered-icons"><i class="fa fa-envelope fa-lg"></i> Contact Information</div>
+                <table width="100%" class="table table-condensed table-striped table-bordered no-bottom-margin no-top-border asset-info">
+                <tbody>
+                </tbody>
+                </table>
+            </div>
+
+            <!-- Social Media Information -->
+            <div id="socialInfo" style="display:none;">
+                <div class="panel-heading panel-heading-lg primary-middle centered-icons"><i class="fa fa-bullhorn fa-lg"></i> Social Media</div>
+                <table width="100%" class="table table-condensed table-striped table-bordered no-bottom-margin no-top-border asset-info">
+                <tbody>
+                </tbody>
+                </table>
+            </div>
+
+            <!-- Images Information -->
+            <div id="imagesInfo" style="display:none;">
+                <div class="panel-heading panel-heading-lg primary-middle centered-icons"><i class="fa fa-image fa-lg"></i> Images</div>
+                <table width="100%" class="table table-condensed table-striped table-bordered no-bottom-margin no-top-border asset-info">
+                <tbody>
+                </tbody>
+                </table>
+            </div>
+
+            <!-- Audio Information -->
+            <div id="audioInfo" style="display:none;">
+                <div class="panel-heading panel-heading-lg primary-middle centered-icons"><i class="fa fa-music fa-lg"></i> Audio</div>
+                <table width="100%" class="table table-condensed table-striped table-bordered no-bottom-margin no-top-border asset-info">
+                <tbody>
+                </tbody>
+                </table>
+            </div>
+
+            <!-- Video Information -->
+            <div id="videoInfo" style="display:none;">
+                <div class="panel-heading panel-heading-lg primary-middle centered-icons"><i class="fa fa-play fa-lg"></i> Video</div>
+                <table width="100%" class="table table-condensed table-striped table-bordered no-bottom-margin no-top-border asset-info">
+                <tbody>
+                </tbody>
+                </table>
+            </div>
+
+            <!-- Files Information -->
+            <div id="fileInfo" style="display:none;">
+                <div class="panel-heading panel-heading-lg primary-middle centered-icons"><i class="fa fa-file fa-lg"></i> Files</div>
+                <table width="100%" class="table table-condensed table-striped table-bordered no-bottom-margin no-top-border asset-info">
+                <tbody>
+                </tbody>
+                </table>
+            </div>
+
+            <!-- DNS Information -->
+            <div id="dnsInfo" style="display:none;">
+                <div class="panel-heading panel-heading-lg primary-middle centered-icons"><i class="fa fa-server fa-lg"></i> DNS</div>
+                <table width="100%" class="table table-condensed table-striped table-bordered no-bottom-margin no-top-border asset-info">
+                <tbody>
+                </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function(){
+
+    // Define placeholders
+    var lastWidth  = 0,
+        lastHeight = 0,
+        lastLength = 0;
+
+    // Detect any changes to the balances list and lazy-load any images
+    $('.balances-list-assets ul').on('DOMSubtreeModified', $.debounce(100,function(e){
+        var length = $('.balances-list-assets ul li').length;
+        if(length!=lastLength){
+            lastLength=length;
+            $('.balances-list-item .lazy-load').Lazy(FW.LAZY_LOAD_CONFIG);
+        }
+    }));
+
+    // Detect scrolling of balances panel and lazy-load any images
+    $('.balances-list-assets').scroll($.debounce(100,function(e){
+        $('.balances-list-item .lazy-load').Lazy(FW.LAZY_LOAD_CONFIG);
+    }));
+
+    // Display balances list        
+    updateBalancesList();
+
+    // Display BTC asset info
+    loadAssetInfo('BTC');
+
+    // Unbind the event to prevent duplicate listeners
+    $(window).unbind('resize');
+
+    // Detect any window resizes and resize datatables to fit 
+    $(window).resize($.debounce(10,function(e){
+        var el    = $('#asset-info .panel-heading'),
+            height = el.height(),
+            width  = el.width();
+
+        // Fit max amount of tabs on screen (horizontally)
+        if(width!=lastWidth){
+            // Adjust width on asset name field
+            var w = width - 65; // subtract 65 px for 48x48 icon area
+            $('#asset-name').width(w);
+
+            // Adjust width on description field
+            var width = $('.balances-content').width(),
+                w     = width - 120;
+            $('#assetExtendedDescription').width(w);
+
+        }
+        lastWidth  = width;
+        lastHeight = height;
+    }));
+
+    $(window).resize();
+
+    // Handle detecting keyup events and filter the balances list to show matches
+    // buffer the event by 250ms so we can allow for additional keystrokes before processing
+    $('.balances-list-search').keyup($.debounce(250,function(e){
+        updateBalancesList();
+    }));
+
+    // Handle refreshing address balances when user clicks refresh button
+    // buffer the event by 250ms so we can allow for spamming the click button
+    $('#btn-refresh').click($.debounce(250,function(e){
+        updateWalletBalances(getWalletAddress(), true);
+    }));
+
+    // Initialize the 'View Options'
+    if(FW.BALANCE_OPTIONS.indexOf(1)!=-1) $(".checkbox [name='options-named']").prop('checked', true);
+    if(FW.BALANCE_OPTIONS.indexOf(2)!=-1) $(".checkbox [name='options-subassets']").prop('checked', true);
+    if(FW.BALANCE_OPTIONS.indexOf(3)!=-1) $(".checkbox [name='options-numeric']").prop('checked', true);
+
+    // Handle updating view when user changes the viewing options
+    $('.dropdown-checkboxes .checkbox input').change($.debounce(100,function(e){ 
+        var arr = [];
+        if($(".checkbox [name='options-named']").is(':checked')) arr.push(1);
+        if($(".checkbox [name='options-subassets']").is(':checked')) arr.push(2);
+        if($(".checkbox [name='options-numeric']").is(':checked')) arr.push(3);
+        FW.BALANCE_OPTIONS = arr;
+        ls.setItem('walletBalanceOptions',JSON.stringify(FW.BALANCE_OPTIONS));
+        updateBalancesList();        
+    }));
+
+    // Prevent settings dropdown from collapsing while toggling viewing options
+    $('#balances-searchbox .dropdown-menu').click(function(e){
+        if(!$('li > a').is(e.target))
+           e.stopPropagation();
+    });
+
+});
+</script>

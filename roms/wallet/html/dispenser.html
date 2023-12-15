@@ -1,0 +1,266 @@
+<!-- Dispenser Form -->
+<form class="form-horizontal" id="dispenser-form" data-toggle="validator" role="form">
+    <div class="form-group" id="source-address-field">
+        <!-- Source Address Field -->
+    </div>
+    <div class="form-group" id="destination-address-field">
+        <!-- Destination Address Field -->
+    </div>
+    <div class="form-group" id="oracle-select-field">
+        <!-- Oracle Field  -->
+    </div>
+    <div class="form-group" id="token-name-select-field">
+        <!-- Token Name Field  -->
+    </div>
+    <div class="form-group" id="available-field">
+        <!-- Available  Field -->
+    </div>
+    <div class="form-group" id="escrow-amount-field">
+        <!-- Escrow Amount Field -->
+    </div>
+    <div class="form-group" id="give-amount-field">
+        <!-- Give Amount Field -->
+    </div>
+    <div class="form-group" id="btc-amount-field">
+        <!-- BTC Amount Field -->
+    </div>
+    <div class="form-group" id="fiat-amount-field" style="display:none;">
+        <!-- Fiat Amount Field -->
+    </div>
+    <div class="form-group" id="tx-fee-field">
+        <!-- Transaction Fee Field -->
+    </div>
+    <div id="transaction-status"></div>
+    <div class="text-right">
+        <div id="btn-cancel" class="btn btn-danger margin-right-5"><i class="fa fa-lg fa-fw fa-ban"></i> Cancel</div>
+        <div id="btn-submit" class="btn btn-success "><i class="fa fa-lg fa-fw fa-arrows-h"></i> Create Dispenser</div>
+    </div>
+</form>
+
+
+<script>
+
+// Callback to run after broadcasting transaction
+function doneCb(tx){
+    if(tx){
+        dialogClose('dialog-dispenser');
+        dialogMessage('<i class="fa fa-lg fa-arrows-h"></i> Create Dispenser Successful', '<center>Your dispenser transaction has been sent to the network and should be included to a block shortly.' +
+                      '<br/><br/><a class="btn btn-success" href="' + FW.XCHAIN_API + '/tx/' + tx + '" target="_blank">View Transaction</a></center>');
+    }
+}
+
+// Handle confirming action with user
+function confirmCreateDispenser(vals){
+    var oracle_address = getOracleAddress(vals);
+    // Callback to run if user confirms action
+    var confirmCb = function(){
+        var network  = (FW.WALLET_NETWORK==2) ? 'testnet' : 'mainnet',
+            escrow_sat = getSatoshis(vals['escrow-amount']),
+            give_sat   = getSatoshis(vals['give-amount']),
+            fee_sat    = getSatoshis(vals['fee-amount']),
+            btc_sat    = (oracle_address!='') ? parseInt(numeral(vals['fiat-amount']).multiply(100).value()) : parseInt(numeral(vals['btc-amount']).multiply(100000000).value()),
+            asset      = vals.name, 
+            status     = 0; // Hardcode to open for creating a dispenser... can close via dispensers interface
+        cpDispenser(network, vals.source, vals.destination, asset, escrow_sat, give_sat, btc_sat, status, fee_sat, oracle_address, doneCb);
+    }
+    // Confirm the action with the user
+    var title = '<i class="fa fa-lg fa-fw fa-arrows-h"></i> Confirm Create Dispenser?',
+        msg   = 'Escrow <b>' + vals['escrow-amount'] + ' ' + vals.name + '</b> in a dispenser at <br><b>' + vals.destination + '</b>';
+    // Finally if this is an oracled dispenser, Lookup the oracle fee and display confirmation to user.
+    if(oracle_address!=""){
+        $.getJSON(FW.XCHAIN_API + '/api/broadcasts/' + oracle_address + '/1/1', function(o){
+            var rec = o.data[0];
+            var total_fiat     = numeral(vals['fiat-amount']).value() * numeral(vals['escrow-amount']).value(),
+                total_fiat_fee = numeral(total_fiat).value() * numeral(rec.fee).value(),
+                total_btc_fee  = numeral(Math.ceil(((1 / numeral(rec.value).value()) * total_fiat_fee) * 100000000)).multiply(0.00000001).format('0,0.00000000');
+                fiat           = rec.text.replace('BTC-','');
+            msg += '<br>Dispense <b>' + vals['give-amount'] + ' ' + vals.name + '</b> for <b>' + vals['fiat-amount'] + ' ' + fiat +'</b> each?';
+            msg += '<br><br><div class="alert alert-warning" role="alert">This includes an oracle usage fee of ' + (rec.fee * 100) + '% or ' + numeral(total_fiat_fee).format('0,0.00') + ' ' + fiat + ' (' + total_btc_fee + ' BTC). <br>Oracle usage fees are charged whenever a dispenser is created or refilled.</div>';
+            dialogConfirm(title, '<center>' + msg + '</center>', false, true, confirmCb);
+        });
+    } else {
+        msg  += '<br>Dispense <b>' + vals['give-amount'] + ' ' + vals.name + '</b> for <b>' + vals['btc-amount'] + ' BTC</b> each?';
+        dialogConfirm(title, '<center>' + msg + '</center>', false, true, confirmCb);
+    }   
+
+}
+
+// Handle throwing a scary warning to discourage people from setting up multiple dispensers on the same address
+// This should hopefully prevent some users from losing funds because they do not understand that a single BTC payment can trigger multiple dispensers
+function dialogWarnMultipleDispensers(vals){
+    var message = '<div class="alert alert-danger" role="alert"><strong><center>There is already a dispenser setup at this address!<br><br>Setting up multiple dispensers on the same address is not suggested, and can result in dispensing tokens unexpectedly and loss of funds!</center></strong></div>';
+    message += '<center>Are you sure you want to continue setting up this dispenser?'
+    dialogConfirm('<i class="fa fa-lg fa-fw fa-exclamation-circle"></i> Warning', message, false, true, function(){
+        confirmCreateDispenser(vals);
+    });
+}
+
+
+// Handle throwing a scary warning to discourage people from setting up dispensers on everyday use addresses
+function dialogWarnSameAddress(vals){
+    var message = '<div class="alert alert-danger" role="alert"><strong><center>Setting up a dispenser on an address you commonly use is not advised and can result in dispensing tokens unexpectedly and loss of funds!</center><br>Example: Withdrawing BTC from an exchange or sending BTC to this address from another address you control could trigger an unexpected dispense.</strong></div>';
+    message += '<center>Are you sure you want to continue setting up this dispenser?'
+    dialogConfirm('<i class="fa fa-lg fa-fw fa-exclamation-circle"></i> Warning', message, false, true, function(){
+        confirmCreateDispenser(vals);
+    });
+}
+
+// Handle returning the oracle address
+function getOracleAddress(vals){
+    var addr  = vals['oracle-address'];
+        valid = isValidAddress(addr);
+    if(!valid && addr=='other')
+        addr = vals['oracle-address-other'];
+    if(isValidAddress(addr))
+        return addr;
+    return '';
+}
+
+$(document).ready(function(){
+
+    // Load any field content
+    $('#source-address-field').load('html/fields/source-address.html');
+    $('#destination-address-field').load('html/fields/destination-address.html');
+    $('#oracle-select-field').load('html/fields/oracle-select.html');
+    $('#token-name-select-field').load('html/fields/token-name-select.html');
+    $('#available-field').load('html/fields/available.html');
+    $('#escrow-amount-field').load('html/fields/amount-escrow.html');
+    $('#give-amount-field').load('html/fields/amount-give.html');
+    $('#btc-amount-field').load('html/fields/amount-btc.html');
+    $('#fiat-amount-field').load('html/fields/amount-fiat.html');
+    $('#tx-fee-field').load('html/fields/tx-fee.html');
+
+    // Delay initializing some fields to give things a chance to load
+    setTimeout(function(){
+
+        // Initialize any tooltips
+        $('[data-toggle="tooltip"]').tooltip({ 
+            html: true,
+            placement: 'bottom'
+        }); 
+
+        // Handle loading any data from FW.DIALOG_DATA
+        var data = FW.DIALOG_DATA;
+
+        if(data.token){
+            $('#token-name-select').val(data.token);
+            $('#token-name-select').change();
+        }
+
+        // Reset dialog data so we don't reuse data on form in the future
+        FW.DIALOG_DATA = {};
+
+        // Detect any asset change and clear the escrow and give amounts
+        $('#token-name-select').change(function(e){
+            $('#escrow-amount').val('');
+            $('#escrow-amount-value').val('');
+            $('#give-amount').val('');
+            $('#give-amount-value').val('');
+        });
+
+    },100);
+
+    // Submit form if user clicks 'Submit' button
+    $('#btn-submit').click($.debounce(100,function(e){
+        $('#dispenser-form').submit();
+    }));
+
+    // Hide the form if users clicks 'Cancel' button
+    $('#btn-cancel').click($.debounce(100,function(e){
+        dialogClose('dialog-dispenser');
+    }));
+
+    // Handle form validation and displaying any errors
+    $('#dispenser-form').validator().on('submit', function(e){
+        // prevent form submission
+        e.preventDefault(); 
+        // Get object with form values
+        var vals   = array2Object($(this).serializeArray()),
+            errors = [];
+        console.log('vals=',vals);
+        // Remove error indicators from any fields 
+        $('.form-group').removeClass('has-error has-danger');
+
+        // Verify we have a valid dispenser address
+        if(!isValidAddress(vals.destination)){
+            errors.push('You must enter a valid dispenser address!');
+            $('#destination-address').closest('.form-group').addClass('has-error has-danger');
+        }
+
+        // Verify we have a valid oracle address
+        if(vals['oracle-address']!=""){
+            var addr = getOracleAddress(vals);
+            if(!isValidAddress(addr)){
+                errors.push('You must enter a valid oracle address!');
+                $('#oracle-address-other').closest('.form-group').addClass('has-error has-danger');
+            }
+        }
+
+        // Verify we have valid escrow amount 
+        if(numeral(vals['escrow-amount']).value()==0){
+            errors.push('You must enter an escrow amount which is greater than 0!');
+            $('#escrow-amount').closest('.form-group').addClass('has-error has-danger');
+        }
+
+        // Verify we have valid give amount 
+        if(numeral(vals['give-amount']).value()==0){
+            errors.push('You must enter an give amount which is greater than 0!');
+            $('#give-amount').closest('.form-group').addClass('has-error has-danger');
+        }
+
+        // Make sure we have a FIAT or BTC quantity
+        if(vals['oracle-address']!=""){
+            if(numeral(vals['fiat-amount']).value()==0){
+                errors.push('You must enter a fiat amount which is greater than 0!');
+                $('#fiat-amount').closest('.form-group').addClass('has-error has-danger');
+            }
+        } else {
+            if(numeral(vals['btc-amount']).value()==0){
+                errors.push('You must enter an BTC amount which is greater than 0!');
+                $('#btc-amount').closest('.form-group').addClass('has-error has-danger');
+            }
+        }
+
+        // Verify we have valid fee amount 
+        if(numeral(vals['fee-amount']).value()==0){
+            errors.push('You must enter a fee which is greater than 0.00000000!');
+            $('#fee-amount').closest('.form-group').addClass('has-error has-danger');
+        }
+
+        // Display any error message
+        if(errors.length){
+            dialogMessage('<i class="fa fa-lg fa-fw fa-exclamation-circle"></i> Error(s)', errors.join('<br/>') );
+        } else {
+            // Check if user has any dispensers setup on this address already
+            $.getJSON(FW.XCHAIN_API + '/api/dispensers/' + vals.destination, function(o){
+                var found = false
+                o.data.forEach(function(item){
+                    if(item.status==0)
+                        found = true;
+                });
+                // If open dispensers are found, throw warning about multiple dispensers
+                if(found){
+                    dialogWarnMultipleDispensers(vals);
+                } else {
+                    // So far so good, now lets check mempool for any pending dispenser transactions
+                    $.getJSON(FW.XCHAIN_API + '/api/mempool/' + vals.destination, function(o){
+                        var found = false
+                        o.data.forEach(function(item){
+                            if(item.tx_type=='Dispenser')
+                                found = true;
+                        });
+                        // Handle throwing warnings to steer users away from pitfalls of dispenser use
+                        if(found){
+                            dialogWarnMultipleDispensers(vals);
+                        } else {
+                            // Throw warning about not using dispensers on commonly used addresses
+                            dialogWarnSameAddress(vals);
+                        }
+                    });
+                }
+            });
+        }
+    })
+
+});
+</script>

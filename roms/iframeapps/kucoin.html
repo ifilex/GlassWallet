@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="x-ua-compatible" content="IE=edge">
+<title>MEXC</title>
+<link rel="shortcut icon" href="favicons/metroie.ico"/>
+<link rel="stylesheet" href="common.css"/>
+<script>
+function start()
+{
+	document.getElementById('startbutton').style.display='block';
+}
+</script>
+</head>
+
+<body onload="start()">
+
+<iframe src="https://www.mexc.com/" width="100%" height="100%"></iframe>
+
+<div id="starthoverarea" onmouseover="start()" class="hotcorner">
+</div>
+
+<div id="startbutton" onmouseout="start()">
+<a href="../start/index.html"><img src="img/start.png"/></a>
+</div>
+
+</body>
+</html>
