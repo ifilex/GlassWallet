@@ -35,7 +35,7 @@ iframe {
 }
 #charmsbar {
 	display:none;
-	background-color:#111111;
+	background-color:#001E4E;
 	position:fixed;
 	padding:5% 0;
 	top:0px;
@@ -47,7 +47,7 @@ iframe {
 #settingscharms {
 	padding : 40px;
 	display:none;
-	background-color:#3B66AD;
+	background-color:#001E4E;
 	position:fixed;
 	top:0px;
 	right:0px;

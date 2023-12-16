@@ -1,7 +1,7 @@
 /* HTML Elements */
 html {
 
-	height:100% !important;
+	height:90% !important;
 	position:relative;
 }
 body {
@@ -36,9 +36,9 @@ img { -ms-interpolation-mode: bicubic; }
 #starttext {
 	position:fixed;
 	font-family: Segoe UI Light;
-	font-size:48pt; 
+	font-size:24pt; 
 	color:#FFFFFF;
-	margin-top:20px;
+	margin-top:10px;
 	margin-left:58px;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
@@ -137,7 +137,7 @@ img { -ms-interpolation-mode: bicubic; }
 }
 .block {
 	position:absolute;
-	top:150px;
+	top:15px;
 	left:60px;
 	display:block;
 	z-index:0;
