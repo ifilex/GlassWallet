@@ -1,14 +1,22 @@
 {
-	"name":"Freedows 8BIT :: Glass Progman",
-	"description":"Windows Program Manager emulator for Chrome",
-	"version":"1.02",
-	"manifest_version":3,
-   	"action": {
-		"default_icon": "8bitfarm.png"
-                 	},
-	"chrome_url_overrides": {
-		"newtab": "index.html"
-	},
-	"permissions": [ "contextMenus", "management", "tabs", "storage" ]
-  
+  "dir": "ltr"
+  "lang": "en",
+  "name": "GWallet",
+  "short_name": "GWallet",
+  "scope": "/wine/?source=pwa",
+  "display": "fullscreen",
+  "display_override": ["standalone", "minimal-ui"],
+  "start_url": "/GlassWallet/vm/",
+  "background_color": "#FFFFFF",
+  "theme_color": "#000",
+  "description": "A simple Windows Crypto Wallet.",
+  "orientation": "landscape",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "8bitfarm.png",
+      "type": "image/png",
+      "sizes": "88x70"
+    }
+           ]
 }
