@@ -1,4 +1,4 @@
-(()=> {
+﻿(()=> {
 
 const looksLikeChrome = !!(window.chrome && (window.chrome.loadTimes || window.chrome.csi));
 // NOTE: Microsoft Edge includes window.chrome.app
@@ -227,7 +227,7 @@ window.menus = {
 				// In a cross-origin iframe, or same origin but without custom close(), or top level:
 				// Not all browsers support close() for closing a tab,
 				// so redirect instead. Exit to the official web desktop.
-				window.location = "../../start/index.html";
+				window.location = "../../index.html";
 			},
 			description: localize("Quits Paint."),
 		}

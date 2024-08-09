@@ -1,17 +1,193 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="preconnect" href="https://fonts.googleapis.com"> 
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,300&display=swap" rel="stylesheet">
-<meta http-equiv="x-ua-compatible" content="IE=edge">
-<title>Glass :: Program Manager</title>
-<META HTTP-EQUIV="REFRESH" CONTENT="0;URL=start/index.html">
-<link rel="stylesheet" href="style.css"/>
-<link rel="shortcut icon" href="favicon.ico"/>
-<script>
-var passwd = 'document.getElementById('passwd')';
-</script>
+		<meta http-equiv="x-ua-compatible" content="IE=edge">
+		<title>GWallet</title>
+		<!--[if IE]><style>#targetIE {margin-left:-2.5px;}</style><![endif]-->
+		<link rel="stylesheet" href="lib/win32.css"/>
+		<link rel="stylesheet" href="lib/scrollbar.css"/>
+		<link rel="shortcut icon" href="favicon.ico"/>
+    		<script src="lib/jquery-1.8.0.min.js" type="text/javascript"></script>
+    		<script src="lib/jquery-ui-1.8.23.min.js" type="text/javascript"></script>
+    		<script src="lib/app.js" type="text/javascript"></script>
+
 </head>
 <body>
+	<div id="starttext" onclick="document.getElementById('userdropdown').style.display='none';">
+		<span>Start</span>
+	</div>
+
+	<div id="user" onclick="document.getElementById('userdropdown').style.display='block';">
+		<img src="category/images/user.png" id="userimage"/>
+	</div>
+
+	<ul id="userdropdown">
+		<a href="version/index.html"><li>About</li></a>
+	</ul>
+
+	<div id="tiles"  onclick="document.getElementById('userdropdown').style.display='none';settingscharms.style.display='none';sharecharms.style.display='none';">
+		<div class="block">
+			<div class="blocktitle">
+			<!-- Block title -->
+			</div>
+			<div class="line">
+				<div class="tile">
+					<a href="store/index.html">					
+						<img src="category/images/games.png" height="125" width="258"/>
+					</a>
+					<p>Games</p>
+				</div>
+				<div class="tile">
+					<a href="apps/calendar/index.html">
+						<img src="category/images/calendar.png" height="125" width="258"/>
+					</a>
+					<p>Calendar</p>
+				</div>
+				<div class="tile">
+					<a href="apps/webbrowser/index.html">
+						<img src="category/images/website.png" height="125" width="125"/>
+					</a>
+					<p>Web Explorer</p>
+				</div>
+				<div class="tile">
+					<a href="multimedia/index.html">
+						<img src="category/images/music.png" height="125" width="125"/>
+					</a>
+					<p>Multimedia</p>
+				</div>
+			</div>
+			<div class="line">
+				<div class="tile">
+					<a href="apps/notepad/index.html">
+						<img src="category/images/word.png" height="125" width="125"/>
+					</a>
+					<p>Write</p>
+				</div>
+				<div class="tile">
+
+					<a href="apps/calculator/index.html">
+						<img src="category/images/calc.png" height="125" width="125"/>
+					</a>
+					<p>Calculator</p>
+				</div>
+				<div class="tile">
+					<a href="apps/paint/index.html">
+						<img src="category/images/photos.png" height="125" width="125"/>
+					</a>
+					<p>Paint</p>
+				</div>
+				<div class="tile">
+					<a href="accesories/index.html">
+						<img src="category/images/store.png" height="125" width="125"/>
+					</a>
+					<p>Accesories</p>
+				</div>
+				<div class="tile">
+					<a href="apps/todo/index.html">
+						<img src="category/images/todo.png" height="125" width="125"/>
+					</a>
+					<p>Task List</p>
+				</div>
+				<div class="tile">
+					<a href="apps/recorder/index.html">
+						<img src="category/images/rec.png" height="125" width="125"/>
+					</a>
+					<p></p>
+				</div>
+			</div>
+
+			<div class="line">
+				<div class="tile">
+					<a href="wallet/index.html">
+						<img src="category/images/btc.png" height="125" width="258"/>
+					</a>
+					<p>Cold Wallet</p>
+				</div>
+				<div class="tile">
+					<a href="defi/index.html">
+					<img src="category/images/finance.png" height="125" width="258"/>
+					</a>
+					<p>DEFI</p>
+				</div>
+
+				<div class="tile">
+					<a href="apps/youtube/index.html">
+						<img src="category/images/youtube.png" height="125" width="258"/>
+					</a>
+					<p></p>
+				</div>
+
+			</div>
+		</div>
+		<div class="block two">
+			<div class="blocktitle">
+			
+			</div>
+			<div class="line">
+				<div class="tile">
+					<a href="apps/floffice/index.html">
+						<img src="category/images/office.png" height="125" width="258"/>
+					</a>
+					<p></p>
+				</div>
+				<div class="tile">
+					<a href="apps/xbill/index.html">
+						<img src="category/images/x11.png" height="125" width="125"/>
+					</a>
+					<p></p>
+				</div>
+				<div class="tile">
+					<a href="apps/winmine/index.html">
+						<img src="category/images/winmine.png" height="125" width="125"/>
+					</a>
+					<p class="white"></p>
+				</div>
+			</div>
+			<div class="line">
+                                                                            <div class="tile">
+					<a href="apps/sport/index.html">
+						<img src="category/images/sports.png" height="125" width="125"/>
+					</a>						
+					<p>Sports</p>
+                                                                             </div>
+				<div class="tile">
+					<a href="iframeapps/news.html">
+						<img src="category/images/news.png" height="125" width="125"/>
+					</a>
+					<p>News</p>
+				</div>
+				<div class="tile">
+					<a href="apps/sol/index.html">
+						<img src="category/images/solg.png" height="125" width="258"/>
+					</a>
+					<p>Solitaire</p>
+				</div>
+			</div>
+			<div class="line">
+				<div class="tile">
+					<a href="wallet/market.html">
+						<img src="category/images/swapsfast.png" height="125" width="125"/>
+					</a>
+					<p>Swap</p>
+				</div>
+				<div class="tile">
+					<a href="wallet/farmpools.html">
+						<img src="category/images/farm.png" height="125" width="125"/>
+					</a>
+					<p>Farm</p>
+				</div>	
+				<div class="tile">
+					<a href="help/index.html">
+						<img src="category/images/help.png" height="125" width="258"/>
+					</a>
+					<p>Help</p>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
 </body>
+</html>
+
+

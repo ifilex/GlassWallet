@@ -70,7 +70,7 @@ var menus = {
 					}
 				} catch (e) {
 				}
-				window.location = "../../start/index.html";
+				window.location = "../../index.html";
 			},
 			description: "Quits Notepad.",
 		}
