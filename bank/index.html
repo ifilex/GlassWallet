@@ -1,0 +1,1707 @@
+<html>
+<head>
+<title>Secure Bank</title>
+<style>
+  /* Estilos existentes (se mantienen iguales) */
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #141414;
+    color: #ffffff;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: background-color 0.3s ease, background-image 0.3s ease;
+  }
+  .header {
+    background-color: #000000;
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-content {
+    display: flex;
+    align-items: center;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #a0a0a0;
+  }
+  .menu-button {
+    background-color: #333;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .menu-button:hover {
+    background-color: #666;
+  }
+  .menu-button svg {
+    width: 20px;
+    height: 20px;
+    fill: white;
+  }
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+  }
+  .search-input {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    width: 300px;
+    background-color: #333;
+    color: white;
+  }
+  .search-button {
+    background-color: #4a4a4a;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .settings-button {
+    background-color: #333;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .settings-button:hover {
+    background-color: #0066cc;
+  }
+  .settings-button svg {
+    width: 20px;
+    height: 20px;
+    fill: white;
+  }
+  .container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  .recent-section {
+    position: relative;
+    margin: 20px 0 40px;
+  }
+  .recent-apps-container {
+    position: relative;
+    padding-bottom: 30px;
+  }
+  .selected-app-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #4a4a4a;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    pointer-events: none;
+  }
+  .recent-app.selected ~ .selected-app-info {
+    opacity: 1;
+  }
+  .recent-apps {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .recent-apps::-webkit-scrollbar {
+    display: none;
+  }
+  .recent-app {
+    width: 160px;
+    height: 160px;
+    border-radius: 8px;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.2s;
+    border: 2px solid transparent;
+    flex-shrink: 0;
+  }
+  .recent-app:hover {
+    transform: scale(1.1);
+  }
+  .recent-app.selected {
+    border: 2px solid #4a4a4a;
+    transform: scale(1.1);
+  }
+  .scroll-indicator {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 24px;
+    width: 30px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 10;
+  }
+  .recent-apps-container:hover .scroll-indicator {
+    opacity: 1;
+  }
+  .categories {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .category-button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .category-button:hover, 
+  .category-button.active,
+  .category-button.selected {
+    background-color: #0066cc;
+  }
+  .app-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+  }
+  .app-card {
+    background-color: #2f2f2f;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    position: relative;
+  }
+  .app-card:hover {
+    transform: scale(1.05);
+  }
+  .app-card.selected {
+    outline: 3px solid #0066cc;
+    transform: scale(1.05);
+  }
+  .app-thumbnail {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  .app-info {
+    padding: 15px;
+  }
+  .app-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  .app-category {
+    color: #ccc;
+    margin-bottom: 5px;
+    font-size: 12px;
+  }
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.9);
+  }
+  .modal-content {
+    background-color: #181818;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 800px;
+    width: 90%;
+  }
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .close:hover,
+  .close:focus {
+    color: #fff;
+  }
+  .app-details {
+    margin-top: 20px;
+  }
+  .action-button {
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+  }
+  .action-button:hover {
+    background-color: #004d99;
+  }
+  
+  /* Estilos para el menú lateral */
+  .side-menu {
+    position: fixed;
+    left: -300px;
+    top: 0;
+    width: 250px;
+    height: 100vh;
+    background-color: #000;
+    z-index: 999;
+    transition: left 0.3s ease;
+    padding: 20px 0;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+  }
+  .side-menu.open {
+    left: 0;
+  }
+  .menu-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .menu-item:hover {
+    background-color: #333;
+  }
+  .menu-item.selected {
+    background-color: #0066cc;
+  }
+  .menu-item svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 15px;
+    fill: currentColor;
+  }
+  .menu-item span {
+    font-size: 14px;
+  }
+  .menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 998;
+  }
+  .menu-overlay.open {
+    display: block;
+  }
+  
+  /* NUEVOS ESTILOS - VENTANA MODAL DE CONFIGURACIÓN */
+  .settings-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.9);
+  }
+  
+  .settings-modal-content {
+    background-color: #181818;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 800px;
+    width: 90%;
+    position: relative;
+  }
+  
+  .settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .settings-title {
+    font-size: 24px;
+    margin: 0;
+    color: #ffffff;
+  }
+  
+  .close-settings {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+  }
+  
+  .close-settings:hover,
+  .close-settings:focus {
+    color: #fff;
+  }
+  
+  .settings-section {
+    margin-bottom: 25px;
+  }
+  
+  .settings-section-title {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #4a8fe7;
+  }
+  
+  .color-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .color-option {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.2s ease;
+  }
+  
+  .color-option:hover {
+    transform: scale(1.1);
+  }
+  
+  .color-option.selected {
+    border-color: white;
+  }
+  
+  .image-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .image-option {
+    width: 100%;
+    height: 80px;
+    border-radius: 4px;
+    cursor: pointer;
+    overflow: hidden;
+    border: 2px solid transparent;
+    transition: transform 0.2s ease;
+  }
+  
+  .image-option img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .image-option:hover {
+    transform: scale(1.05);
+  }
+  
+  .image-option.selected {
+    border-color: #4a8fe7;
+  }
+  
+  .apply-button {
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .apply-button:hover {
+    background-color: #004d99;
+  }
+  
+  .custom-image-upload {
+    margin-top: 15px;
+  }
+  
+  .custom-image-upload input {
+    width: 100%;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    color: white;
+    margin-top: 5px;
+  }
+</style>
+</head>
+<body>
+  <!-- Menú lateral -->
+  <div class="side-menu" id="sideMenu">
+    <div class="menu-item" data-category="all">
+      <svg viewBox="0 0 24 24">
+        <path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" />
+      </svg>
+      <span>Home</span>
+    </div>
+    <div class="menu-item" data-category="personas">
+      <svg viewBox="0 0 24 24">
+        <path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+      </svg>
+      <span>Personas</span>
+    </div>
+    <div class="menu-item" data-category="empresas">
+      <svg viewBox="0 0 24 24">
+       <path d="M21,16V4H3V16H21M21,2A2,2 0 0,1 23,4V16A2,2 0 0,1 21,18H14V20H16V22H8V20H10V18H3C1.89,18 1,17.1 1,16V4C1,2.89 1.89,2 3,2H21M5,6H14V11H5V6M15,6H19V8H15V6M19,9V14H15V9H19M5,12H9V14H5V12Z" />
+      </svg>
+      <span>Empresas</span>
+    </div>
+    <div class="menu-item" data-category="microcreditos">
+      <svg viewBox="0 0 24 24">
+        <path d="M21,16V4H3V16H21M21,2A2,2 0 0,1 23,4V16A2,2 0 0,1 21,18H14V20H16V22H8V20H10V18H3C1.89,18 1,17.1 1,16V4C1,2.89 1.89,2 3,2H21M5,6H14V11H5V6M15,6H19V8H15V6M19,9V14H15V9H19M5,12H9V14H5V12Z" />
+      </svg>
+      <span>Microcreditos</span>
+    </div>
+    <div class="menu-item" data-category="utilidades">
+      <svg viewBox="0 0 24 24">
+        <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" />
+      </svg>
+      <span>Utilidades</span>
+    </div>
+    <div class="menu-item" data-category="negocios">
+      <svg viewBox="0 0 24 24">
+        <path d="M12,2L1,21H23M12,6L19.53,19H4.47M11,10V14H13V10M11,16V18H13V16" />
+      </svg>
+      <span>Negocios</span>
+    </div>
+   <div class="menu-item" data-category="canales">
+      <svg viewBox="0 0 24 24">
+       <path d="M21,6H3A2,2 0 0,0 1,8V16A2,2 0 0,0 3,18H21A2,2 0 0,0 23,16V8A2,2 0 0,0 21,6M21,16H3V8H21M6,15H8V13H10V11H8V9H6V11H4V13H6M14.5,12A1.5,1.5 0 0,1 16,13.5A1.5,1.5 0 0,1 14.5,15A1.5,1.5 0 0,1 13,13.5A1.5,1.5 0 0,1 14.5,12M18.5,9A1.5,1.5 0 0,1 20,10.5A1.5,1.5 0 0,1 18.5,12A1.5,1.5 0 0,1 17,10.5A1.5,1.5 0 0,1 18.5,9Z" />
+      </svg>
+      <span>Canales</span>
+    </div>
+  </div>
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <!-- NUEVA VENTANA MODAL DE CONFIGURACIÓN -->
+  <div id="settingsModal" class="settings-modal">
+    <div class="settings-modal-content">
+      <span class="close-settings" id="closeSettings">&times;</span>
+      
+      <div class="settings-header">
+        <h2 class="settings-title">Configuración de Fondo</h2>
+      </div>
+      
+      <div class="settings-section">
+        <h3 class="settings-section-title">Color de Fondo</h3>
+        <div class="color-options">
+          <div class="color-option selected" style="background-color: #141414;" data-color="#141414"></div>
+          <div class="color-option" style="background-color: #0d1b2a;" data-color="#0d1b2a"></div>
+          <div class="color-option" style="background-color: #1b263b;" data-color="#1b263b"></div>
+          <div class="color-option" style="background-color: #0a2240;" data-color="#0a2240"></div>
+          <div class="color-option" style="background-color: #122c4d;" data-color="#122c4d"></div>
+          <div class="color-option" style="background-color: #0f2a47;" data-color="#0f2a47"></div>
+        </div>
+      </div>
+      
+      <div class="settings-section">
+        <h3 class="settings-section-title">Imagen de Fondo</h3>
+        <div class="image-options">
+          <div class="image-option" data-image="url('https://images.unsplash.com/photo-1579546929662-711aa81148cf?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+            <img src="https://images.unsplash.com/photo-1579546929662-711aa81148cf?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Fondo 1">
+          </div>
+          <div class="image-option" data-image="url('https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+            <img src="https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Fondo 2">
+          </div>
+          <div class="image-option" data-image="url('https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+            <img src="https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Fondo 3">
+          </div>
+          <div class="image-option" data-image="url('https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+            <img src="https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Fondo 4">
+          </div>
+          <div class="image-option" data-image="url('https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+            <img src="https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Fondo 5">
+          </div>
+          <div class="image-option" data-image="url('https://images.unsplash.com/photo-1518837695005-2083093ee35b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+            <img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Fondo 6">
+          </div>
+        </div>
+        
+        <div class="custom-image-upload">
+          <label>Subir imagen personalizada:</label>
+          <input type="file" id="customImageUpload" accept="image/*">
+        </div>
+      </div>
+      
+      <button class="apply-button" id="applyButton">Aplicar Cambios</button>
+    </div>
+  </div>
+
+  <header class="header">
+    <div class="header-content">
+      <div class="logo-container">
+        <button id="menuButton" class="menu-button">
+          <svg viewBox="0 0 24 24">
+            <path d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" />
+          </svg>
+        </button>
+        <div class="logo">Secure Bank</div>
+      </div>
+      <div class="search-bar">
+        <input type="text" class="search-input" placeholder="Buscar ...">
+        <button class="search-button">Buscar</button>
+        <button id="settingsButton" class="settings-button">
+          <svg viewBox="0 0 24 24">
+            <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="recent-section">
+      <div class="recent-title">Recientemente usado</div>
+      <div class="recent-apps-container">
+        <div class="recent-apps" id="recentApps"></div>
+        <div class="scroll-indicator" id="scrollIndicator">></div>
+        <div class="selected-app-info" id="selectedAppInfo"></div>
+      </div>
+    </div>
+
+    <div class="categories" id="categories">
+      <button class="category-button active" data-category="all">Todo</button>
+      <button class="category-button" data-category="personas">Personas</button>
+      <button class="category-button" data-category="empresas">Empresas</button>
+      <button class="category-button" data-category="microcreditos">Microcreditos</button>
+      <button class="category-button" data-category="utilidades">Utilidades</button>
+      <button class="category-button" data-category="negocios">Negocios</button>
+      <button class="category-button" data-category="canales">Canales</button>
+    </div>
+    <div class="app-grid" id="appGrid"></div>
+  </div>
+
+  <div id="appModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <div class="app-details" id="appDetails"></div>
+      <div class="app-actions">
+        <button id="launchButton" class="action-button">Ejecutar</button>
+      </div>
+    </div>
+  </div>
+
+  <audio id="navSound" preload="auto">
+    <source src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    // Polyfills para Chromium 41
+    if (!Array.prototype.forEach) {
+      Array.prototype.forEach = function(callback, thisArg) {
+        var T, k;
+        if (this == null) {
+          throw new TypeError(' this is null or not defined');
+        }
+        var O = Object(this);
+        var len = O.length >>> 0;
+        if (typeof callback !== 'function') {
+          throw new TypeError(callback + ' is not a function');
+        }
+        if (arguments.length > 1) {
+          T = thisArg;
+        }
+        k = 0;
+        while (k < len) {
+          var kValue;
+          if (k in O) {
+            kValue = O[k];
+            callback.call(T, kValue, k, O);
+          }
+          k++;
+        }
+      };
+    }
+
+    if (!NodeList.prototype.forEach) {
+      NodeList.prototype.forEach = Array.prototype.forEach;
+    }
+    
+    if (!String.prototype.includes) {
+      String.prototype.includes = function(search, start) {
+        if (typeof start !== 'number') {
+          start = 0;
+        }
+        if (start + search.length > this.length) {
+          return false;
+        } else {
+          return this.indexOf(search, start) !== -1;
+        }
+      };
+    }
+
+    // Función de espera para DOMContentLoaded más compatible
+    function ready(fn) {
+      if (document.readyState != 'loading') {
+        fn();
+      } else if (document.addEventListener) {
+        document.addEventListener('DOMContentLoaded', fn);
+      } else {
+        document.attachEvent('onreadystatechange', function() {
+          if (document.readyState != 'loading')
+            fn();
+        });
+      }
+    }
+
+    ready(function() {
+      // Base de datos de aplicaciones de ejemplo
+      var appData = [
+        {
+          name: "BIP Personas",
+          image: "box/homebank.png",
+          description: "Acceda a su homebanking personal del banco provincia.",
+          category: "personas",
+          link: "https://www.bancoprovincia.bancainternet.com.ar/spa/"
+        },
+        {
+          name: "BIP Empresas",
+          image: "box/hb.png",
+          description: "Acceda al homebanking de su empresa a traves del banco provincia.",
+          category: "empresas",
+          link: "https://www.bancoprovincia.bancainternet.com.ar/spa-empresas/"
+        },
+        {
+          name: "Cuenta DNI",
+          image: "box/dni.png",
+          description: "Tu cuenta en tu celular, siempre más cerca tuyo: Descargá la app y abrí tu cuenta en Banco Provincia, gratis, 100% digital y solo con tu DNI",
+          category: "personas",
+          link: "https://www.bancoprovincia.com.ar/cuentadni/contenidos/cdniIndividuos"
+        },
+        {
+          name: "Tarjetas y Paquetes",
+          image: "box/tarjet.png",
+          description: "Conocé las tarjetas de Banco Provincia y los paquetes de productos que tenemos para ofrecerte. Las mejores alternativas para realizar compras, administrar tus cuentas, financiar tus compras y potenciar tu negocio o emprendimiento.",
+          category: "personas",
+          link: "https://www.bancoprovincia.com.ar/web/tarjetas_y_paquetes"
+        },
+        {
+          name: "Cuentas",
+          image: "box/cuent.png",
+          description: "Una cuenta para cada necesidad",
+          category: "personas",
+          link: "https://www.bancoprovincia.com.ar/web/cuentas"
+        },
+        {
+          name: "Prestamos personales e hipotecario",
+          image: "box/prestamos.png",
+          description: "Te ofrecemos un servicio a la medida de tus necesidades.",
+          category: "personas",
+          link: "https://www.bancoprovincia.com.ar/web/prestamos_personales_e_hipotecarios"
+        },
+        {
+          name: "Caja de seguridad",
+          image: "box/caja.png",
+          description: "Protegé los objetos que más valorás, en un sitio seguro.",
+          category: "personas",
+          link: "https://www.bancoprovincia.com.ar/web/cajas_de_seguridad"
+        },
+        {
+          name: "Inversiones",
+          image: "box/inversion.png",
+          description: "Podés realizar tus inversiones fácilmente, desde cualquier lugar, ingresando a Home Banking BIP, o contactándote con nuestro Centro de Inversiones , donde te brindaremos un servicio personalizado ya la medida de tus necesidades.",
+          category: "personas",
+          link: "https://www.bancoprovincia.com.ar/productos/inversiones/-inversiones/inversiones"
+        },
+        {
+          name: "Empresas",
+          image: "box/empresa.png",
+          description: "Acompañamos el desarrollo comercial de tu empresa, promoviendo acciones que potencian su crecimiento.",
+          category: "empresas",
+          link: "https://www.bancoprovincia.com.ar/home/home_empresas"
+        },
+        {
+          name: "Cuentas y Tarjetas",
+          image: "box/ecuentas.png",
+          description: "Conocé la variedad de cuentas y de tarjetas que tenemos para ofrecerte, con características especiales para cada necesidad.",
+          category: "empresas",
+          link: "https://www.bancoprovincia.com.ar/web/cuentas_y_tarjetas"
+        },
+        {
+          name: "Financiacion",
+          image: "box/fin.png",
+          description: "Te mostramos cada una de nuestras opciones de financiación que tenemos para ofrecerte y la importancia de conocer las distintas alternativas para el crecimiento de tu empresa o negocio.",
+          category: "empresas",
+          link: "https://www.bancoprovincia.com.ar/web/financiacion"
+        },
+        {
+          name: "Cobros y Pagos",
+          image: "box/cobros.png",
+          description: "Utilizá nuestros servicios para reducir la mora y tus costos operativos.",
+          category: "empresas",
+          link: "https://www.bancoprovincia.com.ar/web/cobros_y_pagos"
+        },
+        {
+          name: "Cuenta DNI Comercios",
+          image: "box/cdni.png",
+          description: "Sumá tu negocio a Cuenta DNI y potenciá tus ventas.",
+          category: "empresas",
+          link: "https://www.bancoprovincia.com.ar/cuentadni/contenidos/cdniComercios"
+        },
+        {
+          name: "Comercios",
+          image: "box/ecom.png",
+          description: "Accedé a los beneficios de operar con Tarjetas de Crédito, Débito y Cuenta DNI.",
+          category: "empresas",
+          link: "https://www.bancoprovincia.com.ar/web/adhesion_comercios"
+        },
+        {
+          name: "Comercio Exterior",
+          image: "box/expo.png",
+          description: "Ahora desde Banco Provincia acompañamos a las empresas en el inicio de su proceso exportador, brindándoles asesoramiento técnico, de gestión y asistencia financiera.",
+          category: "empresas",
+          link: "https://www.bancoprovincia.com.ar/comercio_exterior/comex_exportacion"
+        },
+        {
+          name: "Mercado de Capitales",
+          image: "box/mercado.png",
+          description: "Te acompañamos junto a un equipo de profesionales con vasta experiencia en la estructuración y colocación de instrumentos financieros en el Mercado de Capitales, tanto local como internacional.",
+          category: "empresas",
+          link: "https://www.bancoprovincia.com.ar/productos/inversiones/mercadodecapitales/mercadodecapitales"
+        },
+        {
+          name: "Microcreditos",
+          image: "box/micro.png",
+          description: "Provincia Microcréditos, una empresa del banco provincia.",
+          category: "microcreditos",
+          link: "https://www.provinciamicrocreditos.com.ar/"
+        },
+        {
+          name: "Creditos de Linea Tradicional",
+          image: "box/tradicional.png",
+          description: "Nuestros créditos están destinados a trabajadoras y trabajadores independientes de la Provincia de Buenos Aires, que realicen una actividad productiva, comercial o de servicio, y cuyo destino sea la Inversión Productiva o Capital de Trabajo, para fortalecer el emprendimiento.",
+          category: "microcreditos",
+          link: "https://www.provinciamicrocreditos.com.ar/creditos/simulador/"
+        },
+        {
+          name: "Creditos de Linea convenios municipales",
+          image: "box/convenios.png",
+          description: "Líneas de financiación para emprendedoras y emprendedores locales, por medio de firma de convenios municipales quienes aportan en el subsidio de la tasa",
+          category: "microcreditos",
+          link: "https://www.provinciamicrocreditos.com.ar/creditos/convenios-municipales/"
+        },
+        {
+          name: "Creditos de Linea Agropecuarios",
+          image: "box/agropecuario.png",
+          description: "Líneas de financiación con tasa subsidiada para productoras y productores agropecuarios de la Provincia de Buenos Aires.",
+          category: "microcreditos",
+          link: "https://www.provinciamicrocreditos.com.ar/creditos/agropecuarios/"
+        },
+        {
+          name: "Creditos de Linea Agroecologicos",
+          image: "box/agro.png",
+          description: "Líneas de financiación con tasa subsidiada para productoras y productores agroecológicos de la Provincia de Buenos Aires.",
+          category: "microcreditos",
+          link: "https://www.provinciamicrocreditos.com.ar/creditos/agroecologicos/"
+        },
+        {
+          name: "Calculadora",
+          image: "box/calc.png",
+          description: "Calculadora para realizar cuentas de forma rapida.",
+          category: "utilidades",
+          link: "webapps/calculator/index.html"
+        },
+        {
+          name: "Calendario",
+          image: "box/calendar.png",
+          description: "Es un calendario para que pueda ver feriados, y actividades.",
+          category: "utilidades",
+          link: "webapps/calendar/index.html"
+        },
+        {
+          name: "Reloj Mundial",
+          image: "box/clock.png",
+          description: "Simplmente es un reloj internacional, puede ser util para ver la hora en otros paises.",
+          category: "utilidades",
+          link: "webapps/clock/index.html"
+        },
+       {
+          name: "Editor de Textos",
+          image: "box/npad.png",
+          description: "Es un editor de texto simplificado, para que pueda guardar notas o editarlas.",
+          category: "utilidades",
+          link: "webapps/notepad/index.html"
+        },           
+       {
+          name: "Editor de Imagenes",
+          image: "box/paint.jpg",
+          description: "Inspirado en el editor de imagenes paintbrush le permitira tomar notas y dibujar.",
+          category: "utilidades",
+          link: "webapps/paint/index.html"
+        },        
+       {
+          name: "Lista de Tareas",
+          image: "box/todo.png",
+          description: "Utilidad para crear listas de tareas, es altamente util para no olvidar tareas.",
+          category: "utilidades",
+          link: "webapps/todo/index.html"
+        },
+        {
+          name: "Prestamos para profesionales y negocios",
+          image: "box/pp.png",
+          description: "Prestamos diseñado para: Trabajadores, comerciantes o profesionales.",
+          category: "negocios",
+          link: "https://www.bancoprovincia.com.ar/productos/creditos/ProfNeg/condiciones_prof_neg"
+        },
+        {
+          name: "Centro de inversiones",
+          image: "box/ci.png",
+          description: "El Centro de Inversiones te ofrece las mejores alternativas para invertir tu dinero cubriendo tus necesidades y preferencias.",
+          category: "negocios",
+          link: "https://www.bancoprovincia.com.ar/productos/inversiones/centrodeinversiones/centrodeinversiones"
+        },
+        {
+          name: "Turno WEB",
+          image: "box/turno.png",
+          description: "Para mejorar tu experiencia, te sugerimos planificar tu visita a la sucursal solicitando un turno de atención comercial. Previo a tu cita, nos estaremos comunicando contigo para ayudarte.",
+          category: "canales",
+          link: "https://www.bancoprovincia.com.ar/turneroweb/#/"
+        },
+        {
+          name: "Sucursales",
+          image: "box/cajero.png",
+          description: "Acceda al buscador de sucursales.",
+          category: "canales",
+          link: "https://www.bancoprovincia.com.ar/BuscadorSucursales"
+        },
+        {
+          name: "Contacto",
+          image: "box/contact.png",
+          description: "Contactenos.",
+          category: "canales",
+          link: "https://www.bancoprovincia.com.ar/web/informacion_de_utilidad"
+        },
+        {
+          name: "Noticias",
+          image: "box/news.png",
+          description: "Acceda a las ultimas noticias del Banco Provincia.",
+          category: "canales",
+          link: "https://www.bancoprovincia.com.ar/web/informacion_de_utilidad"
+        }
+      ];
+
+      // Variables para control de navegación
+      var MAX_RECENT_APPS = 16;
+      var currentSelectedIndex = -1;
+      var currentApps = [];
+      var isModalOpen = false;
+      var recentApps = JSON.parse(localStorage.getItem('recentApps')) || [];
+      var currentFocusArea = 'recent';
+      var currentCategoryIndex = 0;
+      var currentRecentIndex = -1;
+      var isScrolling = false;
+      var isMenuOpen = false;
+      var currentMenuItemIndex = -1;
+
+      // Variables para configuración de fondo
+      var isSettingsOpen = false;
+      var selectedColor = localStorage.getItem('bgColor') || '#141414';
+      var selectedBackground = localStorage.getItem('bgImage') || '';
+
+      // Elementos del DOM
+      var appGrid = document.getElementById('appGrid');
+      var recentAppsContainer = document.getElementById('recentApps');
+      var selectedAppInfo = document.getElementById('selectedAppInfo');
+      var categoryButtons = document.querySelectorAll('.category-button');
+      var navSound = document.getElementById('navSound');
+      var scrollIndicator = document.getElementById('scrollIndicator');
+      var recentAppsEl = document.getElementById('recentApps');
+      var menuButton = document.getElementById('menuButton');
+      var sideMenu = document.getElementById('sideMenu');
+      var menuOverlay = document.getElementById('menuOverlay');
+      var menuItems = document.querySelectorAll('.menu-item');
+      
+      // Nuevos elementos para configuración
+      var settingsButton = document.getElementById('settingsButton');
+      var settingsModal = document.getElementById('settingsModal');
+      var closeSettings = document.getElementById('closeSettings');
+      var applyButton = document.getElementById('applyButton');
+      var colorOptions = document.querySelectorAll('.color-option');
+      var imageOptions = document.querySelectorAll('.image-option');
+      var customImageUpload = document.getElementById('customImageUpload');
+
+      // Aplicar configuración guardada al cargar
+      if (selectedBackground) {
+        document.body.style.backgroundImage = selectedBackground;
+        document.body.style.backgroundColor = '';
+      } else {
+        document.body.style.backgroundColor = selectedColor;
+        document.body.style.backgroundImage = '';
+      }
+
+      // Función para mostrar aplicaciones recientes
+      function displayRecentApps() {
+        recentAppsContainer.innerHTML = '';
+        
+        if (recentApps.length === 0) {
+          recentAppsContainer.innerHTML = '<p style="color: #666; padding: 10px;">Sin aplicativos recientes</p>';
+          return;
+        }
+        
+        for (var i = 0; i < recentApps.length; i++) {
+          var app = recentApps[i];
+          var appInData = null;
+          
+          // Buscar la app en los datos
+          for (var j = 0; j < appData.length; j++) {
+            if (appData[j].name === app.name) {
+              appInData = appData[j];
+              break;
+            }
+          }
+          
+          if (!appInData) {
+            appInData = app;
+          }
+          
+          var appWrapper = document.createElement('div');
+          appWrapper.style.position = 'relative';
+          appWrapper.style.display = 'inline-block';
+          
+          var img = document.createElement('img');
+          img.src = appInData.image || 'https://via.placeholder.com/160x160/333333/FFFFFF?text=App';
+          img.className = 'recent-app';
+          img.title = appInData.name;
+          img.setAttribute('data-index', i);
+          img.setAttribute('data-app-name', appInData.name);
+          
+          var infoDiv = document.createElement('div');
+          infoDiv.className = 'selected-app-info';
+          infoDiv.textContent = appInData.name;
+          
+          img.addEventListener('click', function() {
+            var index = parseInt(this.getAttribute('data-index'));
+            var recentApp = recentApps[index];
+            var fullAppData = null;
+            for (var k = 0; k < appData.length; k++) {
+              if (appData[k].name === recentApp.name) {
+                fullAppData = appData[k];
+                break;
+              }
+            }
+            if (!fullAppData) {
+              fullAppData = recentApp;
+            }
+            launchRecentApp(fullAppData);
+          });
+          
+          appWrapper.appendChild(img);
+          appWrapper.appendChild(infoDiv);
+          recentAppsContainer.appendChild(appWrapper);
+        }
+
+        if (recentApps.length > 0 && currentFocusArea === 'recent') {
+          currentRecentIndex = 0;
+          updateSelection();
+        }
+        
+        setTimeout(updateScrollIndicator, 100);
+      }
+
+      // Función para mostrar aplicaciones
+      function displayApps(apps) {
+        appGrid.innerHTML = '';
+        currentApps = apps;
+        
+        if (apps.length === 0) {
+          appGrid.innerHTML = '<p style="color: #666; grid-column: 1/-1; text-align: center;">No se encontro nada</p>';
+          return;
+        }
+        
+        for (var i = 0; i < apps.length; i++) {
+          var app = apps[i];
+          var appCard = document.createElement('div');
+          appCard.className = 'app-card';
+          
+          if (i === currentSelectedIndex && currentFocusArea === 'apps') {
+            appCard.className += ' selected';
+          }
+          
+          appCard.innerHTML = 
+            '<img src="' + app.image + '" alt="' + app.name + '" class="app-thumbnail">' +
+            '<div class="app-info">' +
+              '<div class="app-title">' + app.name + '</div>' +
+              '<div class="app-category">' + app.category + '</div>' +
+            '</div>';
+          
+          appCard.addEventListener('click', (function(app) {
+            return function() {
+              openAppModal(app);
+              addToRecentApps(app);
+            };
+          })(app));
+          
+          appGrid.appendChild(appCard);
+        }
+
+        if (currentApps.length > 0 && currentSelectedIndex === -1 && currentFocusArea === 'apps') {
+          currentSelectedIndex = 0;
+          updateSelection();
+        }
+      }
+
+      // Función para actualizar selección
+      function updateSelection() {
+        var recentAppElements = document.querySelectorAll('.recent-app');
+        
+        for (var i = 0; i < recentAppElements.length; i++) {
+          var element = recentAppElements[i];
+          if (parseInt(element.getAttribute('data-index')) === currentRecentIndex && currentFocusArea === 'recent') {
+            element.className += ' selected';
+            var appName = element.getAttribute('data-app-name');
+            selectedAppInfo.textContent = appName;
+            selectedAppInfo.style.left = element.offsetLeft + 'px';
+            selectedAppInfo.style.width = element.offsetWidth + 'px';
+            
+            // ScrollIntoView para Chromium 41
+            element.scrollIntoViewIfNeeded ? element.scrollIntoViewIfNeeded() : element.scrollIntoView();
+          } else {
+            element.className = 'recent-app';
+          }
+        }
+
+        for (var i = 0; i < categoryButtons.length; i++) {
+          var button = categoryButtons[i];
+          if (i === currentCategoryIndex && currentFocusArea === 'categories') {
+            button.className += ' selected';
+            button.scrollIntoViewIfNeeded ? button.scrollIntoViewIfNeeded() : button.scrollIntoView();
+          } else {
+            button.className = 'category-button';
+          }
+        }
+
+        var appCards = document.querySelectorAll('.app-card');
+        for (var i = 0; i < appCards.length; i++) {
+          var card = appCards[i];
+          if (i === currentSelectedIndex && currentFocusArea === 'apps') {
+            card.className += ' selected';
+            card.scrollIntoViewIfNeeded ? card.scrollIntoViewIfNeeded() : card.scrollIntoView();
+          } else {
+            card.className = 'app-card';
+          }
+        }
+
+        // Actualizar selección en el menú
+        for (var i = 0; i < menuItems.length; i++) {
+          var item = menuItems[i];
+          if (i === currentMenuItemIndex && currentFocusArea === 'menu') {
+            item.className += ' selected';
+          } else {
+            item.className = 'menu-item';
+          }
+        }
+      }
+
+      // Función para agregar a recientes
+      function addToRecentApps(app) {
+        // Filtrado compatible
+        var newRecentApps = [];
+        for (var i = 0; i < recentApps.length; i++) {
+          if (recentApps[i].name !== app.name) {
+            newRecentApps.push(recentApps[i]);
+          }
+        }
+        
+        newRecentApps.unshift({
+          name: app.name,
+          image: app.image,
+          link: app.link
+        });
+        
+        if (newRecentApps.length > MAX_RECENT_APPS) {
+          newRecentApps = newRecentApps.slice(0, MAX_RECENT_APPS);
+        }
+        
+        recentApps = newRecentApps;
+        localStorage.setItem('recentApps', JSON.stringify(recentApps));
+        displayRecentApps();
+      }
+
+      // Función para abrir modal de aplicación
+      function openAppModal(app) {
+        isModalOpen = true;
+        var appDetails = document.getElementById('appDetails');
+        var modal = document.getElementById('appModal');
+
+        appDetails.innerHTML = 
+          '<h2>' + app.name + '</h2>' +
+          '<img src="' + app.image + '" alt="' + app.name + '" style="max-width: 200px;">' +
+          '<p><strong>Categoria:</strong> ' + app.category + '</p>' +
+          '<p><strong>Descripcion:</strong> ' + app.description + '</p>';
+
+        var launchButton = document.getElementById('launchButton');
+        launchButton.onclick = function() {
+      //    location.href = app.link;
+         window.open(app.link, '_blank'); 
+         addToRecentApps(app);
+        };
+
+        modal.style.display = 'block';
+        currentSelectedIndex = -1;
+      }
+
+      // Función para abrir modal de configuración
+      function openSettingsModal() {
+        isSettingsOpen = true;
+        settingsModal.style.display = 'block';
+      }
+
+      // Función para cerrar modal
+      function closeModal() {
+        isModalOpen = false;
+        document.getElementById('appModal').style.display = 'none';
+        if (currentApps.length > 0 && currentFocusArea === 'apps') {
+          currentSelectedIndex = Math.min(currentSelectedIndex, currentApps.length - 1);
+          updateSelection();
+        }
+      }
+
+      // Función para cerrar modal de configuración
+      function closeSettingsModal() {
+        isSettingsOpen = false;
+        settingsModal.style.display = 'none';
+      }
+
+      // Función para alternar el menú
+      function toggleMenu() {
+        isMenuOpen = !isMenuOpen;
+        if (isMenuOpen) {
+          sideMenu.className += ' open';
+          menuOverlay.className += ' open';
+          currentFocusArea = 'menu';
+          currentMenuItemIndex = 0;
+        } else {
+          sideMenu.className = 'side-menu';
+          menuOverlay.className = 'menu-overlay';
+          currentFocusArea = 'recent';
+          currentMenuItemIndex = -1;
+        }
+        updateSelection();
+      }
+
+      // Funciones de navegación con teclado
+      function handleUpArrow() {
+        if (isMenuOpen) {
+          if (currentMenuItemIndex > 0) {
+            currentMenuItemIndex--;
+            updateSelection();
+          }
+          return;
+        }
+
+        if (isSettingsOpen) return;
+
+        if (currentFocusArea === 'apps' && currentApps.length > 0) {
+          var columns = Math.floor(appGrid.offsetWidth / (240 + 25));
+          if (currentSelectedIndex >= columns) {
+            currentSelectedIndex -= columns;
+            updateSelection();
+          } else {
+            currentFocusArea = 'categories';
+            currentCategoryIndex = Math.min(currentCategoryIndex, categoryButtons.length - 1);
+            updateSelection();
+          }
+        } else if (currentFocusArea === 'categories') {
+          currentFocusArea = 'recent';
+          if (recentApps.length > 0) {
+            currentRecentIndex = 0;
+            updateSelection();
+          }
+        }
+      }
+
+      function handleDownArrow() {
+        if (isMenuOpen) {
+          if (currentMenuItemIndex < menuItems.length - 1) {
+            currentMenuItemIndex++;
+            updateSelection();
+          }
+          return;
+        }
+
+        if (isSettingsOpen) return;
+
+        if (currentFocusArea === 'recent') {
+          currentFocusArea = 'categories';
+          currentCategoryIndex = Math.min(currentCategoryIndex, categoryButtons.length - 1);
+          updateSelection();
+        } else if (currentFocusArea === 'categories') {
+          currentFocusArea = 'apps';
+          currentSelectedIndex = Math.min(currentSelectedIndex, currentApps.length - 1);
+          if (currentSelectedIndex === -1 && currentApps.length > 0) {
+            currentSelectedIndex = 0;
+          }
+          updateSelection();
+        } else if (currentFocusArea === 'apps' && currentApps.length > 0) {
+          var columns = Math.floor(appGrid.offsetWidth / (240 + 25));
+          if (currentSelectedIndex + columns < currentApps.length) {
+            currentSelectedIndex += columns;
+            updateSelection();
+          }
+        }
+      }
+
+      function handleLeftArrow() {
+        if (isMenuOpen) return;
+        if (isSettingsOpen) return;
+
+        if (currentFocusArea === 'recent' && recentApps.length > 0) {
+          if (currentRecentIndex > 0) {
+            currentRecentIndex--;
+            updateSelection();
+          }
+        } else if (currentFocusArea === 'categories') {
+          if (currentCategoryIndex > 0) {
+            currentCategoryIndex--;
+            updateSelection();
+          }
+        } else if (currentFocusArea === 'apps' && currentApps.length > 0) {
+          if (currentSelectedIndex > 0) {
+            currentSelectedIndex--;
+            updateSelection();
+          }
+        }
+      }
+
+      function handleRightArrow() {
+        if (isMenuOpen) return;
+        if (isSettingsOpen) return;
+
+        if (currentFocusArea === 'recent' && recentApps.length > 0) {
+          if (currentRecentIndex < recentApps.length - 1) {
+            currentRecentIndex++;
+            updateSelection();
+          }
+        } else if (currentFocusArea === 'categories') {
+          if (currentCategoryIndex < categoryButtons.length - 1) {
+            currentCategoryIndex++;
+            updateSelection();
+          }
+        } else if (currentFocusArea === 'apps' && currentApps.length > 0) {
+          if (currentSelectedIndex < currentApps.length - 1) {
+            currentSelectedIndex++;
+            updateSelection();
+          }
+        }
+      }
+
+      function handleEnter() {
+        if (isSettingsOpen) return;
+        
+        if (isMenuOpen && currentMenuItemIndex >= 0 && currentMenuItemIndex < menuItems.length) {
+          menuItems[currentMenuItemIndex].click();
+          return;
+        }
+
+        if (currentFocusArea === 'recent' && currentRecentIndex >= 0 && currentRecentIndex < recentApps.length) {
+          var recentApp = recentApps[currentRecentIndex];
+          var fullAppData = null;
+          for (var i = 0; i < appData.length; i++) {
+            if (appData[i].name === recentApp.name) {
+              fullAppData = appData[i];
+              break;
+            }
+          }
+          if (!fullAppData) {
+            fullAppData = recentApp;
+          }
+          launchRecentApp(fullAppData);
+        } else if (currentFocusArea === 'categories' && currentCategoryIndex >= 0 && currentCategoryIndex < categoryButtons.length) {
+          categoryButtons[currentCategoryIndex].click();
+          currentFocusArea = 'apps';
+          currentSelectedIndex = 0;
+          updateSelection();
+        } else if (currentFocusArea === 'apps' && currentSelectedIndex >= 0 && currentSelectedIndex < currentApps.length) {
+          openAppModal(currentApps[currentSelectedIndex]);
+        }
+      }
+
+      function toggleFocusArea() {
+        if (isMenuOpen) {
+          toggleMenu();
+          return;
+        }
+
+        if (isSettingsOpen) return;
+
+        if (currentFocusArea === 'recent') {
+          currentFocusArea = 'categories';
+          currentCategoryIndex = Math.min(currentCategoryIndex, categoryButtons.length - 1);
+        } else if (currentFocusArea === 'categories') {
+          currentFocusArea = 'apps';
+          if (currentApps.length > 0) {
+            currentSelectedIndex = 0;
+          }
+        } else if (currentFocusArea === 'apps') {
+          currentFocusArea = 'recent';
+          if (recentApps.length > 0) {
+            currentRecentIndex = 0;
+          }
+        }
+        updateSelection();
+      }
+
+      // Función para lanzar aplicación reciente
+      function launchRecentApp(app) {
+//        location.href = app.link:
+        window.open(app.link, '_blank');
+        addToRecentApps(app);
+      }
+
+      // Función para actualizar visibilidad del indicador de scroll
+      function updateScrollIndicator() {
+        var isAtEnd = recentAppsEl.scrollWidth <= recentAppsEl.scrollLeft + recentAppsEl.clientWidth + 1;
+        scrollIndicator.style.display = isAtEnd ? 'none' : 'flex';
+      }
+
+      // Función para reproducir sonido de navegación
+      function playNavSound() {
+        if (navSound) {
+          navSound.currentTime = 0;
+          try {
+            navSound.play();
+          } catch(e) {
+            console.log("Audio play failed:", e);
+          }
+        }
+      }
+
+      // Eventos
+      document.addEventListener('keydown', function(e) {
+        if (isModalOpen) {
+          if (e.key === 'Escape') {
+            closeModal();
+          } else if (e.key === 'Enter') {
+            document.getElementById('launchButton').click();
+          }
+          return;
+        }
+
+        if (isSettingsOpen) {
+          if (e.key === 'Escape') {
+            closeSettingsModal();
+          }
+          return;
+        }
+
+        switch(e.key) {
+          case 'ArrowUp':
+            e.preventDefault();
+            playNavSound();
+            handleUpArrow();
+            break;
+          case 'ArrowDown':
+            e.preventDefault();
+            playNavSound();
+            handleDownArrow();
+            break;
+          case 'ArrowLeft':
+            e.preventDefault();
+            playNavSound();
+            handleLeftArrow();
+            break;
+          case 'ArrowRight':
+            e.preventDefault();
+            playNavSound();
+            handleRightArrow();
+            break;
+          case 'Enter':
+            e.preventDefault();
+            playNavSound();
+            handleEnter();
+            break;
+          case 'Tab':
+            e.preventDefault();
+            playNavSound();
+            toggleFocusArea();
+            break;
+          case 'Escape':
+            if (isMenuOpen) {
+              e.preventDefault();
+              playNavSound();
+              toggleMenu();
+            }
+            break;
+        }
+      });
+
+      scrollIndicator.addEventListener('click', function() {
+        recentAppsEl.scrollLeft += 200;
+        setTimeout(updateScrollIndicator, 300);
+      });
+
+      recentAppsEl.addEventListener('scroll', function() {
+        if (!isScrolling) {
+          isScrolling = true;
+          setTimeout(function() {
+            updateScrollIndicator();
+            isScrolling = false;
+          }, 100);
+        }
+      });
+
+      menuButton.addEventListener('click', function() {
+        playNavSound();
+        toggleMenu();
+      });
+
+      menuOverlay.addEventListener('click', function() {
+        playNavSound();
+        toggleMenu();
+      });
+
+      // Eventos para configuración
+      settingsButton.addEventListener('click', function() {
+        playNavSound();
+        openSettingsModal();
+      });
+
+      closeSettings.addEventListener('click', function() {
+        playNavSound();
+        closeSettingsModal();
+      });
+
+      // Seleccionar color
+      colorOptions.forEach(function(option) {
+        option.addEventListener('click', function() {
+          colorOptions.forEach(function(opt) {
+            opt.classList.remove('selected');
+          });
+          this.classList.add('selected');
+          selectedColor = this.getAttribute('data-color');
+          selectedBackground = '';
+        });
+      });
+
+      // Seleccionar imagen
+      imageOptions.forEach(function(option) {
+        option.addEventListener('click', function() {
+          imageOptions.forEach(function(opt) {
+            opt.classList.remove('selected');
+          });
+          this.classList.add('selected');
+          selectedBackground = this.getAttribute('data-image');
+          selectedColor = '';
+        });
+      });
+
+      // Subir imagen personalizada
+      customImageUpload.addEventListener('change', function(e) {
+        var file = e.target.files[0];
+        if (file) {
+          var reader = new FileReader();
+          reader.onload = function(event) {
+            selectedBackground = "url('" + event.target.result + "')";
+            selectedColor = '';
+            imageOptions.forEach(function(opt) {
+              opt.classList.remove('selected');
+            });
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // Aplicar cambios de configuración
+      applyButton.addEventListener('click', function() {
+        if (selectedBackground) {
+          document.body.style.backgroundImage = selectedBackground;
+          document.body.style.backgroundColor = '';
+        } else {
+          document.body.style.backgroundColor = selectedColor;
+          document.body.style.backgroundImage = '';
+        }
+        
+        // Guardar en localStorage para persistencia
+        localStorage.setItem('bgColor', selectedColor);
+        localStorage.setItem('bgImage', selectedBackground);
+        
+        playNavSound();
+        closeSettingsModal();
+      });
+
+      for (var i = 0; i < menuItems.length; i++) {
+        (function(index) {
+          menuItems[index].addEventListener('click', function() {
+            var category = this.getAttribute('data-category');
+            var filteredApps = [];
+            
+            if (category === 'all') {
+              filteredApps = appData;
+            } else {
+              for (var k = 0; k < appData.length; k++) {
+                if (appData[k].category === category) {
+                  filteredApps.push(appData[k]);
+                }
+              }
+            }
+            
+            displayApps(filteredApps);
+            currentSelectedIndex = 0;
+            currentFocusArea = 'apps';
+            updateSelection();
+            toggleMenu();
+          });
+        })(i);
+      }
+
+      for (var i = 0; i < categoryButtons.length; i++) {
+        (function(index) {
+          categoryButtons[index].addEventListener('click', function() {
+            for (var j = 0; j < categoryButtons.length; j++) {
+              categoryButtons[j].className = 'category-button';
+            }
+            this.className += ' active';
+            var category = this.getAttribute('data-category');
+            var filteredApps = [];
+            
+            if (category === 'all') {
+              filteredApps = appData;
+            } else {
+              for (var k = 0; k < appData.length; k++) {
+                if (appData[k].category === category) {
+                  filteredApps.push(appData[k]);
+                }
+              }
+            }
+            
+            displayApps(filteredApps);
+            currentSelectedIndex = 0;
+            currentFocusArea = 'apps';
+            updateSelection();
+          });
+        })(i);
+      }
+
+      var searchInput = document.querySelector('.search-input');
+      var searchButton = document.querySelector('.search-button');
+
+      searchButton.addEventListener('click', function() {
+        var query = searchInput.value.trim();
+        if (query) {
+          var filteredApps = [];
+          for (var i = 0; i < appData.length; i++) {
+            var app = appData[i];
+            if (app.name.toLowerCase().indexOf(query.toLowerCase()) !== -1 || 
+                app.description.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
+              filteredApps.push(app);
+            }
+          }
+          displayApps(filteredApps);
+          currentSelectedIndex = 0;
+          currentFocusArea = 'apps';
+          updateSelection();
+        }
+      });
+
+      searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          var query = searchInput.value.trim();
+          if (query) {
+            var filteredApps = [];
+            for (var i = 0; i < appData.length; i++) {
+              var app = appData[i];
+              if (app.name.toLowerCase().indexOf(query.toLowerCase()) !== -1 || 
+                  app.description.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
+                filteredApps.push(app);
+              }
+            }
+            displayApps(filteredApps);
+            currentSelectedIndex = 0;
+            currentFocusArea = 'apps';
+            updateSelection();
+          }
+        }
+      });
+
+      var closeBtn = document.querySelector('.close');
+      var modal = document.getElementById('appModal');
+
+      closeBtn.onclick = closeModal;
+
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          closeModal();
+        }
+        if (event.target == settingsModal) {
+          closeSettingsModal();
+        }
+      }
+
+      // Inicialización
+      displayApps(appData);
+      displayRecentApps();
+      
+      if (recentApps.length > 0) {
+        currentRecentIndex = 0;
+        updateSelection();
+      }
+    });
+  </script>
+</body>
+</html>

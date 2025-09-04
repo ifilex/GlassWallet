@@ -1,0 +1,9 @@
+{
+  "name": "Secure Bank",
+  "version": "1.0.0",
+  "description": "Secure Bank for Provincia Bank",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  }
+}

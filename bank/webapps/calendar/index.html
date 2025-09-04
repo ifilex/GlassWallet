@@ -1,0 +1,580 @@
+<html><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendar</title>
+<style>
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f3f3f3;
+    color: #000000;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.header {
+    background-color: #0078d4;
+    color: #ffffff;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.month-year {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-buttons button {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+.main-content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-right: 1px solid #e0e0e0;
+    overflow-y: auto;
+}
+
+.calendar-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background-color: #f0f0f0;
+    padding: 10px 0;
+    text-align: center;
+    font-weight: bold;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background-color: #e0e0e0;
+    padding: 1px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.day {
+    background-color: #ffffff;
+    padding: 10px;
+    text-align: left;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.day:hover {
+    background-color: #f0f0f0;
+}
+
+.day.today {
+    background-color: #e6f2ff;
+    font-weight: bold;
+}
+
+.day.other-month {
+    color: #999999;
+}
+
+.day-number {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.event {
+    font-size: 12px;
+    background-color: #0078d4;
+    color: #ffffff;
+    padding: 2px 4px;
+    border-radius: 3px;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.mini-calendar {
+    margin-bottom: 20px;
+}
+
+.mini-calendar table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.mini-calendar th, .mini-calendar td {
+    text-align: center;
+    padding: 5px;
+}
+
+.mini-calendar .current-day {
+    background-color: #0078d4;
+    color: #ffffff;
+    border-radius: 50%;
+}
+
+.upcoming-events h3 {
+    margin-top: 0;
+}
+
+.upcoming-event {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.upcoming-event .event-date {
+    font-weight: bold;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px;
+    border-radius: 8px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#eventForm {
+    display: flex;
+    flex-direction: column;
+}
+
+#eventForm input, #eventForm button {
+    margin-top: 10px;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .container {
+        height: auto;
+        margin: 0;
+        border-radius: 0;
+    }
+
+    .main-content {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: auto;
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .calendar-container {
+        height: auto;
+    }
+
+    .calendar-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .weekdays {
+        display: none;
+    }
+
+    .day {
+        min-height: auto;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .day-number::after {
+        content: attr(data-day);
+        margin-left: 5px;
+        font-weight: normal;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        margin: 10px;
+    }
+
+    .sidebar {
+        width: 200px;
+    }
+
+    .calendar-grid {
+        grid-template-columns: repeat(7, 1fr);
+    }
+
+    .day {
+        min-height: 80px;
+    }
+}
+
+/* For mobile devices in landscape mode */
+@media (max-width: 768px) and (orientation: landscape) {
+    .main-content {
+        flex-direction: row;
+    }
+
+    .sidebar {
+        width: 30%;
+        border-right: 1px solid #e0e0e0;
+        border-bottom: none;
+    }
+
+    .calendar-container {
+        width: 70%;
+    }
+
+    .calendar-grid {
+        grid-template-columns: repeat(7, 1fr);
+    }
+
+    .weekdays {
+        display: grid;
+    }
+}
+
+/* Hide scrollbar for cleaner look */
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="month-year" id="monthYear"></div>
+        <div class="nav-buttons">
+            <button id="prevMonth">&lt;</button>
+            <button id="nextMonth">&gt;</button>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="sidebar">
+            <div class="mini-calendar" id="miniCalendar"></div>
+            <div class="upcoming-events">
+                <h3>Upcoming Events</h3>
+                <div id="upcomingEventsList"></div>
+            </div>
+        </div>
+        <div class="calendar-container">
+            <div class="weekdays">
+                <div>Sun</div>
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+            </div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+        </div>
+    </div>
+</div>
+
+<div id="eventModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Edit Event</h2>
+        <form id="eventForm">
+            <input type="hidden" id="eventDate">
+            <input type="hidden" id="eventId">
+            <input type="text" id="eventTitle" placeholder="Event Title" required>
+            <button type="submit">Save Event</button>
+        </form>
+    </div>
+</div>
+
+<script>
+const monthYear = document.getElementById('monthYear');
+const calendarGrid = document.getElementById('calendarGrid');
+const prevMonthBtn = document.getElementById('prevMonth');
+const nextMonthBtn = document.getElementById('nextMonth');
+const miniCalendar = document.getElementById('miniCalendar');
+const upcomingEventsList = document.getElementById('upcomingEventsList');
+const eventModal = document.getElementById('eventModal');
+const eventForm = document.getElementById('eventForm');
+const eventTitleInput = document.getElementById('eventTitle');
+const eventDateInput = document.getElementById('eventDate');
+const eventIdInput = document.getElementById('eventId');
+
+let currentDate = new Date();
+let events = [];
+
+const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+function updateCalendar() {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+
+    monthYear.textContent = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(currentDate);
+
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    
+    const startingDayOfWeek = firstDay.getDay();
+    const totalDays = lastDay.getDate();
+
+    calendarGrid.innerHTML = '';
+
+    for (let i = 0; i < startingDayOfWeek; i++) {
+        const prevMonthLastDay = new Date(year, month, 0).getDate();
+        const dayElement = createDayElement(prevMonthLastDay - startingDayOfWeek + i + 1, true, new Date(year, month - 1, prevMonthLastDay - startingDayOfWeek + i + 1));
+        calendarGrid.appendChild(dayElement);
+    }
+
+    for (let day = 1; day <= totalDays; day++) {
+        const dayElement = createDayElement(day, false, new Date(year, month, day));
+        if (year === new Date().getFullYear() && month === new Date().getMonth() && day === new Date().getDate()) {
+            dayElement.classList.add('today');
+        }
+        calendarGrid.appendChild(dayElement);
+    }
+
+    const remainingCells = 42 - (startingDayOfWeek + totalDays);
+    for (let i = 1; i <= remainingCells; i++) {
+        const dayElement = createDayElement(i, true, new Date(year, month + 1, i));
+        calendarGrid.appendChild(dayElement);
+    }
+
+    updateMiniCalendar();
+    renderEvents();
+    updateUpcomingEvents();
+}
+
+function createDayElement(day, isOtherMonth, date) {
+    const dayElement = document.createElement('div');
+    dayElement.classList.add('day');
+    if (isOtherMonth) {
+        dayElement.classList.add('other-month');
+    }
+    const dayNumber = document.createElement('div');
+    dayNumber.classList.add('day-number');
+    dayNumber.textContent = day;
+    dayNumber.setAttribute('data-day', weekdays[date.getDay()]);
+    dayElement.appendChild(dayNumber);
+    
+    dayElement.addEventListener('click', () => openEventModal(date));
+    
+    return dayElement;
+}
+
+function updateMiniCalendar() {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    const today = new Date();
+
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    
+    const startingDayOfWeek = firstDay.getDay();
+    const totalDays = lastDay.getDate();
+
+    let html = '<table>';
+    html += '<tr><th colspan="7">' + new Intl.DateTimeFormat('en-US', { month: 'long' }).format(currentDate) + '</th></tr>';
+    html += '<tr><th>S</th><th>M</th><th>T</th><th>W</th><th>T</th><th>F</th><th>S</th></tr>';
+
+    let day = 1;
+    for (let i = 0; i < 6; i++) {
+        html += '<tr>';
+        for (let j = 0; j < 7; j++) {
+            if (i === 0 && j < startingDayOfWeek) {
+                html += '<td></td>';
+            } else if (day > totalDays) {
+                html += '<td></td>';
+            } else {
+                const isCurrentDay = (year === today.getFullYear() && month === today.getMonth() && day === today.getDate());
+                html += '<td' + (isCurrentDay ? ' class="current-day"' : '') + '>' + day + '</td>';
+                day++;
+            }
+        }
+        html += '</tr>';
+        if (day > totalDays) break;
+    }
+
+    html += '</table>';
+    miniCalendar.innerHTML = html;
+}
+
+function renderEvents() {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+
+    events.forEach(event => {
+        const eventDate = new Date(event.date);
+        if (eventDate.getFullYear() === year && eventDate.getMonth() === month) {
+            const dayElement = calendarGrid.children[eventDate.getDate() + getStartingDayOfWeek() - 1];
+            if (dayElement) {
+                const eventElement = document.createElement('div');
+                eventElement.classList.add('event');
+                eventElement.textContent = event.title;
+                eventElement.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openEventModal(eventDate, event);
+                });
+                dayElement.appendChild(eventElement);
+            }
+        }
+    });
+}
+
+function updateUpcomingEvents() {
+    const today = new Date();
+    const futureEvents = events.filter(event => new Date(event.date) >= today)
+                               .sort((a, b) => new Date(a.date) - new Date(b.date))
+                               .slice(0, 5);
+
+    let html = '';
+    futureEvents.forEach(event => {
+        html += `<div class="upcoming-event">
+            <div class="event-date">${formatDate(new Date(event.date))}</div>
+            <div class="event-title">${event.title}</div>
+        </div>`;
+    });
+
+    upcomingEventsList.innerHTML = html;
+}
+
+function formatDate(date) {
+    return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' }).format(date);
+}
+
+function getStartingDayOfWeek() {
+    return new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
+}
+
+function openEventModal(date, event = null) {
+    eventDateInput.value = date.toISOString().split('T')[0];
+    if (event) {
+        eventTitleInput.value = event.title;
+        eventIdInput.value = event.id;
+    } else {
+        eventTitleInput.value = '';
+        eventIdInput.value = '';
+    }
+    eventModal.style.display = 'block';
+}
+
+eventForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const title = eventTitleInput.value.trim();
+    const date = eventDateInput.value;
+    const id = eventIdInput.value || Date.now().toString();
+
+    if (title && date) {
+        const existingEventIndex = events.findIndex(e => e.id === id);
+        if (existingEventIndex !== -1) {
+            events[existingEventIndex] = { id, title, date };
+        } else {
+            events.push({ id, title, date });
+        }
+        saveToCookies();
+        updateCalendar();
+        eventModal.style.display = 'none';
+    }
+});
+
+document.querySelector('.close').addEventListener('click', () => {
+    eventModal.style.display = 'none';
+});
+
+window.addEventListener('click', (e) => {
+    if (e.target === eventModal) {
+        eventModal.style.display = 'none';
+    }
+});
+
+prevMonthBtn.addEventListener('click', () => {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    updateCalendar();
+});
+
+nextMonthBtn.addEventListener('click', () => {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    updateCalendar();
+});
+
+function saveToCookies() {
+    document.cookie = `events=${JSON.stringify(events)}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
+}
+
+function loadFromCookies() {
+    const cookieValue = document.cookie.split('; ').find(row => row.startsWith('events='));
+    if (cookieValue) {
+        events = JSON.parse(cookieValue.split('=')[1]);
+    }
+}
+
+function handleResize() {
+    if (window.innerWidth <= 768) {
+        document.querySelectorAll('.day-number').forEach(dayNumber => {
+            dayNumber.setAttribute('data-day', weekdays[new Date(currentDate.getFullYear(), currentDate.getMonth(), parseInt(dayNumber.textContent)).getDay()]);
+        });
+    }
+}
+
+window.addEventListener('resize', handleResize);
+
+loadFromCookies();
+updateCalendar();
+handleResize();
+</script>
+</body></html>

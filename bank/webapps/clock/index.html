@@ -1,0 +1,234 @@
+<html><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clock</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f3f3f3;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .clock-app {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 300px;
+      padding: 20px;
+    }
+    .time {
+      font-size: 48px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .date {
+      font-size: 18px;
+      text-align: center;
+      color: #666;
+      margin-bottom: 20px;
+    }
+    .tabs {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+    }
+    .tab {
+      padding: 10px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+    }
+    .tab.active {
+      border-bottom: 2px solid #0078d4;
+      color: #0078d4;
+    }
+    .content {
+      display: none;
+    }
+    .content.active {
+      display: block;
+    }
+    .alarm-list {
+      list-style-type: none;
+      padding: 0;
+    }
+    .alarm-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .toggle {
+      position: relative;
+      display: inline-block;
+      width: 40px;
+      height: 20px;
+    }
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 20px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #0078d4;
+    }
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+  </style>
+</head>
+<body>
+  <div class="clock-app">
+    <div class="time" id="time">00:00:00</div>
+    <div class="date" id="date">Monday, January 1</div>
+    <div class="tabs">
+      <div class="tab active" data-tab="clock">Clock</div>
+      <div class="tab" data-tab="alarm">Alarm</div>
+      <div class="tab" data-tab="timer">Timer</div>
+    </div>
+    <div class="content active" id="clock-content">
+      <div id="world-clock">
+        <!-- World clock content will be dynamically added here -->
+      </div>
+    </div>
+    <div class="content" id="alarm-content">
+      <ul class="alarm-list">
+        <li class="alarm-item">
+          <span>07:00 AM</span>
+          <label class="toggle">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </li>
+        <li class="alarm-item">
+          <span>08:30 AM</span>
+          <label class="toggle">
+            <input type="checkbox">
+            <span class="slider"></span>
+          </label>
+        </li>
+      </ul>
+    </div>
+    <div class="content" id="timer-content">
+      <div id="timer">00:00:00</div>
+      <button id="start-timer">Start</button>
+      <button id="stop-timer">Stop</button>
+      <button id="reset-timer">Reset</button>
+    </div>
+  </div>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      const timeElement = document.getElementById('time');
+      const dateElement = document.getElementById('date');
+      
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      
+      timeElement.textContent = `${hours}:${minutes}:${seconds}`;
+      
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      dateElement.textContent = now.toLocaleDateString(undefined, options);
+    }
+
+    function switchTab(tabName) {
+      const tabs = document.querySelectorAll('.tab');
+      const contents = document.querySelectorAll('.content');
+      
+      tabs.forEach(tab => tab.classList.remove('active'));
+      contents.forEach(content => content.classList.remove('active'));
+      
+      document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add('active');
+      document.getElementById(`${tabName}-content`).classList.add('active');
+    }
+
+    // World Clock
+    function addWorldClock(city, timezone) {
+      const worldClockDiv = document.getElementById('world-clock');
+      const clockElement = document.createElement('div');
+      clockElement.innerHTML = `<strong>${city}:</strong> <span id="${city.toLowerCase()}-time"></span>`;
+      worldClockDiv.appendChild(clockElement);
+
+      function updateWorldClock() {
+        const now = new Date();
+        const cityTime = now.toLocaleTimeString('en-US', { timeZone: timezone, hour: '2-digit', minute: '2-digit' });
+        document.getElementById(`${city.toLowerCase()}-time`).textContent = cityTime;
+      }
+
+      updateWorldClock();
+      setInterval(updateWorldClock, 1000);
+    }
+
+    // Timer functionality
+    let timerInterval;
+    let timerTime = 0;
+
+    function updateTimerDisplay() {
+      const hours = Math.floor(timerTime / 3600);
+      const minutes = Math.floor((timerTime % 3600) / 60);
+      const seconds = timerTime % 60;
+      document.getElementById('timer').textContent = 
+        `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    document.getElementById('start-timer').addEventListener('click', () => {
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        timerTime++;
+        updateTimerDisplay();
+      }, 1000);
+    });
+
+    document.getElementById('stop-timer').addEventListener('click', () => {
+      clearInterval(timerInterval);
+    });
+
+    document.getElementById('reset-timer').addEventListener('click', () => {
+      clearInterval(timerInterval);
+      timerTime = 0;
+      updateTimerDisplay();
+    });
+
+    // Initialize
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    addWorldClock('New York', 'America/New_York');
+    addWorldClock('London', 'Europe/London');
+    addWorldClock('Tokyo', 'Asia/Tokyo');
+
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+    });
+  </script>
+</body>
+</html>
